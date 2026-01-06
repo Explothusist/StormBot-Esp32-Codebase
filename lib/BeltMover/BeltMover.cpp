@@ -7,13 +7,17 @@ StepperArm = _StepperArm;
 
 }
 
-void BeltMover::init(){
+void BeltMover::init(){ // Runs once when startLoop() is called
     StepperArm->init();
     setSpeed(speed);
 
 
 
 }
+
+void BeltMover::periodic() { // Runs continuously while robot is enabled
+
+};
 
 
 bool BeltMover::update(){

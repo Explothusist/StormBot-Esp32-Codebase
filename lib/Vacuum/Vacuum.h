@@ -2,13 +2,15 @@
 
 #include <Arduino.h>
 #include <DcMotor.h>
+#include "../src/Automat/Subsystem.h"
 
-class Vacuum {
+class Vacuum : public atmt::Subsystem {
     public:
     Vacuum(DcMotor _vacuumDriver);
 
 
-    void init();
+    void init() override;
+    void periodic() override;
 
     void setSpeed(int speed); // 0 to 255
 

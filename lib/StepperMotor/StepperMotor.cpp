@@ -19,7 +19,7 @@ StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin){
 
 }
 
-void StepperMotor::init(){
+void StepperMotor::init() { // Runs once when startLoop() is called
     
 
     //Set the enable high at all times, as it causes a lock to appear
@@ -35,6 +35,9 @@ void StepperMotor::init(){
 
 
 }
+void StepperMotor::periodic() { // Runs continuously while robot is enabled
+    
+};
 
 void StepperMotor::invertDrive(bool _invert ){
     invertDirection = _invert;

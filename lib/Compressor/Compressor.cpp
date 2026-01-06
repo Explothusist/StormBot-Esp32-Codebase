@@ -7,10 +7,13 @@ Compressor::Compressor(DcMotor _compressorDriver){
     compressorDriver = new DcMotor(_compressorDriver);
 }
 
-void Compressor::init(){
+void Compressor::init(){ // Runs once when startLoop() is called
 
     compressorDriver->init();
 }
+void Compressor::periodic() { // Runs continuously while robot is enabled
+
+};
 
 void Compressor::setSpeed(int _speed){
 

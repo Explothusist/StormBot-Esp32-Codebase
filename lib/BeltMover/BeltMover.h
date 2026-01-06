@@ -1,14 +1,16 @@
 #pragma once
 #include <StepperMotor.h>
+#include "../src/Automat/Subsystem.h"
 
 
-class BeltMover {
+class BeltMover : public atmt::Subsystem {
 
     public:
 
     BeltMover(StepperMotor* _StepperArm );
 
-    void init();
+    void init() override;
+    void periodic() override;
 
 
     bool update();

@@ -18,7 +18,7 @@ DcMotor::DcMotor(int _pwmPin1,int _pwmPin2 ){
 
 }
 
-void DcMotor::init(){
+void DcMotor::init() { // Runs once when startLoop() is called
 
     pinMode(pwmPin1, OUTPUT);
     pinMode(pwmPin2, OUTPUT);
@@ -32,6 +32,9 @@ void DcMotor::init(){
         digitalWrite(enPin2, HIGH);
     }
 }
+void DcMotor::periodic() { // Runs continuously while robot is enabled
+    
+};
 
 
 void DcMotor::setSpeed(int _speed){

@@ -1,14 +1,16 @@
 #pragma once
 
 #include <Arduino.h>
+#include "../src/Automat/Subsystem.h"
 
-class DcMotor {
+class DcMotor : public atmt::Subsystem {
     public:
     DcMotor(int _pwmPin1,int _pwmPin2 , int _enPin1 = 0, int _enPin2 = 0);
 
     DcMotor(int _pwmPin1,int _pwmPin2);
 
-    void init();
+    void init() override;
+    void periodic() override;
 
     void setSpeed(int speed); // -255 to 255
 

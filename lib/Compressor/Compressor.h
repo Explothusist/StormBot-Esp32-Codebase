@@ -2,13 +2,15 @@
 
 #include <Arduino.h>
 #include <DcMotor.h>
+#include "../src/Automat/Subsystem.h"
 
-class Compressor {
+class Compressor : public atmt::Subsystem {
     public:
     Compressor(DcMotor _compressorDriver);
 
 
-    void init();
+    void init() override;
+    void periodic() override;
 
     void setSpeed(int speed); // 0 to 255
 

@@ -1,8 +1,9 @@
 #pragma once
 #include <Arduino.h>
+#include "../src/Automat/Subsystem.h"
 
 
-class StepperMotor{
+class StepperMotor : public atmt::Subsystem {
 
     public: 
 
@@ -23,7 +24,8 @@ class StepperMotor{
         StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin , uint8_t _MS2Pin);
         StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin);
 
-        void init();
+        void init() override;
+        void periodic() override;
 
         void setDirection(int dir);
 
