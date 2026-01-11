@@ -7,7 +7,7 @@ ExampleCommand::ExampleCommand(DcMotor* motor, int speed, int speed_shift):
     m_speed_shift{ speed_shift },
     m_counter{ 0 }
 {
-    usesSubsystem(motor); // May be called multiple times for multiple subsystems
+    // usesSubsystem(motor); // May be called multiple times for multiple subsystems
 };
 ExampleCommand::ExampleCommand(ExampleCommand& command):
     atmt::Command(command)

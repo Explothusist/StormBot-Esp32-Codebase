@@ -11,7 +11,7 @@ StormBot::StormBot():
     registerSubsystem(m_bot_cont->m_compressor);
     registerSubsystem(m_bot_cont->m_beltMover);
     registerSubsystem(m_bot_cont->m_vacuumPump);
-    registerSubsystem(m_bot_cont->m_motor);
+    // registerSubsystem(m_bot_cont->m_motor);
 
     // Add all Joysticks
     addJoystick(m_bot_cont->m_operator_controller);
