@@ -31,3 +31,26 @@ void BeltMover::setSpeed (int _speed){
 
 }
 
+void BeltMover::moveLeft(int _moveDistance){
+    direction = false;
+    StepperArm->setDirection(direction);
+     lastMoveDistance = _moveDistance;
+    StepperArm->setDistance(_moveDistance);
+
+    while(!StepperArm->moveComplete()){
+        StepperArm->updateStepper();
+    }
+    
+}
+
+void BeltMover::moveRight(int _moveDistance){
+    direction = true;
+    StepperArm->setDirection(direction);
+     lastMoveDistance = _moveDistance;
+    StepperArm->setDistance(_moveDistance);
+
+    while(!StepperArm->moveComplete()){
+        StepperArm->updateStepper();
+    }
+    
+}

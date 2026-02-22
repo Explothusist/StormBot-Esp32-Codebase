@@ -1,23 +1,65 @@
 #include "main.h"
+#include "StepperMotor.h"
+//int LoadEN = 48; int LoadSTEP = 45; int LoadDIR = 46;
+
+//  int BuildEN = 34, BuildSTEP = 33, BuildDIR = 47;
+
+constexpr uint8_t BELT_EN_PIN = 34;
+constexpr uint8_t BELT_DIR_PIN = 47;
+constexpr uint8_t BELT_STEP_PIN = 33;
+
+StepperMotor stepperArm(BELT_EN_PIN, BELT_DIR_PIN, BELT_STEP_PIN);
 
 
 
-Compressor* compressor = new Compressor(DcMotor(25,26,27)); // PWM1, PWM2, EN1, EN2
-Vacuum* vacuumPump = new Vacuum(DcMotor(14,12,13)); // PWM1, PWM2, EN1, EN2
-BeltMover* beltMover = new BeltMover(new StepperMotor(33,32,15)); // EN, DIR, STEP
+
+
+
+
 
 
 void mapFunction(){
-//  Serial.println("Mapping");
-// Put ALL mapping from the remote here.. (Turn on compressor, vacuum pump, and stepper drive, etc here)
-} 
+
+  switch(sD.Direction[0]){
+    case 0: // Stop
+ 
+    break;
+    case 1: // Forward
+     // Serial.println("Moving forward with magnitude: ");
+      stepperArm.setDirection(1);
+      stepperArm.updateStepper();
+
+    break;
+    case 2: // Backward
+     // Serial.println("Moving backward with magnitude: ");
+      stepperArm.setDirection(0);
+      stepperArm.updateStepper();
+
+    break;
+    case 3: // Left
+
+    break;
+    case 4: // Right
+
+    break;
+    default:
+
+    break;
+
+  };
+
+}
 
 
 void setup() {
   // put your setup code here, to run once:
-  compressor->init();
-  vacuumPump->init();
-  beltMover->init();
+  Serial.begin(115200);
+  Serial.println("Starting up...");
+  // Initialize belt mover
+  stepperArm.init();
+  stepperArm.setSpeed(StepperMotor::MEDIUM);
+  stepperArm.setDirection(1); // Set initial direction to forward
+  stepperArm.setDistance(1000); // Move 1000 steps forward as a test
 
   WiFi.mode(WIFI_MODE_STA);
   WiFi.disconnect();
@@ -28,7 +70,7 @@ void setup() {
 
    // Initialize ESP-NOW
   if (esp_now_init() != ESP_OK) {
-    Serial.println("Error initializing ESP-NOW");
+   Serial.println("Error initializing ESP-NOW");
     return;
   }
   ESPNow.add_peer((uint8_t*)broadcastAddress,0); 
@@ -37,5 +79,18 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  
+ 
+  if(timeout > 0){
+
+    mapFunction();
+    timeout--;
+    delayMicroseconds(500);
+  }
+  else{
+   Serial.println("No response received, waiting...");
+
+    waitingForResponse();
+  }
+
 }

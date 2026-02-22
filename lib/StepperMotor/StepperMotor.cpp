@@ -123,29 +123,21 @@ bool StepperMotor::countDown(bool state){
 
 void StepperMotor::updateStepper(){
 
-    if(!moveComplete()){
-       // Serial.println("Not finished moving");
-       // Serial.printf("Curr Dist: %d , toDistance: %d", currDistance, toDistance);
-      //  Serial.println();
-        //    digitalWrite(dirPin, HIGH); // Low is heading downwards, high is heading upwards
-        
-        //digitalWrite(dirPin, HIGH);
-        if(countDown(!onOrOff)){
-         //   Serial.println("Stepping!");
-            if(!onOrOff){
-            digitalWrite(stepPin, HIGH);
-            currDistance++;
-            onOrOff = true;
-            }
-            else{
-                digitalWrite(stepPin, LOW);
-                onOrOff = false;
-            }
-            
-            
-            
+
+
+    if(!onOrOff){
+        digitalWrite(stepPin, HIGH);
+        //currDistance++;
+        onOrOff = true;
+        }
+        else{
+            digitalWrite(stepPin, LOW);
+            onOrOff = false;
         }
 
-    }
+
+    
+            
+
 
 }

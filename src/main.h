@@ -1,12 +1,13 @@
+
+
 #include <Arduino.h>
-#include "BeltMover.h"
-#include "Compressor.h"
-#include "Vacuum.h"
+
 #include <WiFi.h>
 #include "EspNowEZ.h"
 #include <esp_now.h>
 #include <esp_system.h>
 #include "esp_wifi.h"
+
 
 const uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 int timeout = 0;
@@ -33,6 +34,8 @@ Container message;
 uint8_t macAddress[6];
 //Message msg;
 sendData sD;
+
+
 bool waitingForResponse(){
 
  
@@ -45,7 +48,7 @@ bool waitingForResponse(){
 
   result == ESP_OK ? Serial.println("Sent successfully"): Serial.printf("Print failure %02x", ESP_OK);
 
-
+  Serial.println("Result Status: " + String(result));
   delay(250);
 
 
@@ -77,4 +80,3 @@ void onReceive(const esp_now_recv_info *mac_info, const uint8_t *incomingData, i
 
 
 }
-

@@ -16,14 +16,14 @@ class BeltMover {
     void setSpeed(int _speed);
     
 
-
-
+    void moveLeft(int _moveDistance);
+    void moveRight(int _moveDistance);
 
     StepperMotor* StepperArm = nullptr;
 
 
     
-    int moveDistance = 0; // Update using main
+    int lastMoveDistance = 0; // Last commanded distance
     bool direction = false;
 
     private:
