@@ -1,0 +1,9 @@
+Fill out commands
+Finish Joystick interal
+Serial Connection
+Test everything
+
+Someday:
+
+Questions:
+Build failures? (lib or my computer possibly)

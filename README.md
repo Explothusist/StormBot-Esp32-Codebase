@@ -2,9 +2,11 @@
 
 Codebase for the University of Arkansas RIOT (Robotics Interdisciplinary Organization of Teams) robot built for the 2025 STORM (Student Tele-Operated Robotics Mission) competition Power Flash. The codebase also includes Automat, a WPILib-based library adapted to the VEX and Esp32 platforms.
 
-Used in parallel with Explothusist/StormBot-Codebase. Our robot includes both a VEX v5 Brain and an Esp32 chip.
+Used in parallel with Explothusist/StormBot-Codebase. Our robot includes both a VEX v5 Brain and an Esp32 chip. Also used in parallel with Explothusist/StormBot-Camera, the codebase for our Esp32-S3 Sense cameras.
 
 Esp32 Codebase: https://github.com/Explothusist/StormBot-Codebase
+
+Camera Codebase: https://github.com/Explothusist/StormBot-Camera
 
 Uark RIOT website: https://riotrobotics.org/
 

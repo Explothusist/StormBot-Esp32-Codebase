@@ -19,7 +19,8 @@ class StepperMotor : public atmt::Subsystem {
         
 
         uint8_t enPin = 0, dirPin = 0, stepPin = 0;
-        uint8_t MS1Pin = NULL, MS2Pin = NULL;
+        // uint8_t MS1Pin = NULL, MS2Pin = NULL;
+        uint8_t MS1Pin = 0, MS2Pin = 0;
 
         StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin , uint8_t _MS2Pin);
         StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin);
