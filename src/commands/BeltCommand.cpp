@@ -1,0 +1,37 @@
+
+#include "BeltCommand.h"
+
+#include <cmath>
+
+BeltCommand::BeltCommand(BeltMover* BeltMover, int direction):
+    atmt::Command(),
+    m_belt_mover{ BeltMover },
+    m_direction{ direction }
+{
+    usesSubsystem(m_belt_mover);
+};
+BeltCommand::BeltCommand(BeltCommand& command):
+    atmt::Command(command)
+{
+    m_belt_mover = command.m_belt_mover;
+    m_direction = command.m_direction;
+};
+BeltCommand::~BeltCommand() {
+    // Will run ~Command() after this is complete
+};
+atmt::Command* BeltCommand::clone() const {
+    return new BeltCommand(m_belt_mover, m_direction);
+};
+
+void BeltCommand::initialize() {
+    m_belt_mover->setDirection(m_direction);
+};
+void BeltCommand::execute() {
+    m_belt_mover->update();
+};
+void BeltCommand::end(bool interrupted) {
+    
+};
+bool BeltCommand::is_finished() {
+    return m_belt_mover->moveComplete();
+};

@@ -1,16 +1,14 @@
-#include "main.h"
-#include "StepperMotor.h"
+
+
 //int LoadEN = 48; int LoadSTEP = 45; int LoadDIR = 46;
 
 //  int BuildEN = 34, BuildSTEP = 33, BuildDIR = 47;
 
-constexpr uint8_t BELT_EN_PIN = 34;
-constexpr uint8_t BELT_DIR_PIN = 47;
-constexpr uint8_t BELT_STEP_PIN = 33;
+// constexpr uint8_t BELT_EN_PIN = 34; // Moved to Constants
+// constexpr uint8_t BELT_DIR_PIN = 47;
+// constexpr uint8_t BELT_STEP_PIN = 33;
 
-StepperMotor stepperArm(BELT_EN_PIN, BELT_DIR_PIN, BELT_STEP_PIN);
-
-
+// StepperMotor stepperArm(BELT_EN_PIN, BELT_DIR_PIN, BELT_STEP_PIN); // Moved to RobotContainer
 
 
 
@@ -18,79 +16,98 @@ StepperMotor stepperArm(BELT_EN_PIN, BELT_DIR_PIN, BELT_STEP_PIN);
 
 
 
-void mapFunction(){
 
-  switch(sD.Direction[0]){
-    case 0: // Stop
+// See RobotContainer.configureBindings()
+// void mapFunction(){
+
+//   switch(sD.Direction[0]){
+//     case 0: // Stop
  
-    break;
-    case 1: // Forward
-     // Serial.println("Moving forward with magnitude: ");
-      stepperArm.setDirection(1);
-      stepperArm.updateStepper();
+//     break;
+//     case 1: // Forward
+//      // Serial.println("Moving forward with magnitude: ");
+//       stepperArm.setDirection(1);
+//       stepperArm.updateStepper();
 
-    break;
-    case 2: // Backward
-     // Serial.println("Moving backward with magnitude: ");
-      stepperArm.setDirection(0);
-      stepperArm.updateStepper();
+//     break;
+//     case 2: // Backward
+//      // Serial.println("Moving backward with magnitude: ");
+//       stepperArm.setDirection(0);
+//       stepperArm.updateStepper();
 
-    break;
-    case 3: // Left
+//     break;
+//     case 3: // Left
 
-    break;
-    case 4: // Right
+//     break;
+//     case 4: // Right
 
-    break;
-    default:
+//     break;
+//     default:
 
-    break;
+//     break;
 
-  };
+//   };
 
-}
+// }
 
+#include "StormBot.h"
 
-void setup() {
+StormBot m_robot{ StormBot() };
+
+void setup() { // loop() will never run, because startLoop() doesn't end
+    atmt::platform_println("Starting");
+
+    m_robot.startLoop(); // Doesn't end under normal circumstances
+
+    atmt::platform_println("Ending");
+
   // put your setup code here, to run once:
-  Serial.begin(115200);
-  Serial.println("Starting up...");
+
+  
+  // Moved to StormBot.robotInit()
+//   Serial.begin(115200);
+//   Serial.println("Starting up...");
+
   // Initialize belt mover
-  stepperArm.init();
-  stepperArm.setSpeed(StepperMotor::MEDIUM);
-  stepperArm.setDirection(1); // Set initial direction to forward
-  stepperArm.setDistance(1000); // Move 1000 steps forward as a test
+//   stepperArm.init(); // Called by atmt::TimedRobot because it is a registered subsystem
 
-  WiFi.mode(WIFI_MODE_STA);
-  WiFi.disconnect();
-  ESPNow.init();
-  WiFi.macAddress(macAddress); 
-  WiFi.setTxPower(WIFI_POWER_19dBm);
-  ESPNow.reg_recv_cb(onReceive);
+  // Moved to StormBot.robotInit()
+//   stepperArm.setSpeed(StepperMotor::MEDIUM);
+//   stepperArm.setDirection(1); // Set initial direction to forward
+//   stepperArm.setDistance(1000); // Move 1000 steps forward as a test
 
+  // Moved to StormBot.robotInit()
+//   WiFi.mode(WIFI_MODE_STA);
+//   WiFi.disconnect();
+//   ESPNow.init();
+//   WiFi.macAddress(macAddress); 
+//   WiFi.setTxPower(WIFI_POWER_19dBm);
+//   ESPNow.reg_recv_cb(onReceive);
+
+  // Moved to StormBot.robotInit()
    // Initialize ESP-NOW
-  if (esp_now_init() != ESP_OK) {
-   Serial.println("Error initializing ESP-NOW");
-    return;
-  }
-  ESPNow.add_peer((uint8_t*)broadcastAddress,0); 
-
+//   if (esp_now_init() != ESP_OK) {
+//    Serial.println("Error initializing ESP-NOW");
+//     return;
+//   }
+//   ESPNow.add_peer((uint8_t*)broadcastAddress,0);
 
 }
 
 void loop() {
   
- 
-  if(timeout > 0){
 
-    mapFunction();
-    timeout--;
-    delayMicroseconds(500);
-  }
-  else{
-   Serial.println("No response received, waiting...");
+    // Moved to StormBot.robotPeriodic
+//   if(timeout > 0){
 
-    waitingForResponse();
-  }
+//     mapFunction();
+//     timeout--;
+//     delayMicroseconds(500);
+//   }
+//   else{
+//    Serial.println("No response received, waiting...");
+
+//     waitingForResponse();
+//   }
 
 }

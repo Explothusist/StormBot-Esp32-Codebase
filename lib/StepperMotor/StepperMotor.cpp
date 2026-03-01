@@ -1,6 +1,13 @@
 #include "StepperMotor.h"
 
-StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin = 0, uint8_t _MS2Pin = 0){
+
+// Changed defaults and duplicated constructor to delegating constructor
+StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin):
+    StepperMotor(_enPin, _dirPin, _stepPin, 0, 0)
+{
+    
+}
+StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin){
 
     enPin = _enPin;
     dirPin = _dirPin;
@@ -8,14 +15,6 @@ StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, ui
 
     if(_MS1Pin) MS1Pin = _MS1Pin;
     if(_MS2Pin) MS2Pin = _MS2Pin;
-
-}
-
-StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin){
-
-    enPin = _enPin;
-    dirPin = _dirPin;
-    stepPin = _stepPin;
 
 }
 

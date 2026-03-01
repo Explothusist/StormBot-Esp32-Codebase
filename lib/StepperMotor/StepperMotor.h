@@ -7,18 +7,17 @@ class StepperMotor{
     public: 
 
 
-        enum Speeds{
-            FAST = 150,
-            MEDIUM = 300,
-            SLOW = 600,
-            SUPERSLOW = 1000
-
-        } speed;
+        // enum Speeds{ // Moved to Constants
+        //     FAST = 150,
+        //     MEDIUM = 300,
+        //     SLOW = 600,
+        //     SUPERSLOW = 1000
+        // } speed;
 
         
 
-        uint8_t enPin = 0, dirPin = 0, stepPin = 0;
-        uint8_t MS1Pin = NULL, MS2Pin = NULL;
+        // uint8_t enPin = 0, dirPin = 0, stepPin = 0; // Moved to private
+        // uint8_t MS1Pin = NULL, MS2Pin = NULL;
 
         StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin , uint8_t _MS2Pin);
         StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin);
@@ -44,6 +43,9 @@ class StepperMotor{
         void invertDrive(bool _invert );
 
     private:
+        uint8_t enPin = 0, dirPin = 0, stepPin = 0;
+        uint8_t MS1Pin = NULL, MS2Pin = NULL;
+
         int toDistance = 0;
         int currDistance = 0;
         bool invertDirection = false;

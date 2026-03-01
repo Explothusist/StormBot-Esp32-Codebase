@@ -1,0 +1,25 @@
+
+#ifndef STORMBOT_BELTCOMMAND_
+#define STORMBOT_BELTCOMMAND_
+
+#include "../Automat/automat.h"
+#include "BeltMover.h"
+
+class BeltCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
+    public:
+        BeltCommand(BeltMover* BeltMover, int direction); // Put subsystems as parameters
+        BeltCommand(BeltCommand& command); // Copy constructor
+        ~BeltCommand();
+        atmt::Command* clone() const override;
+
+        void initialize() override; // User-made
+        void execute() override; // User-made
+        void end(bool interrupted) override; // User-made
+        bool is_finished() override; // User-made
+        
+    private:
+        BeltMover* m_belt_mover;
+        int m_direction;
+};
+
+#endif
