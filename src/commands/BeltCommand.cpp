@@ -3,9 +3,9 @@
 
 #include <cmath>
 
-BeltCommand::BeltCommand(BeltMover* BeltMover, int direction):
+BeltCommand::BeltCommand(BeltMover* belt_mover, int direction):
     atmt::Command(),
-    m_belt_mover{ BeltMover },
+    m_belt_mover{ belt_mover },
     m_direction{ direction }
 {
     usesSubsystem(m_belt_mover);

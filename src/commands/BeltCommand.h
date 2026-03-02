@@ -7,7 +7,7 @@
 
 class BeltCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
     public:
-        BeltCommand(BeltMover* BeltMover, int direction); // Put subsystems as parameters
+        BeltCommand(BeltMover* belt_mover, int direction); // Put subsystems as parameters
         BeltCommand(BeltCommand& command); // Copy constructor
         ~BeltCommand();
         atmt::Command* clone() const override;
