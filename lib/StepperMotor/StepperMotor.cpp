@@ -1,21 +1,19 @@
 #include "StepperMotor.h"
 
-StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin):
-    stepper{ AccelStepper::DRIVER, _stepPin, _dirPin },
-    enPin{ _enPin },
-    dirPin{ _dirPin },
-    stepPin{ _stepPin },
-    MS1Pin{ _MS1Pin },
-    MS2Pin{ _MS2Pin }
-{
-
+StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin)
+    : stepper(AccelStepper::DRIVER, _stepPin, _dirPin),
+      enPin(_enPin),
+      dirPin(_dirPin),
+      stepPin(_stepPin),
+      MS1Pin(_MS1Pin),
+      MS2Pin(_MS2Pin) {
 }
 
-// Changed to delegating constructor
-StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin):
-    StepperMotor(_enPin, _dirPin, _stepPin, 0, 0)
-{
-
+StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin)
+    : stepper(AccelStepper::DRIVER, _stepPin, _dirPin),
+      enPin(_enPin),
+      dirPin(_dirPin),
+      stepPin(_stepPin) {
 }
 
 void StepperMotor::init() {

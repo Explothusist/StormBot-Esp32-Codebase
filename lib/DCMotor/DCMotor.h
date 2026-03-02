@@ -4,9 +4,11 @@
 
 class DcMotor {
     public:
-    DcMotor(int _pwmPin1,int _pwmPin2 , int _enPin1, int _enPin2);
+    DcMotor(int _pwmPin1,int _pwmPin2, int _enPin1, int _enPin2);
 
     DcMotor(int _pwmPin1,int _pwmPin2);
+
+    DcMotor(int _pwmPin1);
 
     void init();
 
