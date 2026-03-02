@@ -1,142 +1,111 @@
 #include "StepperMotor.h"
 
-
-// Changed defaults and duplicated constructor to delegating constructor
-StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin):
-    StepperMotor(_enPin, _dirPin, _stepPin, 0, 0)
-{
-    
-}
-StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin){
-
-    enPin = _enPin;
-    dirPin = _dirPin;
-    stepPin = _stepPin;
-
-    if(_MS1Pin) MS1Pin = _MS1Pin;
-    if(_MS2Pin) MS2Pin = _MS2Pin;
-
+StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin)
+    : stepper(AccelStepper::DRIVER, _stepPin, _dirPin),
+      enPin(_enPin),
+      dirPin(_dirPin),
+      stepPin(_stepPin),
+      MS1Pin(_MS1Pin),
+      MS2Pin(_MS2Pin) {
 }
 
-void StepperMotor::init(){
-    
+StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin)
+    : stepper(AccelStepper::DRIVER, _stepPin, _dirPin),
+      enPin(_enPin),
+      dirPin(_dirPin),
+      stepPin(_stepPin) {
+}
 
-    //Set the enable high at all times, as it causes a lock to appear
-   // Serial.printf("En: %d - Dir: %d - Step: %d", enPin, dirPin, stepPin);
-
+void StepperMotor::init() {
     pinMode(enPin, OUTPUT);
-    pinMode(stepPin, OUTPUT);
-    pinMode(dirPin, OUTPUT);
+    digitalWrite(enPin, HIGH); 
 
-    digitalWrite(enPin, LOW); // LOW turns the stepper motor on
-    digitalWrite(dirPin, LOW);
-    digitalWrite(stepPin, LOW);
+    if (MS1Pin) {
+        pinMode(MS1Pin, OUTPUT);
+        digitalWrite(MS1Pin, LOW);
+    }
+    if (MS2Pin) {
+        pinMode(MS2Pin, OUTPUT);
+        digitalWrite(MS2Pin, LOW);
+    }
 
-
+    stepper.setEnablePin(enPin);
+    stepper.setPinsInverted(invertDirection, false, true);
+    stepper.enableOutputs();
+    applySpeed();
 }
 
-void StepperMotor::invertDrive(bool _invert ){
+void StepperMotor::invertDrive(bool _invert) {
     invertDirection = _invert;
+    stepper.setPinsInverted(invertDirection, false, true);
+    applySpeed();
 }
 
-void StepperMotor::home(int height){
-   // Serial.println("Setting Home");
-   currDistance = 0;
-   currDistance = 0; 
-   // setSpeed(MEDIUM);
-    toDistance = height;
-    digitalWrite(dirPin, invertDirection);
+void StepperMotor::home(int height) {
     resetHome = true;
+    setDirection(invertDirection ? 1 : 0);
+    setDistance(height);
 }
 
-
-void StepperMotor::setDirection(int dir){
-    digitalWrite(dirPin, dir);
+void StepperMotor::setDirection(int dir) {
+    directionSign = dir ? 1 : -1;
+    stepper.setSpeed(directionSign * speedStepsPerSecond);
 }
 
-bool StepperMotor::moveComplete(){
-
-    if(currDistance != toDistance){
-        return false;
+bool StepperMotor::moveComplete() {
+    bool done = (stepper.distanceToGo() == 0);
+    if (done && resetHome) {
+        resetHome = false;
+        stepper.setCurrentPosition(0);
     }
-    else{
-        if(resetHome){
-            resetHome = false;
-            currDistance = 0;
-        }
-        return true;
-    }
-
-
+    return done;
 }
 
-void StepperMotor::setSpeed(int _speed){
-    microsecondCountDown = _speed;
-
+void StepperMotor::setSpeed(int _speed) {
+    speedSetting = _speed;
+    applySpeed();
 }
 
-int16_t StepperMotor::getCurrentDistance(){
-    return currDistance;
+int16_t StepperMotor::getCurrentDistance() {
+    return static_cast<int16_t>(stepper.currentPosition());
 }
 
-void StepperMotor::setCurrentDistance(int _currDistance){
-    currDistance = _currDistance;
+void StepperMotor::setCurrentDistance(int _currDistance) {
+    stepper.setCurrentPosition(_currDistance);
 }
 
-void StepperMotor::setDistance(int _distance){ // Distance is relative 
+void StepperMotor::setDistance(int _distance) {
     toDistance = _distance;
-    setCurrentDistance(0);
+    hasTarget = true;
+    stepper.move(directionSign * _distance);
 }
 
-int StepperMotor::getToDistance(){
+int StepperMotor::getToDistance() {
     return toDistance;
 }
 
-bool StepperMotor::countDown(bool state){
+void StepperMotor::updateStepper() {
+    if (hasTarget) {
+        stepper.run();
+        if (stepper.distanceToGo() == 0) {
+            hasTarget = false;
+        }
+        return;
+    }
 
-    //Serial.printf(" -- ToDistance %d - Current Count - %d - Current Distance - %d", toDistance, currCount, currDistance);
-    //Serial.println();
-    if(state){
-        if(currCount == microsecondCountDown){
-            currCount = 0;
-            return true;
-        }
-        else{
-            currCount++;
-            return false;
-        }
-    }
-    else{
-        if(currCount == stepRegister){
-            currCount = 0;
-            return true;
-        }
-        else{
-            currCount++;
-            return false;
-        }
-    }
+    stepper.runSpeed();
 }
 
+float StepperMotor::toStepsPerSecond(int microsecondsPerStep) const {
+    if (microsecondsPerStep <= 0) {
+        return 0.0f;
+    }
+    return 1000000.0f / static_cast<float>(microsecondsPerStep);
+}
 
-
-void StepperMotor::updateStepper(){
-
-
-
-    if(!onOrOff){
-        digitalWrite(stepPin, HIGH);
-        //currDistance++;
-        onOrOff = true;
-        }
-        else{
-            digitalWrite(stepPin, LOW);
-            onOrOff = false;
-        }
-
-
-    
-            
-
-
+void StepperMotor::applySpeed() {
+    speedStepsPerSecond = toStepsPerSecond(speedSetting);
+    stepper.setMaxSpeed(speedStepsPerSecond);
+    stepper.setAcceleration(speedStepsPerSecond * 2.0f);
+    stepper.setSpeed(directionSign * speedStepsPerSecond);
 }
