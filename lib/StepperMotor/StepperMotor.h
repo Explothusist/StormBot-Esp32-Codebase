@@ -1,66 +1,55 @@
 #pragma once
 #include <Arduino.h>
+#include <AccelStepper.h>
 
+class StepperMotor {
+    public:
+        enum Speeds : uint32_t {
+            FAST = 150,
+            MEDIUM = 300,
+            SLOW = 600,
+            SUPERSLOW = 1000
+        } speed;
 
-class StepperMotor{
-
-    public: 
-
-
-        // enum Speeds{ // Moved to Constants
-        //     FAST = 150,
-        //     MEDIUM = 300,
-        //     SLOW = 600,
-        //     SUPERSLOW = 1000
-        // } speed;
-
-        
-
-        // uint8_t enPin = 0, dirPin = 0, stepPin = 0; // Moved to private
-        // uint8_t MS1Pin = NULL, MS2Pin = NULL;
-
-        StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin , uint8_t _MS2Pin);
+        StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin);
         StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin);
 
         void init();
 
         void setDirection(int dir);
-
         void setSpeed(int _speed);
-
         void setDistance(int _distance);
-
         void setCurrentDistance(int _currDistance);
 
-        bool moveComplete(); // 
-
-        void updateStepper(); // Run this command until moveComplete is true
+        bool moveComplete();
+        void updateStepper();
 
         int16_t getCurrentDistance();
         int getToDistance();
         void home(int height);
 
-        void invertDrive(bool _invert );
+        void invertDrive(bool _invert);
 
     private:
-        uint8_t enPin = 0, dirPin = 0, stepPin = 0;
-        uint8_t MS1Pin = NULL, MS2Pin = NULL;
+        AccelStepper stepper;
+
+        uint8_t enPin = 0;
+        uint8_t dirPin = 0;
+        uint8_t stepPin = 0;
+        uint8_t MS1Pin = 0;
+        uint8_t MS2Pin = 0;
 
         int toDistance = 0;
-        int currDistance = 0;
         bool invertDirection = false;
-        
-        bool countDown(bool state);
-        int microsecondCountDown = 100;
-        int stepRegister = 50;
-        bool onOrOff = false;
-        int currCount = 0;
-
         bool resetHome = false;
+        bool hasTarget = false;
 
-        
+        int speedSetting = MEDIUM;
+        int directionSign = 1;
+        float speedStepsPerSecond = 0.0f;
 
-
+        float toStepsPerSecond(int microsecondsPerStep) const;
+        void applySpeed();
 };
 
 

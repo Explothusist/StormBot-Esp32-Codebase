@@ -1,38 +1,25 @@
-
 #pragma once
-
 #include <StepperMotor.h>
 
-#include "Constants.h"
-#include "Automat/Subsystem.h"
 
-
-class BeltMover : public atmt::Subsystem {
+class BeltMover {
 
     public:
 
-    // BeltMover(StepperMotor* _StepperArm ); // Made StepperArm internal
-    BeltMover(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin);
-    BeltMover(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin);
-    ~BeltMover(); // Now BeltMover owns StepperMotor and has to delete it
+    BeltMover(StepperMotor* _StepperArm );
 
-    void init() override;
-    void periodic() override;
+    void init();
 
-
-    void setDirection(int dir); // Added wrappers around StepperMotor methods for outside use (see Stormot.robotInit())
-    void setDistance(int distance);
 
     bool update();
 
     void setSpeed(int _speed);
     
-    bool moveComplete();
 
     void moveLeft(int _moveDistance);
     void moveRight(int _moveDistance);
 
-    // StepperMotor* StepperArm = nullptr; // Moved to private
+    StepperMotor* StepperArm = nullptr;
 
 
     
@@ -41,10 +28,8 @@ class BeltMover : public atmt::Subsystem {
 
     private:
 
-    StepperMotor* StepperArm = nullptr;
 
-
-    int speed = StepperSpeeds::FAST;
+    int speed = StepperMotor::FAST;
 
 
     

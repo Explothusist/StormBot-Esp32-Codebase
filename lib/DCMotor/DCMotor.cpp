@@ -1,9 +1,7 @@
 #include "DCMotor.h"
 
 
-// Changed duplicated constructor to delegating constructor
-DcMotor::DcMotor(int _pwmPin1, int _pwmPin2, int _enPin1, int _enPin2)
-{
+DcMotor::DcMotor(int _pwmPin1,int _pwmPin2 , int _enPin1 , int _enPin2 ){
 
     pwmPin1 = _pwmPin1;
     pwmPin2 = _pwmPin2;
@@ -13,12 +11,10 @@ DcMotor::DcMotor(int _pwmPin1, int _pwmPin2, int _enPin1, int _enPin2)
 
 }
 
-DcMotor::DcMotor(int _pwmPin1,int _pwmPin2 ):
-    DcMotor(_pwmPin1, _pwmPin2, 0, 0)
-{
+DcMotor::DcMotor(int _pwmPin1,int _pwmPin2 ){
 
-    // pwmPin1 = _pwmPin1;
-    // pwmPin2 = _pwmPin2;
+    pwmPin1 = _pwmPin1;
+    pwmPin2 = _pwmPin2;
 
 }
 
