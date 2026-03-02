@@ -24,7 +24,9 @@ atmt::Command* BeltCommand::clone() const {
 };
 
 void BeltCommand::initialize() {
+    Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
     m_belt_mover->setDirection(m_direction);
+    m_belt_mover->setDistance(m_direction == 1 ? 1000 : -1000); // Move 1000 steps in the appropriate direction as a test
 };
 void BeltCommand::execute() {
     m_belt_mover->update();

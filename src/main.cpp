@@ -17,42 +17,42 @@
 
 
 
+// See BeltCommand and RobotContainer.configureBindings
+// void mapFunction(){
 
-void mapFunction(){
-
-  switch(sD.Direction[0]){
-    case 0: // Stop
+//   switch(sD.Direction[0]){
+//     case 0: // Stop
  
-    break;
-    case 1: // Forward
-       Serial.println("Moving forward with magnitude: ");
-        stepperArm.setDirection(1);
-      if (stepperArm.moveComplete()) {
-        stepperArm.setDistance(1000); // Move 1000 steps forward as a test
-      }
+//     break;
+//     case 1: // Forward
+//        Serial.println("Moving forward with magnitude: ");
+//         stepperArm.setDirection(1);
+//       if (stepperArm.moveComplete()) {
+//         stepperArm.setDistance(1000); // Move 1000 steps forward as a test
+//       }
 
-    break;
-    case 2: // Backward
-       Serial.println("Moving backward with magnitude: ");
-      stepperArm.setDirection(0);
-      if (stepperArm.moveComplete()) {
-        stepperArm.setDistance(-1000); // Move 1000 steps backward as a test
-      }
+//     break;
+//     case 2: // Backward
+//        Serial.println("Moving backward with magnitude: ");
+//       stepperArm.setDirection(0);
+//       if (stepperArm.moveComplete()) {
+//         stepperArm.setDistance(-1000); // Move 1000 steps backward as a test
+//       }
 
-    break;
-    case 3: // Left
+//     break;
+//     case 3: // Left
 
-    break;
-    case 4: // Right
+//     break;
+//     case 4: // Right
 
-    break;
-    default:
+//     break;
+//     default:
 
-    break;
+//     break;
 
-  };
+//   };
 
-}
+// }
 
 
 void setup() {
