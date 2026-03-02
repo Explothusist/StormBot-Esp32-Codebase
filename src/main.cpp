@@ -1,14 +1,14 @@
-#include "main.h"
-#include "StepperMotor.h"
+
+
 //int LoadEN = 48; int LoadSTEP = 45; int LoadDIR = 46;
 
 //  int BuildEN = 34, BuildSTEP = 33, BuildDIR = 47;
 
-constexpr uint8_t BELT_EN_PIN = 34;
-constexpr uint8_t BELT_DIR_PIN = 47;
-constexpr uint8_t BELT_STEP_PIN = 33;
+// constexpr uint8_t BELT_EN_PIN = 34; // Moved to Constants
+// constexpr uint8_t BELT_DIR_PIN = 47;
+// constexpr uint8_t BELT_STEP_PIN = 33;
 
-StepperMotor stepperArm(BELT_EN_PIN, BELT_DIR_PIN, BELT_STEP_PIN);
+// StepperMotor stepperArm(BELT_EN_PIN, BELT_DIR_PIN, BELT_STEP_PIN); // Moved to RobotContainer
 
 
 
@@ -57,44 +57,52 @@ void mapFunction(){
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
-  Serial.println("Starting up...");
+
+  
+  // Moved to StormBot.robotInit()
+//   Serial.begin(115200);
+//   Serial.println("Starting up...");
+
   // Initialize belt mover
-  stepperArm.init();
-  stepperArm.setSpeed(StepperMotor::MEDIUM);
-  stepperArm.setDirection(1); // Set initial direction to forward
-  stepperArm.setDistance(1000); // Move 1000 steps forward as a test
+//   stepperArm.init(); // Called by atmt::TimedRobot because it is a registered subsystem
 
-  WiFi.mode(WIFI_MODE_STA);
-  WiFi.disconnect();
-  ESPNow.init();
-  WiFi.macAddress(macAddress); 
-  WiFi.setTxPower(WIFI_POWER_19dBm);
-  ESPNow.reg_recv_cb(onReceive);
+  // Moved to StormBot.robotInit()
+//   stepperArm.setSpeed(StepperMotor::MEDIUM);
+//   stepperArm.setDirection(1); // Set initial direction to forward
+//   stepperArm.setDistance(1000); // Move 1000 steps forward as a test
 
+  // Moved to StormBot.robotInit()
+//   WiFi.mode(WIFI_MODE_STA);
+//   WiFi.disconnect();
+//   ESPNow.init();
+//   WiFi.macAddress(macAddress); 
+//   WiFi.setTxPower(WIFI_POWER_19dBm);
+//   ESPNow.reg_recv_cb(onReceive);
+
+  // Moved to StormBot.robotInit()
    // Initialize ESP-NOW
-  if (esp_now_init() != ESP_OK) {
-   Serial.println("Error initializing ESP-NOW");
-    return;
-  }
-  ESPNow.add_peer((uint8_t*)broadcastAddress,0); 
-
+//   if (esp_now_init() != ESP_OK) {
+//    Serial.println("Error initializing ESP-NOW");
+//     return;
+//   }
+//   ESPNow.add_peer((uint8_t*)broadcastAddress,0);
 
 }
 
 void loop() {
-  stepperArm.updateStepper();
+  
 
-  if(timeout > 0){
+    // Moved to StormBot.robotPeriodic
+//   if(timeout > 0){
 
-    mapFunction();
-    timeout--;
-    delayMicroseconds(500);
-  }
-  else{
-   Serial.println("No response received, waiting...");
+//     mapFunction();
+//     timeout--;
+//     delayMicroseconds(500);
+//   }
+//   else{
+//    Serial.println("No response received, waiting...");
 
-    waitingForResponse();
-  }
+//     waitingForResponse();
+//   }
 
 }
