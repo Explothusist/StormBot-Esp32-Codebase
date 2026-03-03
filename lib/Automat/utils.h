@@ -1,0 +1,127 @@
+
+#ifndef AUTOMAT_UTILS_
+#define AUTOMAT_UTILS_
+
+#include "automat_platform.h"
+#include <string>
+#include <cstdint>
+
+#ifdef AUTOMAT_VEX_
+#include "vex.h"
+#endif
+
+namespace atmt {
+
+    typedef enum {
+        Disabled,
+        Autonomous,
+        Teleop
+    } RobotState;
+
+#ifdef AUTOMAT_VEX_
+    extern vex::competition m_competition;
+    extern vex::brain m_brain;
+#endif
+
+    class Vector_2D;
+    class Vector_Polar;
+
+    class Vector_2D {
+        public:
+            Vector_2D(double x, double y);
+            ~Vector_2D();
+
+            double getX();
+            double getY();
+
+            void translate(Vector_2D vector);
+            void translate(double x, double y);
+
+            void rotate(double theta);
+
+            void normalize();
+
+            Vector_Polar toPolar();
+        private:
+            double m_x;
+            double m_y;
+    };
+
+    class Vector_Polar {
+        public:
+            Vector_Polar(double r, double theta);
+            ~Vector_Polar();
+
+            double getR();
+            double getTheta();
+
+            void rotate(Vector_Polar vector);
+            void rotate(double theta);
+
+            void normalize();
+
+            Vector_2D toCartesian();
+        private:
+            double m_r;
+            double m_theta; // In radians
+    };
+
+    void platform_clear_screen();
+    void platform_print(std::string stuff);
+    void platform_println(std::string stuff);
+
+    double degreesToRadians(double angle);
+    double radiansToDegrees(double angle);
+
+    class Timestamp {
+        public:
+            Timestamp();
+#ifdef AUTOMAT_VEX_
+            Timestamp(int milliseconds); // vex::timer::system()
+#endif
+#ifdef AUTOMAT_ESP32_
+            Timestamp(unsigned long int milliseconds);
+#endif
+            ~Timestamp();
+
+            int getTimeDifferenceMS(Timestamp timestamp); // ms
+            int getTimeMS(); // ms
+        private:
+#ifdef AUTOMAT_VEX_
+            int m_milliseconds;
+#endif
+#ifdef AUTOMAT_ESP32_
+            unsigned long int m_milliseconds;
+#endif
+    };
+
+    Timestamp getSystemTime();
+    void systemWait(int milliseconds);
+
+    double getProportional(double value, double input_min, double input_max, double output_min, double output_max);
+    
+    
+    constexpr int kBaudrate = 115200;
+    constexpr int kMaxMessagesPerFrame = 256;
+    constexpr uint8_t kMaxPacketSize = 64;
+
+    typedef struct {
+        uint8_t data[kMaxPacketSize];
+        uint8_t length;
+    } serial_message;
+
+    enum class SerialMessage : uint8_t {
+        // Get_Status = 0xfb,
+        // Status_Processing = 0xfc,
+        // Status_Complete = 0xfd,
+        StartDuplicate = 0xfc,
+        Escape = 0xfd,
+        End = 0xfe,
+        Start = 0xff,
+        // Invalid = 0xfe,
+        // Error = 0xff
+    };
+
+};
+
+#endif

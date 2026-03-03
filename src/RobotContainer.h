@@ -2,7 +2,7 @@
 #ifndef STORMBOT_CONTAINER_
 #define STORMBOT_CONTAINER_
 
-#include "Automat/automat.h"
+#include "../Automat/automat.h"
 #include "Constants.h"
 
 #include "Compressor.h"

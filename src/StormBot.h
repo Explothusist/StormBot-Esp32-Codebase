@@ -2,7 +2,7 @@
 #ifndef STORMBOT_
 #define STORMBOT_
 
-#include "Automat/automat.h"
+#include "../Automat/automat.h"
 #include "RobotContainer.h"
 
 class StormBot : public atmt::TimedRobot {

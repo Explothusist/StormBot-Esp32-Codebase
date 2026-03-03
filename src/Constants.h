@@ -5,12 +5,8 @@
 #include <cstdint>
 
 
-enum StepperSpeeds {
-    FAST = 150,
-    MEDIUM = 300,
-    SLOW = 600,
-    SUPERSLOW = 1000
-} speed;
+
+
 
 namespace consts {
 

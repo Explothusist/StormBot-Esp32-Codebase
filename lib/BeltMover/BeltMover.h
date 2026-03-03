@@ -4,7 +4,7 @@
 #include <StepperMotor.h>
 
 #include "Constants.h"
-#include "Automat/Subsystem.h"
+#include "../Automat/Subsystem.h"
 
 
 class BeltMover : public atmt::Subsystem {
@@ -44,7 +44,7 @@ class BeltMover : public atmt::Subsystem {
     StepperMotor* StepperArm = nullptr;
 
 
-    int speed = StepperSpeeds::FAST;
+    int speed =  150;// StepperSpeeds::FAST;
 
 
     

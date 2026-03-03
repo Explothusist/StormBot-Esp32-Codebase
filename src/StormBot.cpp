@@ -1,7 +1,7 @@
 
 #include "StormBot.h"
 
-#include "Automat/automat.h"
+#include "../Automat/automat.h"
 
 #include "Constants.h"
 #include "main.h"
@@ -35,7 +35,7 @@ void StormBot::robotInit() {
     Serial.begin(115200);
     Serial.println("Starting up...");
     
-    m_bot_cont->m_belt_mover->setSpeed(StepperSpeeds::MEDIUM);
+    m_bot_cont->m_belt_mover->setSpeed(650); // Stepper Speeds dec here
     m_bot_cont->m_belt_mover->setDirection(1); // Set initial direction to forward
     m_bot_cont->m_belt_mover->setDistance(1000); // Move 1000 steps forward as a test
 

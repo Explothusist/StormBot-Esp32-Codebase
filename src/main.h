@@ -8,7 +8,7 @@
 #include <esp_system.h>
 #include "esp_wifi.h"
 
-#include "Automat/automat.h"
+ #include "../Automat/automat.h"
 
 
 const uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
@@ -31,6 +31,7 @@ struct __attribute__((packed)) ControlData {
 
     bool connectCheck = false;
 };
+
 
 atmt::JoystickState controlDataToJoystickState(ControlData data) {
     atmt::JoystickState state;

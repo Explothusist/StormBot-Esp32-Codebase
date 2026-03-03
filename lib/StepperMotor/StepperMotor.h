@@ -4,7 +4,18 @@
 
 #include "Constants.h"
 
+
+
 class StepperMotor {
+    /*
+        enum StepperSpeeds {
+        FAST = 150,
+        MEDIUM = 300,
+        SLOW = 600,
+        SUPERSLOW = 1000
+    } StepSpeeds;
+    */
+
     public:
         // Moved to Constants
         // enum Speeds : uint32_t {
@@ -47,7 +58,7 @@ class StepperMotor {
         bool resetHome = false;
         bool hasTarget = false;
 
-        int speedSetting = StepperSpeeds::MEDIUM;
+        int speedSetting = 650; //StepperSpeeds::MEDIUM;
         int directionSign = 1;
         float speedStepsPerSecond = 0.0f;
 
