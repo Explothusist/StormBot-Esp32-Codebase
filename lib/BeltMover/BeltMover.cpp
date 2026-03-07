@@ -16,6 +16,10 @@ BeltMover::BeltMover(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin):
 {
 
 };
+BeltMover::~BeltMover() {
+    delete StepperArm;
+    StepperArm = nullptr;
+};
 
 void BeltMover::init(){
     StepperArm->init();

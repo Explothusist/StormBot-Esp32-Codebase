@@ -58,7 +58,7 @@
 
 StormBot m_robot{ StormBot() };
 
-int main() {
+void setup() {
     atmt::platform_println("Starting");
 
     m_robot.startLoop();

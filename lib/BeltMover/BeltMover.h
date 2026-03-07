@@ -4,7 +4,7 @@
 #include <StepperMotor.h>
 
 #include "Constants.h"
-#include "../Automat/Subsystem.h"
+#include "../Automat/command_based/Subsystem.h"
 
 
 class BeltMover : public atmt::Subsystem {

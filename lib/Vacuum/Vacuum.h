@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <DcMotor.h>
 
-#include "../Automat/Subsystem.h"
+#include "../Automat/command_based/Subsystem.h"
 
 class Vacuum : public atmt::Subsystem {
     public:

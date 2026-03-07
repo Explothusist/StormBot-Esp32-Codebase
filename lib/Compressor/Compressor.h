@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <DcMotor.h>
 
-#include "../Automat/Subsystem.h"
+#include "../Automat/command_based/Subsystem.h"
 
 class Compressor : public atmt::Subsystem {
     public:
