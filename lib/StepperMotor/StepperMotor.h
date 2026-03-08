@@ -25,8 +25,8 @@ class StepperMotor {
         //     SUPERSLOW = 1000
         // } speed;
 
-        StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin);
-        StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin);
+        StepperMotor(uint8_t enPin, uint8_t dirPin, uint8_t stepPin, uint8_t ms1Pin, uint8_t ms2Pin);
+        StepperMotor(uint8_t enPin, uint8_t dirPin, uint8_t stepPin);
 
         void init();
 
