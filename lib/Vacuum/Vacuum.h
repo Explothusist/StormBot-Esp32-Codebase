@@ -3,17 +3,17 @@
 #include <Arduino.h>
 #include <DcMotor.h>
 
+#include "../Automat/command_based/Subsystem.h"
 
-
-class Vacuum {
+class Vacuum : public atmt::Subsystem {
     public:
     // Vacuum(DcMotor _vacuumDriver); // Made DCMotor internal
     Vacuum(int _pwmPin1,int _pwmPin2 , int _enPin1, int _enPin2);
     Vacuum(int _pwmPin1,int _pwmPin2);
 
 
-    void init();
-    void periodic();
+    void init() override;
+    void periodic() override;
 
     void setSpeed(int speed); // 0 to 255
 
@@ -23,7 +23,6 @@ class Vacuum {
 
     private:
 
-    float speedTicker = 0;
     int speed = 0;
 
     DcMotor* vacuumDriver = nullptr;

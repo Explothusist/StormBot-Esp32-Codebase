@@ -11,7 +11,7 @@ Vacuum::Vacuum(int _pwmPin1, int _pwmPin2, int _enPin1, int _enPin2):
 {
 
 }
-Vacuum::Vacuum(int _pwmPin1,int _pwmPin2 = 0):
+Vacuum::Vacuum(int _pwmPin1,int _pwmPin2):
     Vacuum(_pwmPin1, _pwmPin2, 0, 0)
 {
 
@@ -33,12 +33,9 @@ void Vacuum::setSpeed(int _speed){
     speed = _speed;
 }
 void Vacuum::enableVacuum(){
-    //if(int(speedTicker) < speed) speedTicker += 5;
     vacuumDriver->setSpeed(speed);
 }
 
 void Vacuum::disableVacuum(){
-    
-    //if(speedTicker > 0) speedTicker-= 1;
     vacuumDriver->setSpeed(0);
-}   
+}

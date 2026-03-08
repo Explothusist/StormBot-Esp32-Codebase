@@ -54,8 +54,17 @@
 
 // }
 
+#include "StormBot.h"
+
+StormBot m_robot{ StormBot() };
 
 void setup() {
+    atmt::platform_println("Starting");
+
+    m_robot.startLoop();
+
+    atmt::platform_println("Ending");
+
   // put your setup code here, to run once:
 
   
