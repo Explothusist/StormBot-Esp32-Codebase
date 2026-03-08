@@ -21,8 +21,16 @@ namespace consts {
         uint8_t const MS1Pin = 0;
         uint8_t const MS2Pin = 0;
 
-        int const Direction_Forward = 1;
-        int const Direction_Backward = 0;
+        static constexpr int FAST      = 150;
+        static constexpr int MEDIUM    = 300;
+        static constexpr int SLOW      = 600;
+        static constexpr int SUPERSLOW = 1000;
+
+        static constexpr int INITPOS = 2000; // Amount of steps to get out of inital poisition
+
+        static constexpr int TURNSTEPS = 1500; // Inital steps to match corner movements
+
+        static constexpr int LEFTRIGHTMOVE = 500; // Adjust to be moved left or giht
     };
 
     namespace compressor {

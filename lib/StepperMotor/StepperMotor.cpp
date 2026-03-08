@@ -1,34 +1,30 @@
 #include "StepperMotor.h"
 
-StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin):
-    stepper{ AccelStepper::DRIVER, _stepPin, _dirPin },
-    enPin{ _enPin },
-    dirPin{ _dirPin },
-    stepPin{ _stepPin },
-    MS1Pin{ _MS1Pin },
-    MS2Pin{ _MS2Pin }
-{
+// Construct a driver-based AccelStepper with optional microstep control pins.
+StepperMotor::StepperMotor(uint8_t enPin_, uint8_t dirPin_, uint8_t stepPin_, uint8_t ms1Pin_, uint8_t ms2Pin_)
+    : stepper{AccelStepper::DRIVER, stepPin_, dirPin_},
+      enPin{enPin_},
+      dirPin{dirPin_},
+      stepPin{stepPin_},
+      ms1Pin{ms1Pin_},
+      ms2Pin{ms2Pin_} {}
 
-}
-
-// Changed to delegating constructor
-StepperMotor::StepperMotor(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin):
-    StepperMotor(_enPin, _dirPin, _stepPin, 0, 0)
-{
-
-}
+// Convenience ctor when you don't care about microstep control pins.
+StepperMotor::StepperMotor(uint8_t enPin_, uint8_t dirPin_, uint8_t stepPin_)
+    : StepperMotor(enPin_, dirPin_, stepPin_, 0, 0) {}
 
 void StepperMotor::init() {
     pinMode(enPin, OUTPUT);
-    digitalWrite(enPin, HIGH); 
+    // Your wiring expects HIGH here; keep behaviour identical.
+    digitalWrite(enPin, HIGH);
 
-    if (MS1Pin) {
-        pinMode(MS1Pin, OUTPUT);
-        digitalWrite(MS1Pin, LOW);
+    if (ms1Pin) {
+        pinMode(ms1Pin, OUTPUT);
+        digitalWrite(ms1Pin, LOW);
     }
-    if (MS2Pin) {
-        pinMode(MS2Pin, OUTPUT);
-        digitalWrite(MS2Pin, LOW);
+    if (ms2Pin) {
+        pinMode(ms2Pin, OUTPUT);
+        digitalWrite(ms2Pin, LOW);
     }
 
     stepper.setEnablePin(enPin);
@@ -37,8 +33,8 @@ void StepperMotor::init() {
     applySpeed();
 }
 
-void StepperMotor::invertDrive(bool _invert) {
-    invertDirection = _invert;
+void StepperMotor::invertDrive(bool invert) {
+    invertDirection = invert;
     stepper.setPinsInverted(invertDirection, false, true);
     applySpeed();
 }
@@ -63,8 +59,21 @@ bool StepperMotor::moveComplete() {
     return done;
 }
 
-void StepperMotor::setSpeed(int _speed) {
-    speedSetting = _speed;
+void StepperMotor::move() {
+    Serial.println("Moving to distance: " + String(toDistance) + " from current: " + String(stepper.currentPosition()));
+    while (!moveComplete()) {
+        stepper.run();
+        delayMicroseconds(1);
+        
+    }
+    Serial.println("Move complete. Current position: " + String(stepper.currentPosition()));
+}
+
+void StepperMotor::setSpeed(int microsecondsPerStep) {
+    if (microsecondsPerStep <= 0) {
+        microsecondsPerStep = consts::belt_mover::FAST;
+    }
+    speedSettingUs = microsecondsPerStep;
     applySpeed();
 }
 
@@ -72,31 +81,25 @@ int16_t StepperMotor::getCurrentDistance() {
     return static_cast<int16_t>(stepper.currentPosition());
 }
 
-void StepperMotor::setCurrentDistance(int _currDistance) {
-    stepper.setCurrentPosition(_currDistance);
+void StepperMotor::setCurrentDistance(int currDistance) {
+    stepper.setCurrentPosition(currDistance);
+
+    move();
+
+
 }
 
-void StepperMotor::setDistance(int _distance) {
-    toDistance = _distance;
+void StepperMotor::setDistance(int distance) {
+    toDistance = distance;
     hasTarget = true;
-    stepper.move(directionSign * _distance);
+    stepper.move(directionSign * distance);
+    move();
 }
 
 int StepperMotor::getToDistance() {
     return toDistance;
 }
 
-void StepperMotor::updateStepper() {
-    if (hasTarget) {
-        stepper.run();
-        if (stepper.distanceToGo() == 0) {
-            hasTarget = false;
-        }
-        return;
-    }
-
-    stepper.runSpeed();
-}
 
 float StepperMotor::toStepsPerSecond(int microsecondsPerStep) const {
     if (microsecondsPerStep <= 0) {
@@ -106,7 +109,7 @@ float StepperMotor::toStepsPerSecond(int microsecondsPerStep) const {
 }
 
 void StepperMotor::applySpeed() {
-    speedStepsPerSecond = toStepsPerSecond(speedSetting);
+    speedStepsPerSecond = toStepsPerSecond(speedSettingUs);
     stepper.setMaxSpeed(speedStepsPerSecond);
     stepper.setAcceleration(speedStepsPerSecond * 2.0f);
     stepper.setSpeed(directionSign * speedStepsPerSecond);

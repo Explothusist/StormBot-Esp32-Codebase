@@ -16,6 +16,9 @@ class BeltCommand : public atmt::Command { // Add more functionality to this, bu
         void execute() override; // User-made
         void end(bool interrupted) override; // User-made
         bool is_finished() override; // User-made
+
+        void moveLeft(bool direction, int distance); 
+        void moveRight(bool direction, int distance);
         
     private:
         BeltMover* m_belt_mover;

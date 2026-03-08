@@ -28,21 +28,35 @@ class StepperMotor {
         StepperMotor(uint8_t enPin, uint8_t dirPin, uint8_t stepPin, uint8_t ms1Pin, uint8_t ms2Pin);
         StepperMotor(uint8_t enPin, uint8_t dirPin, uint8_t stepPin);
 
+        // Must be called once at startup after construction.
         void init();
 
+        // dir != 0 => forward, dir == 0 => backward (relative to wiring).
         void setDirection(int dir);
-        void setSpeed(int _speed);
-        void setDistance(int _distance);
-        void setCurrentDistance(int _currDistance);
 
+        // Speed in MICROSECONDS PER STEP.
+        // Example: 150 = very fast, 650 = medium, 1000 = slow.
+        void setSpeed(int microsecondsPerStep);
+
+        // Relative move in steps (sign comes from setDirection()).
+        void setDistance(int distance);
+
+        void setCurrentDistance(int currDistance);
+
+        // True when there is no remaining distance to go.
         bool moveComplete();
+
+        // Call as often as possible to advance motion.
         void updateStepper();
 
         int16_t getCurrentDistance();
         int getToDistance();
         void home(int height);
 
-        void invertDrive(bool _invert);
+        // Invert logical direction (useful if wiring is flipped).
+        void invertDrive(bool invert);
+
+    void move();
 
     private:
         AccelStepper stepper;
@@ -50,15 +64,15 @@ class StepperMotor {
         uint8_t enPin = 0;
         uint8_t dirPin = 0;
         uint8_t stepPin = 0;
-        uint8_t MS1Pin = 0;
-        uint8_t MS2Pin = 0;
+        uint8_t ms1Pin = 0;
+        uint8_t ms2Pin  = 0;
 
         int toDistance = 0;
         bool invertDirection = false;
         bool resetHome = false;
         bool hasTarget = false;
 
-        int speedSetting = 650; //StepperSpeeds::MEDIUM;
+        int speedSettingUs = consts::belt_mover::MEDIUM; // microseconds per step
         int directionSign = 1;
         float speedStepsPerSecond = 0.0f;
 

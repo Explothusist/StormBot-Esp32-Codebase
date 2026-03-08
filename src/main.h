@@ -35,7 +35,20 @@ struct __attribute__((packed)) ControlData {
 
 atmt::JoystickState controlDataToJoystickState(ControlData data) {
     atmt::JoystickState state;
+
+    state.buttons[atmt::AButton] =  lastControlPackage.objectArm[0];
+
+    state.buttons[atmt::BButton] =  lastControlPackage.objectArm[2];
+
+    //state.axes[atmt::LYAxis] = lastControlPackage.Direction[0] == 3 ? 0 : 255;
+
+    lastControlPackage.objectRun[0];
+
+    lastControlPackage.objectRun[2];
+    
     // Please help me write this function, ControlData struct is confusing
+
+
     return state;
 };
 
