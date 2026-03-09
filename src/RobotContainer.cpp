@@ -22,7 +22,7 @@ void RobotContainer::configure_bindings() {
     // m_driver_controller->bindKey(atmt::R1Button, atmt::ButtonPressed, atmt::WhileTrigger, new AlignAndPounce(m_drivetrain, m_camera_reader));
     
     // m_drivetrain->setDefaultCommand(new TeleopDriveCommand(m_drivetrain, m_driver_controller));
-
+    /*
     m_operator_controller->bindKey(
         new atmt::Trigger(atmt::LeftStick, atmt::StickUp),
         new BeltCommand(m_belt_mover, consts::belt_mover::Direction_Forward)
@@ -31,6 +31,8 @@ void RobotContainer::configure_bindings() {
         new atmt::Trigger(atmt::LeftStick, atmt::StickDown),
         new BeltCommand(m_belt_mover, consts::belt_mover::Direction_Backward)
     );
+    */
+
 };
 
 atmt::Command* RobotContainer::getAutonomousCommand() {

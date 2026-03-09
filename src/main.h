@@ -33,24 +33,7 @@ struct __attribute__((packed)) ControlData {
 };
 
 
-atmt::JoystickState controlDataToJoystickState(ControlData data) {
-    atmt::JoystickState state;
 
-    state.buttons[atmt::AButton] =  lastControlPackage.objectArm[0];
-
-    state.buttons[atmt::BButton] =  lastControlPackage.objectArm[2];
-
-    //state.axes[atmt::LYAxis] = lastControlPackage.Direction[0] == 3 ? 0 : 255;
-
-    lastControlPackage.objectRun[0];
-
-    lastControlPackage.objectRun[2];
-    
-    // Please help me write this function, ControlData struct is confusing
-
-
-    return state;
-};
 
 
 Container message;
@@ -58,6 +41,27 @@ uint8_t macAddress[6];
 //Message msg;
 ControlData lastControlPackage; // Renamed for clarity
 
+atmt::JoystickState controlDataToJoystickState(ControlData data) {
+    atmt::JoystickState state;
+
+    state.buttons[atmt::AButton] =  lastControlPackage.objectArm[0];
+
+    state.buttons[atmt::BButton] =  lastControlPackage.objectArm[2];
+
+    state.buttons[atmt::LeftButton] =  lastControlPackage.objectRun[0];
+
+    state.buttons[atmt::RightButton] =  lastControlPackage.objectRun[2];
+
+    state.axes[atmt::LTAxis] = lastControlPackage.Direction[0] == 3 ? 0 : 255;
+
+    state.axes[atmt::RTAxis] = lastControlPackage.Direction[0] == 2 ? 0 : 255;
+
+    
+    // Please help me write this function, ControlData struct is confusing
+
+
+    return state;
+};
 
 bool waitingForResponse(){
 
