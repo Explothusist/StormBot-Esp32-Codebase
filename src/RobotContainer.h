@@ -8,6 +8,7 @@
 #include "Compressor.h"
 #include "BeltMover.h"
 #include "Vacuum.h"
+#include "FastStepperMotor.h"
 
 class RobotContainer {
     public:

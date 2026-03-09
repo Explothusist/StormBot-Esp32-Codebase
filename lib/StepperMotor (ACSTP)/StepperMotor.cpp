@@ -1,5 +1,6 @@
-#include "StepperMotor.h"
+#include "FastStepperMotor.h"
 
+/*
 // Construct a driver-based AccelStepper with optional microstep control pins.
 StepperMotor::StepperMotor(uint8_t enPin_, uint8_t dirPin_, uint8_t stepPin_, uint8_t ms1Pin_, uint8_t ms2Pin_)
     : stepper{AccelStepper::DRIVER, stepPin_, dirPin_},
@@ -114,3 +115,5 @@ void StepperMotor::applySpeed() {
     stepper.setAcceleration(speedStepsPerSecond * 2.0f);
     stepper.setSpeed(directionSign * speedStepsPerSecond);
 }
+
+*/

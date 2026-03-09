@@ -7,7 +7,7 @@
 
 // }
 BeltMover::BeltMover(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin):
-    StepperArm{ new StepperMotor(_enPin, _dirPin, _stepPin, _MS1Pin, _MS2Pin) }
+    StepperArm{ new FastStepperMotor(_enPin, _dirPin, _stepPin, _MS1Pin, _MS2Pin) }
 {
 
 };

@@ -1,7 +1,7 @@
 
 #pragma once
 
-#include <StepperMotor.h>
+#include <FastStepperMotor.h>
 
 #include "Constants.h"
 #include "../Automat/command_based/Subsystem.h"
@@ -41,7 +41,7 @@ class BeltMover : public atmt::Subsystem {
 
     private:
 
-    StepperMotor* StepperArm = nullptr;
+    FastStepperMotor* StepperArm = nullptr;
 
 
     int speed =  150;// StepperSpeeds::FAST;

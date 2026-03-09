@@ -52,9 +52,9 @@ atmt::JoystickState controlDataToJoystickState(ControlData data) {
 
     state.buttons[atmt::RightButton] =  lastControlPackage.objectRun[2];
 
-    state.axes[atmt::LTAxis] = lastControlPackage.Direction[0] == 3 ? 0 : 255;
+    state.axes[atmt::LTAxis] = lastControlPackage.Direction[0];
 
-    state.axes[atmt::RTAxis] = lastControlPackage.Direction[0] == 2 ? 0 : 255;
+    state.axes[atmt::RTAxis] = lastControlPackage.Direction[1];
 
     
     // Please help me write this function, ControlData struct is confusing
