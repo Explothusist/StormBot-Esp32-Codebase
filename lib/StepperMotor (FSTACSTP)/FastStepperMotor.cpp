@@ -59,6 +59,8 @@ bool FastStepperMotor::moveComplete() {
 
 void FastStepperMotor::move() {
    // stepper->move()
+   stepper->forwardStep(false);
+   stepper->backwardStep(false);
 }
 
 void FastStepperMotor::setSpeed(int microsecondsPerStep) {
