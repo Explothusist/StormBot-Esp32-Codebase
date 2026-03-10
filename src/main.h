@@ -44,21 +44,53 @@ ControlData lastControlPackage; // Renamed for clarity
 atmt::JoystickState controlDataToJoystickState(ControlData data) {
     atmt::JoystickState state;
 
-    state.buttons[atmt::AButton] =  lastControlPackage.objectArm[0];
-
-    state.buttons[atmt::BButton] =  lastControlPackage.objectArm[2];
-
-    state.buttons[atmt::LeftButton] =  lastControlPackage.objectRun[0];
-
-    state.buttons[atmt::RightButton] =  lastControlPackage.objectRun[2];
-
-    state.axes[atmt::LTAxis] = lastControlPackage.Direction[0];
-
-    state.axes[atmt::RTAxis] = lastControlPackage.Direction[1];
+    state.buttons[atmt::LeftButton] =  lastControlPackage.objectArm[0]; // Left Bottom Button - Grabber   Vaccum Pumps
 
     
-    // Please help me write this function, ControlData struct is confusing
 
+
+    state.buttons[atmt::RightButton] =  lastControlPackage.objectArm[2];
+
+    state.buttons[atmt::AButton] =  lastControlPackage.objectRun[0];
+
+    state.buttons[atmt::BButton] =  lastControlPackage.objectRun[2];
+
+    // Left Axis
+    state.axes[atmt::LTAxis] = lastControlPackage.Direction[0];
+
+    // 0 is center
+    if(!lastControlPackage.Direction[0]){ // Middle
+        state.axes[atmt::LXAxis] = 0;
+        state.axes[atmt::LYAxis] = 0;
+
+    }
+    else if(lastControlPackage.Direction[0] > 0 && lastControlPackage.Direction[0] <= 2){ // Forward or Backward
+        state.axes[atmt::LYAxis] = lastControlPackage.Direction[0] == 1 ? 255 : 0 ;
+        state.axes[atmt::LXAxis] = 0;
+    }
+    else if(lastControlPackage.Direction[0] > 2){ // Left or Right
+        state.axes[atmt::LXAxis] = lastControlPackage.Direction[0] == 3 ? 255 : 0 ;
+        state.axes[atmt::LYAxis] = 0;
+    }
+
+
+    if(!lastControlPackage.Direction[1]){ // Middle
+        state.axes[atmt::RXAxis] = 0;
+        state.axes[atmt::RYAxis] = 0;
+
+    }
+    else if(lastControlPackage.Direction[1] > 0 && lastControlPackage.Direction[1] <= 2){ // Forward or Backward
+        state.axes[atmt::RYAxis] = lastControlPackage.Direction[1] == 1 ? 255 : 0 ;
+        state.axes[atmt::RXAxis] = 0;
+    }
+    else if(lastControlPackage.Direction[1] > 2){ // Left or Right
+        state.axes[atmt::RXAxis] = lastControlPackage.Direction[1] == 3 ? 255 : 0 ;
+        state.axes[atmt::RYAxis] = 0;
+    }
+
+    
+
+    //if(state.buttons[atmt::AButton]) Serial.println("Vacuum On");
 
     return state;
 };
@@ -87,7 +119,8 @@ void onReceive(const esp_now_recv_info *mac_info, const uint8_t *incomingData, i
   const uint8_t *recv_info = mac_info->src_addr;
   
   if (len == sizeof(ControlData)) {
-   // Serial.println("Data received from remote!"); 
+    //Serial.println("Data received from remote!"); 
+    ESPNow.remoteConnected = true;
     memcpy(&lastControlPackage, incomingData, sizeof(ControlData));
 
     if (!esp_now_is_peer_exist(lastControlPackage.macHandshake)) {
@@ -96,7 +129,7 @@ void onReceive(const esp_now_recv_info *mac_info, const uint8_t *incomingData, i
     }
     
 
-    timeout = 1000;
+    timeout = 5000;
 
     if (lastControlPackage.macHandshake[5] == macAddress[5]
       && lastControlPackage.macHandshake[4] == macAddress[4]

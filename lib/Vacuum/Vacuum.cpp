@@ -39,3 +39,4 @@ void Vacuum::enableVacuum(){
 void Vacuum::disableVacuum(){
     vacuumDriver->setSpeed(0);
 }
+

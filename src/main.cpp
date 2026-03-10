@@ -61,6 +61,9 @@ StormBot m_robot{ StormBot() };
 void setup() {
     atmt::platform_println("Starting");
 
+  
+
+
     m_robot.startLoop();
 
     atmt::platform_println("Ending");
@@ -99,8 +102,8 @@ void setup() {
 }
 
 void loop() {
-  
-
+    m_robot.robotPeriodic();
+    //m_robot.robotInternal(); 
     // Moved to StormBot.robotPeriodic
 //   if(timeout > 0){
 

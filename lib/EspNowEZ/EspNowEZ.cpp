@@ -10,6 +10,7 @@ class ESPNowW32 : public EspNowEZ {
     virtual esp_err_t remove_peer(uint8_t *mac);
     virtual esp_err_t send_message(uint8_t *mac, Container d);
     virtual esp_err_t set_mac(uint8_t *mac);
+    virtual bool is_peer_existing();
 
   private:
     std::list<esp_now_peer_info_t> peers;
@@ -27,6 +28,9 @@ esp_err_t ESPNowW32::add_peer(uint8_t *mac, int channel) {
         remove_peer(mac);
     return success;
 }
+
+
+
 esp_err_t ESPNowW32::remove_peer(uint8_t *mac) {
     // find peer in peers
     for (auto it = peers.begin(); it != peers.end();) {
@@ -49,6 +53,11 @@ esp_err_t ESPNowW32::set_mac(uint8_t *mac) {
     // Use esp_wifi_set_mac to set the base MAC address on Arduino/ESP-IDF
     return esp_wifi_set_mac(WIFI_IF_STA, mac);
 }
+
+bool ESPNowW32::is_peer_existing(){
+    return remoteConnected;
+}
+
 ESPNowW32 espnow;
 EspNowEZ &ESPNow = espnow;
 #endif

@@ -64,16 +64,19 @@ private:
 
     uint8_t _broadcastAll[6] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
     uint8_t currentMac[6] = {0, 0, 0, 0, 0, 0};
+    
 
 
 public:
 
-
+    bool remoteConnected = false;
     
 
     EspNowEZ() {}
     ~EspNowEZ() {}
 
+
+    virtual bool is_peer_existing() = 0;
     virtual int add_peer(uint8_t *mac, int channel = 0) = 0;
     virtual int remove_peer(uint8_t *mac) = 0;
     virtual int send_message(uint8_t *mac, Container d) = 0;

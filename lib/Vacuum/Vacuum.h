@@ -14,12 +14,15 @@ class Vacuum : public atmt::Subsystem {
 
     void init() override;
     void periodic() override;
+    
 
     void setSpeed(int speed); // 0 to 255
 
     void enableVacuum(); // TODO
 
     void disableVacuum(); // TODO
+
+    
 
     private:
 

@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "commands/BeltCommand.h"
+#include "commands/VacuumCommand.h"
 
 RobotContainer::RobotContainer():
     m_belt_mover{ new BeltMover(consts::belt_mover::EnPin, consts::belt_mover::DirPin, consts::belt_mover::StepPin, consts::belt_mover::MS1Pin, consts::belt_mover::MS2Pin) },
@@ -18,20 +19,28 @@ RobotContainer::~RobotContainer() { // Subsystems deleted by atmt::TimedRobot
 };
 
 void RobotContainer::configure_bindings() {
-    // m_driver_controller->bindKey(atmt::R2Button, atmt::ButtonPressed, atmt::WhileTrigger, new ApproachAndAlign(m_drivetrain, m_camera_reader));
+     //m_driver_controller->bindKey(atmt::AButton, atmt::ButtonPressed, atmt::WhileTrigger, new ApproachAndAlign(m_drivetrain, m_camera_reader));
     // m_driver_controller->bindKey(atmt::R1Button, atmt::ButtonPressed, atmt::WhileTrigger, new AlignAndPounce(m_drivetrain, m_camera_reader));
     
     // m_drivetrain->setDefaultCommand(new TeleopDriveCommand(m_drivetrain, m_driver_controller));
+    
+    // AButton is autonomous mode.
+
+    //Automated mode is going to be only wheel spinning - 
     /*
     m_operator_controller->bindKey(
-        new atmt::Trigger(atmt::LeftStick, atmt::StickUp),
-        new BeltCommand(m_belt_mover, consts::belt_mover::Direction_Forward)
-    );
-    m_operator_controller->bindKey(
-        new atmt::Trigger(atmt::LeftStick, atmt::StickDown),
-        new BeltCommand(m_belt_mover, consts::belt_mover::Direction_Backward)
+        (new atmt::Trigger(atmt::BButton, atmt::ButtonPressed))->inMode(atmt::ModeTeleopAndAuto),
+        new VacuumCommand(m_vacuum)
+        //new BeltCommand(m_belt_mover, consts::belt_mover::Direction_Forward)
     );
     */
+    
+    m_operator_controller->bindKey(
+        new atmt::Trigger(atmt::BButton, atmt::ButtonPressed),
+        new VacuumCommand(m_vacuum)
+    );
+    
+    
 
 };
 

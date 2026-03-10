@@ -51,9 +51,23 @@ void StormBot::robotInit() {
         return;
     }
     ESPNow.add_peer((uint8_t*)broadcastAddress,0); 
+
+    // A loop is added here to confirm that the robot has a peer connected.
+    // Note that there is a core dump on the esp32 after this point
+
+    //Reference main.h -- wait for new peer to be added.
+    /*
+    while(!ESPNow.is_peer_existing()){
+        Serial.print("Waiting for peer connection... "); 
+        Serial.println(ESPNow.is_peer_existing());
+        waitingForResponse();
+    }
+    */
+   
+    
 };
 void StormBot::robotPeriodic() {
-    atmt::platform_print("Robot Periodic...     ");
+    //atmt::platform_print("Robot Periodic...     ");
 
     if(timeout > 0){ // WORKING HERE
         // mapFunction(); // Instead of mapFunction, update joystick state

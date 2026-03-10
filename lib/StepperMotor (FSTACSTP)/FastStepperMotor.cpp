@@ -48,6 +48,10 @@ void FastStepperMotor::home(int height) {
   
 }
 
+void FastStepperMotor::updateStepper(){
+    
+}
+
 void FastStepperMotor::setDirection(int dir) {
 
 }
