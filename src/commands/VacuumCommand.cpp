@@ -3,9 +3,10 @@
 
 #include <cmath>
 
-VacuumCommand::VacuumCommand(Vacuum* vacuum):
+VacuumCommand::VacuumCommand(Vacuum* vacuum, bool currState):
     atmt::Command(),
-    m_vacuum{ vacuum }
+    m_vacuum{ vacuum },
+    state{ currState }
 
 {
     usesSubsystem(m_vacuum);
@@ -19,28 +20,32 @@ VacuumCommand::~VacuumCommand() {
     // Will run ~Command() after this is complete
 };
 atmt::Command* VacuumCommand::clone() const {
-    return new VacuumCommand(m_vacuum);
+    return new VacuumCommand(m_vacuum, state);
 };
 
 void VacuumCommand::initialize() {
     Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
-   m_vacuum->init();
+   //m_vacuum->init();
 };
 void VacuumCommand::execute() {
   //  m_vacuum->update();
+    toggleClaw();
+     
+
 };
 void VacuumCommand::end(bool interrupted) {
     
 };
 
 bool VacuumCommand::is_finished(){
-return false; 
+return true; 
 }
 
 
-void VacuumCommand::toggleClaw(bool _state){
-    state = _state;
-    if(_state){
+void VacuumCommand::toggleClaw(){
+
+    m_vacuum->setState(state);
+    if(state){
          m_vacuum->enableVacuum(); // Turn on vacuum
     }
     else{

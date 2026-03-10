@@ -23,10 +23,14 @@ class Vacuum : public atmt::Subsystem {
     void disableVacuum(); // TODO
 
     
+    bool getState(); 
 
+    void setState(bool _state); // Maybe not needed, but we will see
     private:
 
     int speed = 0;
+
+    bool state = false;
 
     DcMotor* vacuumDriver = nullptr;
 

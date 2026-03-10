@@ -8,7 +8,7 @@
 
 StormBot::StormBot():
     atmt::TimedRobot(consts::robot::AutonomousLength),
-    m_bot_cont{ new RobotContainer() }
+    m_bot_cont{ new RobotContainer() } // Init for belt_mover, compressor and vacuum
 {
     // Register all Subsystems
     registerSubsystem(m_bot_cont->m_belt_mover);
@@ -18,11 +18,13 @@ StormBot::StormBot():
     // Add all Joysticks
     addJoystick(m_bot_cont->m_operator_controller);
 
+
+
     // Add SerialReaders
     addSerialReader(m_bot_cont->m_serial_reader);
 
     // Configure bindings
-    m_bot_cont->configure_bindings();
+    m_bot_cont->configure_bindings(); // Bind keys added here
 };
 StormBot::~StormBot() {
     delete m_bot_cont;
@@ -30,39 +32,33 @@ StormBot::~StormBot() {
 };
 
 void StormBot::robotInit() {
+
+    #ifdef AUTOMAT_ESP32_
+       Serial.begin(115200);
+        WiFi.mode(WIFI_MODE_STA);
+        WiFi.disconnect();
+        ESPNow.init();
+        WiFi.macAddress(macAddress); 
+        WiFi.setTxPower(WIFI_POWER_19dBm);
+        ESPNow.reg_recv_cb(onReceive);
+        
+        if (esp_now_init() != ESP_OK) {
+            Serial.println("Error initializing ESP-NOW");
+            return;
+        }
+        ESPNow.add_peer((uint8_t*)broadcastAddress,0); 
+    #endif
+
     atmt::platform_print("Robot Init!           ");
     
-    Serial.begin(115200);
+    
     Serial.println("Starting up...");
     
     m_bot_cont->m_belt_mover->setSpeed(650); // Stepper Speeds dec here
     m_bot_cont->m_belt_mover->setDirection(1); // Set initial direction to forward
     m_bot_cont->m_belt_mover->setDistance(1000); // Move 1000 steps forward as a test
 
-    WiFi.mode(WIFI_MODE_STA);
-    WiFi.disconnect();
-    ESPNow.init();
-    WiFi.macAddress(macAddress); 
-    WiFi.setTxPower(WIFI_POWER_19dBm);
-    ESPNow.reg_recv_cb(onReceive);
-    
-    if (esp_now_init() != ESP_OK) {
-        Serial.println("Error initializing ESP-NOW");
-        return;
-    }
-    ESPNow.add_peer((uint8_t*)broadcastAddress,0); 
 
-    // A loop is added here to confirm that the robot has a peer connected.
-    // Note that there is a core dump on the esp32 after this point
-
-    //Reference main.h -- wait for new peer to be added.
-    /*
-    while(!ESPNow.is_peer_existing()){
-        Serial.print("Waiting for peer connection... "); 
-        Serial.println(ESPNow.is_peer_existing());
-        waitingForResponse();
-    }
-    */
    
     
 };
@@ -71,14 +67,19 @@ void StormBot::robotPeriodic() {
 
     if(timeout > 0){ // WORKING HERE
         // mapFunction(); // Instead of mapFunction, update joystick state
+         m_bot_cont->m_operator_controller->setRobotState(atmt::RobotState::Teleop);
 
         m_bot_cont->m_operator_controller->updateState(controlDataToJoystickState(lastControlPackage));
+        
 
         timeout--;
+
+       
         // delayMicroseconds(500); // Delay handled internally to atmt::TimedRobot
     }else {
         Serial.println("No response received, waiting...");
         waitingForResponse();
+         m_bot_cont->m_operator_controller->setRobotState(atmt::RobotState::Disabled);
     }
 };
 void StormBot::robotExit() {

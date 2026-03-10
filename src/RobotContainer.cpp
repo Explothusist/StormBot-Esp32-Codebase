@@ -36,8 +36,7 @@ void RobotContainer::configure_bindings() {
     */
     
     m_operator_controller->bindKey(
-        new atmt::Trigger(atmt::BButton, atmt::ButtonPressed),
-        new VacuumCommand(m_vacuum)
+        new atmt::Trigger(atmt::BButton, atmt::ButtonPressed), new VacuumCommand(m_vacuum, m_vacuum->getState())
     );
     
     

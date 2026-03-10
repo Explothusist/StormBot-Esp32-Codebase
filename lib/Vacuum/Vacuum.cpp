@@ -25,6 +25,14 @@ void Vacuum::periodic() {
 
 };
 
+bool Vacuum::getState(){
+     return state;
+};
+
+void Vacuum::setState(bool _state) {
+    state = _state;
+};
+
 void Vacuum::setSpeed(int _speed){
 
     if(_speed < 0) _speed = -_speed;

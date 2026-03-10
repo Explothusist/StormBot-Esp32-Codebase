@@ -56,7 +56,7 @@
 
 #include "StormBot.h"
 
-StormBot m_robot{ StormBot() };
+StormBot m_robot{ StormBot() }; // Bindings and init configured here
 
 void setup() {
     atmt::platform_println("Starting");
@@ -102,7 +102,7 @@ void setup() {
 }
 
 void loop() {
-    m_robot.robotPeriodic();
+    //m_robot.robotPeriodic();
     //m_robot.robotInternal(); 
     // Moved to StormBot.robotPeriodic
 //   if(timeout > 0){
