@@ -103,7 +103,7 @@ void setup() {
 
 void loop() {
     //m_robot.robotPeriodic();
-    //m_robot.robotInternal(); 
+    m_robot.runLoop();
     // Moved to StormBot.robotPeriodic
 //   if(timeout > 0){
 

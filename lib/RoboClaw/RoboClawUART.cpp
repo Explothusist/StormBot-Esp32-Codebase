@@ -25,7 +25,8 @@ int RoboClawUART::getPosition() {
 
 void RoboClawUART::setPosition(int position) {
     this->commandedPosition = position;
-    moveCompelte = false;
+
+    moveComplete = false;
 
     if(commandedPosition < MIN_HEIGHT){
         commandedPosition = MIN_HEIGHT; // Minimum position to prevent overextension
@@ -33,7 +34,7 @@ void RoboClawUART::setPosition(int position) {
     if(commandedPosition > MAX_HEIGHT){
         commandedPosition = MAX_HEIGHT; // Maximum position to prevent overextension
     }
-
+    Serial.println("Setting Position to: " + String(commandedPosition));
     move();
 
 }
@@ -52,10 +53,10 @@ void RoboClawUART::setSpeed(int speed) {
 
 void RoboClawUART::move() {
     // Read current position from encoder
-    while(!moveCompelte){
+    //while(!moveCompelte){
 
     int currentPosition = this->roboclaw->ReadEncM1(this->address);
-
+    Serial.println(currentPosition);
     if(currentPosition > commandedPosition + 100) { // If we're above the target position, move backward
        // Serial.println("Moving backward");
         this->roboclaw->BackwardM1(this->address, this->speed);
@@ -65,11 +66,11 @@ void RoboClawUART::move() {
         this->roboclaw->ForwardM1(this->address, this->speed);
     }
     else {
-        moveCompelte = true;
+        moveComplete = true;
         this->roboclaw->ForwardM1(this->address, 0); // Stop if we're within the target range
     }
 
-    }
+   // }
 }
 
 

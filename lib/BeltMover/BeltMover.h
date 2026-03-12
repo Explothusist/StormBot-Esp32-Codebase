@@ -17,21 +17,23 @@ class BeltMover : public atmt::Subsystem {
     ~BeltMover(); // Now BeltMover owns StepperMotor and has to delete it
 
     void init() override;
-    void periodic() override;
+   
 
 
-    void setDirection(int dir); // Added wrappers around StepperMotor methods for outside use (see Stormot.robotInit())
     void setDistance(int distance);
 
     bool update();
+
+    void moveToSide(FastStepperMotor::Side side);
 
     void setSpeed(int _speed);
     
     bool moveComplete();
 
-    void moveLeft(int _moveDistance);
-    void moveRight(int _moveDistance);
+    void moveLeft();
+    void moveRight();
 
+    void stop();
     // StepperMotor* StepperArm = nullptr; // Moved to private
 
 

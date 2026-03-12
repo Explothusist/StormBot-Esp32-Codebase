@@ -28,16 +28,30 @@ void BeltMover::init(){
 
 
 }
-void BeltMover::periodic() {
 
-};
+void BeltMover::moveToSide(FastStepperMotor::Side side){
+    Serial.println("Moving to side: " + String(side));
+    StepperArm->moveToSide(side);
+}
 
 
-void BeltMover::setDirection(int dir) {
-    StepperArm->setDirection(dir);
-};
+void BeltMover::moveLeft(){
+
+    StepperArm->moveForward();
+}
+
+
+void BeltMover::moveRight(){
+
+    StepperArm->moveBackward();
+}
+
+void BeltMover::stop(){
+    StepperArm->stopMotor();
+}
+
 void BeltMover::setDistance(int distance) {
-    StepperArm->setDistance(distance);
+    
 };
 
 bool BeltMover::moveComplete() {
@@ -47,8 +61,6 @@ bool BeltMover::moveComplete() {
 bool BeltMover::update(){
 
         
-    StepperArm->setDirection(direction);
-    StepperArm->updateStepper();
     return true;
 }
 
@@ -57,28 +69,4 @@ void BeltMover::setSpeed (int _speed){
     speed = _speed;
     StepperArm->setSpeed(_speed);
 
-}
-
-void BeltMover::moveLeft(int _moveDistance){
-    direction = false;
-    StepperArm->setDirection(direction);
-     lastMoveDistance = _moveDistance;
-    StepperArm->setDistance(_moveDistance);
-
-    while(!StepperArm->moveComplete()){
-        StepperArm->updateStepper();
-    }
-    
-}
-
-void BeltMover::moveRight(int _moveDistance){
-    direction = true;
-    StepperArm->setDirection(direction);
-     lastMoveDistance = _moveDistance;
-    StepperArm->setDistance(_moveDistance);
-
-    while(!StepperArm->moveComplete()){
-        StepperArm->updateStepper();
-    }
-    
 }

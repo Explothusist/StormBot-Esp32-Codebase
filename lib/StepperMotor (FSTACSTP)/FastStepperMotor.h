@@ -21,6 +21,15 @@ class FastStepperMotor {
 
 
     public:
+        enum Side : uint32_t {
+            Left = 0,
+            Front = 1,
+            Right =2 
+        } side; 
+
+        const int CENTERTOCENTER = 2000; // Adjust this value based on the actual distance between the centers of the left and right positions in steps
+
+        Side currentSide = Front;
         // Moved to Constants
         // enum Speeds : uint32_t {
         //     FAST = 150,
@@ -35,8 +44,9 @@ class FastStepperMotor {
         // Must be called once at startup after construction.
         void init();
 
-        // dir != 0 => forward, dir == 0 => backward (relative to wiring).
-        void setDirection(int dir);
+        void moveToSide(int side);
+
+        void incrementalMove(bool direction);
 
         // Speed in MICROSECONDS PER STEP.
         // Example: 150 = very fast, 650 = medium, 1000 = slow.
@@ -52,6 +62,12 @@ class FastStepperMotor {
 
         // Call as often as possible to advance motion.
         void updateStepper();
+
+        void moveForward();
+
+        void moveBackward();
+
+        void stopMotor();
 
         int16_t getCurrentDistance();
         int getToDistance();
@@ -82,6 +98,8 @@ class FastStepperMotor {
         int speedSettingUs = consts::belt_mover::MEDIUM; // microseconds per step
         int directionSign = 1;
         float speedStepsPerSecond = 0.0f;
+
+        int currSteps = 0;
 
         float toStepsPerSecond(int microsecondsPerStep) const;
         void applySpeed();

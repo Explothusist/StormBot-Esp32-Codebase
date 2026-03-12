@@ -7,7 +7,7 @@
 
 class VacuumCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
     public:
-        VacuumCommand(Vacuum* vacuum, bool currState); // Put subsystems as parameters
+        VacuumCommand(Vacuum* vacuum); // Put subsystems as parameters
         VacuumCommand(VacuumCommand& command); // Copy constructor
         ~VacuumCommand();
         atmt::Command* clone() const override;
@@ -22,7 +22,6 @@ class VacuumCommand : public atmt::Command { // Add more functionality to this, 
     private:
         Vacuum* m_vacuum;
         int m_direction;
-        bool state;
 };
 
 #endif

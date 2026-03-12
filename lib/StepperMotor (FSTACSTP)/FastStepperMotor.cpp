@@ -23,8 +23,8 @@ void FastStepperMotor::init() {
         stepper->setEnablePin(enPin);
         stepper->setAutoEnable(true);
 
-        stepper->setSpeedInUs(10000);
-        stepper->setAcceleration(1000);
+        stepper->setSpeedInUs(30000);
+        stepper->setAcceleration(10000);
     }
 
 }
@@ -44,21 +44,45 @@ void FastStepperMotor::invertDrive(bool invert) {
 
 }
 
+void FastStepperMotor::stopMotor(){
+    stepper->stopMove();
+}
+
 void FastStepperMotor::home(int height) {
   
 }
 
+
+void FastStepperMotor::incrementalMove(bool direction){
+    stepper->setSpeedInUs(900); // Adjust speed for incremental moves as needed
+    if(direction){
+        stepper->runForward();
+    }
+    else{
+        stepper->runBackward();
+    }
+}
 void FastStepperMotor::updateStepper(){
-    
-}
-
-void FastStepperMotor::setDirection(int dir) {
 
 }
+
 
 bool FastStepperMotor::moveComplete() {
     
     return 0;
+}
+
+void FastStepperMotor::moveForward(){
+    stepper->runForward();
+}
+
+void FastStepperMotor::moveBackward(){
+    stepper->runBackward();
+}
+void FastStepperMotor::moveToSide(int side){
+
+   if(side == 0) setDistance(CENTERTOCENTER);
+   else if(side == 1) setDistance(-CENTERTOCENTER);
 }
 
 void FastStepperMotor::move() {
@@ -68,7 +92,7 @@ void FastStepperMotor::move() {
 }
 
 void FastStepperMotor::setSpeed(int microsecondsPerStep) {
-
+    stepper->setSpeedInUs(microsecondsPerStep);
 }
 
 int16_t FastStepperMotor::getCurrentDistance() {
@@ -78,11 +102,17 @@ int16_t FastStepperMotor::getCurrentDistance() {
 void FastStepperMotor::setCurrentDistance(int currDistance) {
 
 
+        
 
 }
 
 void FastStepperMotor::setDistance(int distance) {
-    stepper->move(distance, false);
+    //Serial.println(("Setting Stepper Motor to" + String(distance)));
+    MoveResultCode result = stepper->move(distance, false);
+
+    Serial.print("Move result: ");
+    Serial.println(static_cast<int>(result));
+
 }
 
 int FastStepperMotor::getToDistance() {

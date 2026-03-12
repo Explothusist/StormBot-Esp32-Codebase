@@ -1,12 +1,11 @@
 
 #include "VacuumCommand.h"
-
+#include <Arduino.h>
 #include <cmath>
 
-VacuumCommand::VacuumCommand(Vacuum* vacuum, bool currState):
+VacuumCommand::VacuumCommand(Vacuum* vacuum):
     atmt::Command(),
-    m_vacuum{ vacuum },
-    state{ currState }
+    m_vacuum{ vacuum }
 
 {
     usesSubsystem(m_vacuum);
@@ -20,15 +19,19 @@ VacuumCommand::~VacuumCommand() {
     // Will run ~Command() after this is complete
 };
 atmt::Command* VacuumCommand::clone() const {
-    return new VacuumCommand(m_vacuum, state);
+    return new VacuumCommand(m_vacuum);
 };
 
 void VacuumCommand::initialize() {
-    Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
-   //m_vacuum->init();
+  //  Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
+  Serial.println("Initializing Vacuum Command"); 
+  //m_vacuum->init();
 };
 void VacuumCommand::execute() {
   //  m_vacuum->update();
+    bool newState = !m_vacuum->getState();
+    Serial.println("Toggling Claw " + String(newState ? "On" : "Off"));
+    m_vacuum->setState(newState);
     toggleClaw();
      
 
@@ -43,12 +46,10 @@ return true;
 
 
 void VacuumCommand::toggleClaw(){
-
-    m_vacuum->setState(state);
-    if(state){
-         m_vacuum->enableVacuum(); // Turn on vacuum
+    if(m_vacuum->getState()){
+        m_vacuum->enableVacuum(); // Turn on vacuum
     }
     else{
-         m_vacuum->disableVacuum(); // Turn off vacuum
+        m_vacuum->disableVacuum(); // Turn off vacuum
     }
 }

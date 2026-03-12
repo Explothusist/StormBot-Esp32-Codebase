@@ -13,6 +13,8 @@ public:
         TOPDROP = 5600
     };
 
+
+    int Roboclaw_Positions[4] = {250, 1000, 2000, 3000}; // Pickup, Wheel, MidDrop, TopDrop
     // address: packet-serial address configured in Motion Studio (0x80 default).
     RoboClawUART(uint8_t rxPin, uint8_t txPin, uint8_t _address = 0x80);
     void init();
@@ -24,17 +26,20 @@ public:
 
     void move();
 
-
+    bool moveComplete = false;
+    int positionElement = 0; //1,2,3,4
 
 private:
 
     uint8_t address;
     uint32_t defaultTimeoutMs  = 5;
-    uint16_t speed = 0;
+    uint16_t speed = 32;
     uint8_t rxPin, txPin;
     int commandedPosition = 0;
 
-    bool moveCompelte = false;
+    
+
+   
 
     const int MAX_HEIGHT = 4000; // Maximum encoder count for the linear slide
     const int MIN_HEIGHT = 250;  // Minimum encoder count to prevent overextension

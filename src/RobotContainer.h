@@ -9,6 +9,7 @@
 #include "BeltMover.h"
 #include "Vacuum.h"
 #include "FastStepperMotor.h"
+#include "RoboClawUART.h"
 
 class RobotContainer {
     public:
@@ -22,6 +23,7 @@ class RobotContainer {
         Compressor* m_compressor; // public because they are for Robot.cpp
         BeltMover* m_belt_mover;
         Vacuum* m_vacuum;
+        RoboClawUART* m_roboClaw;
 
 
         atmt::Joystick* m_operator_controller;

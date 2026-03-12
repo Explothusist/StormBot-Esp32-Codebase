@@ -41,10 +41,19 @@ namespace consts {
     };
 
     namespace vacuum {
-        uint8_t const pwmPin1 = 0;
+        uint8_t const pwmPin1 = 45;
         uint8_t const pwmPin2 = 0;
         uint8_t const enPin1 = 0;
         uint8_t const enPin2 = 0;
+    };
+
+    namespace robo_claw {
+        uint8_t const rxPin = 41;
+        uint8_t const txPin = 40;
+
+        uint8_t const address = 0x80; // Default address for RoboClaw
+
+        
     };
 
 };

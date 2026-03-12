@@ -56,37 +56,44 @@ atmt::JoystickState controlDataToJoystickState(ControlData data) {
     state.buttons[atmt::BButton] =  lastControlPackage.objectRun[2];
 
     // Left Axis
-    state.axes[atmt::LTAxis] = lastControlPackage.Direction[0];
+    state.axes[atmt::LeftStick] = lastControlPackage.Direction[0];
+
+    state.axes[atmt::RightStick] = lastControlPackage.Direction[1];
 
     // 0 is center
+    
     if(!lastControlPackage.Direction[0]){ // Middle
-        state.axes[atmt::LXAxis] = 0;
-        state.axes[atmt::LYAxis] = 0;
+        state.axes[atmt::LXAxis] = 50;
+        state.axes[atmt::LYAxis] = 50;
 
     }
     else if(lastControlPackage.Direction[0] > 0 && lastControlPackage.Direction[0] <= 2){ // Forward or Backward
-        state.axes[atmt::LYAxis] = lastControlPackage.Direction[0] == 1 ? 255 : 0 ;
-        state.axes[atmt::LXAxis] = 0;
+        state.axes[atmt::LYAxis] = lastControlPackage.Direction[0] == 1 ? 100 : 0 ;
+        state.axes[atmt::LXAxis] = 50;
+
+      
     }
     else if(lastControlPackage.Direction[0] > 2){ // Left or Right
-        state.axes[atmt::LXAxis] = lastControlPackage.Direction[0] == 3 ? 255 : 0 ;
-        state.axes[atmt::LYAxis] = 0;
+        state.axes[atmt::LXAxis] = lastControlPackage.Direction[0] == 3 ? 100 : 0 ;
+        state.axes[atmt::LYAxis] = 50;
     }
+    //Serial.println("Left Stick X: " + String(state.axes[atmt::LXAxis]) + " Y: " + String(state.axes[atmt::LYAxis]));
 
 
     if(!lastControlPackage.Direction[1]){ // Middle
-        state.axes[atmt::RXAxis] = 0;
-        state.axes[atmt::RYAxis] = 0;
+        state.axes[atmt::RXAxis] = 50;
+        state.axes[atmt::RYAxis] = 50;
 
     }
     else if(lastControlPackage.Direction[1] > 0 && lastControlPackage.Direction[1] <= 2){ // Forward or Backward
-        state.axes[atmt::RYAxis] = lastControlPackage.Direction[1] == 1 ? 255 : 0 ;
-        state.axes[atmt::RXAxis] = 0;
+        state.axes[atmt::RYAxis] = lastControlPackage.Direction[1] == 1 ? 100 : 0 ;
+        state.axes[atmt::RXAxis] = 50;
     }
     else if(lastControlPackage.Direction[1] > 2){ // Left or Right
-        state.axes[atmt::RXAxis] = lastControlPackage.Direction[1] == 3 ? 255 : 0 ;
-        state.axes[atmt::RYAxis] = 0;
+        state.axes[atmt::RXAxis] = lastControlPackage.Direction[1] == 3 ? 100 : 0 ;
+        state.axes[atmt::RYAxis] = 50;
     }
+    //Serial.println("Right Stick X: " + String(state.axes[atmt::RXAxis]) + " Y: " + String(state.axes[atmt::RYAxis]));
 
     
 
@@ -129,7 +136,7 @@ void onReceive(const esp_now_recv_info *mac_info, const uint8_t *incomingData, i
     }
     
 
-    timeout = 5000;
+    timeout = 10000;
 
     if (lastControlPackage.macHandshake[5] == macAddress[5]
       && lastControlPackage.macHandshake[4] == macAddress[4]

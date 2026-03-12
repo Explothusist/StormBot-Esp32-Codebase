@@ -26,6 +26,7 @@ void Vacuum::periodic() {
 };
 
 bool Vacuum::getState(){
+    state = !state; // Toggle state for next command
      return state;
 };
 
@@ -41,10 +42,12 @@ void Vacuum::setSpeed(int _speed){
     speed = _speed;
 }
 void Vacuum::enableVacuum(){
+    Serial.println("Vacuum Enabled");
     vacuumDriver->setSpeed(speed);
 }
 
 void Vacuum::disableVacuum(){
+    Serial.println("Vacuum Disabled");
     vacuumDriver->setSpeed(0);
 }
 
