@@ -18,6 +18,9 @@ void RoboClawUART::init() {
     Serial1.begin(115200, SERIAL_8N1, rxPin, txPin); 
     this->roboclaw->begin(38400); // Initialize RoboClaw communication at 38400 baud
 }
+void RoboClawUART::periodic() {
+    
+};
 
 int RoboClawUART::getPosition() {
     return this->roboclaw->ReadEncM1(this->address);

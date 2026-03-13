@@ -55,10 +55,10 @@ atmt::JoystickState controlDataToJoystickState(ControlData data) {
 
     state.buttons[atmt::BButton] =  lastControlPackage.objectRun[2];
 
-    // Left Axis
-    state.axes[atmt::LeftStick] = lastControlPackage.Direction[0];
-
-    state.axes[atmt::RightStick] = lastControlPackage.Direction[1];
+    // The job that these lines tried to do is done correctly by the lines below
+    // // Left Axis
+    // state.axes[atmt::LeftStick] = lastControlPackage.Direction[0];
+    // state.axes[atmt::RightStick] = lastControlPackage.Direction[1];
 
     // 0 is center
     
@@ -94,6 +94,9 @@ atmt::JoystickState controlDataToJoystickState(ControlData data) {
         state.axes[atmt::RYAxis] = 50;
     }
     //Serial.println("Right Stick X: " + String(state.axes[atmt::RXAxis]) + " Y: " + String(state.axes[atmt::RYAxis]));
+
+    state.axis_range[0] = 0;
+    state.axis_range[1] = 100;
 
     
 

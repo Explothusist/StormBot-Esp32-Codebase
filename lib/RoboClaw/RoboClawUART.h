@@ -17,7 +17,10 @@ public:
     int Roboclaw_Positions[4] = {250, 1000, 2000, 3000}; // Pickup, Wheel, MidDrop, TopDrop
     // address: packet-serial address configured in Motion Studio (0x80 default).
     RoboClawUART(uint8_t rxPin, uint8_t txPin, uint8_t _address = 0x80);
-    void init();
+    
+    void init() override;
+    void periodic() override;
+
     void setPosition(int position);
     int getPosition();
 
