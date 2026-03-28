@@ -3,7 +3,7 @@
 #define STORMBOT_CONSTANTS_
 
 #include <cstdint>
-
+#include "storm_serial_utils.h"
 
 
 
@@ -13,6 +13,12 @@ namespace consts {
     namespace robot {
         int const AutonomousLength = 3;
     };
+
+    namespace serial {
+        int const SerialAddress = Address_EspBot;
+        int const RXPin = 16;
+        int const TXPin = 17;
+    }
 
     namespace belt_mover {
         uint8_t const EnPin = 34;

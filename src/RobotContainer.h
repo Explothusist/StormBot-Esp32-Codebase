@@ -29,6 +29,7 @@ class RobotContainer {
         atmt::Joystick* m_operator_controller;
 
         atmt::SerialReader* m_serial_reader;
+        atmt::RobotDashboardServer* m_dashboard;
     private:
 };
 

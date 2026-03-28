@@ -1,5 +1,6 @@
 
 #include "RobotContainer.h"
+#include "wifi_network.h"
 
 #include <vector>
 
@@ -11,7 +12,9 @@ RobotContainer::RobotContainer():
     m_compressor{ new Compressor(consts::compressor::pwmPin1, consts::compressor::pwmPin2, consts::compressor::enPin1, consts::compressor::enPin2) },
     m_vacuum{ new Vacuum(consts::vacuum::pwmPin1, consts::vacuum::pwmPin2, consts::vacuum::enPin1, consts::vacuum::enPin2) },
     m_roboClaw{ new RoboClawUART(consts::robo_claw::rxPin, consts::robo_claw::txPin, consts::robo_claw::address) },
-    m_operator_controller{ new atmt::Joystick(atmt::PollMode_Manual) }
+    m_operator_controller{ new atmt::Joystick(atmt::PollMode_Manual) },
+    m_serial_reader{ new atmt::SerialReader(consts::serial::SerialAddress, consts::serial::RXPin, consts::serial::TXPin) },
+    m_dashboard{ new atmt::RobotDashboardServer("STORM_Esp32_MainBot", WIFI_SSID, WIFI_PASSWORD) }
 {
 
 };

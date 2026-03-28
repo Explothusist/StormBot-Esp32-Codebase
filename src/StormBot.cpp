@@ -24,6 +24,9 @@ StormBot::StormBot():
     // Add SerialReaders
     addSerialReader(m_bot_cont->m_serial_reader);
 
+    // Add RobotDashboardServer
+    addRobotDashboard(m_bot_cont->m_dashboard);
+
     // Configure bindings
     m_bot_cont->configure_bindings(); // Bind keys added here
 };
