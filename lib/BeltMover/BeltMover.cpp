@@ -28,9 +28,12 @@ void BeltMover::init(){
 
 
 };
-void BeltMover::periodic() {
+void BeltMover::systemPeriodic() {
     
 };
+void BeltMover::disabledPeriodic() {};
+void BeltMover::autonomousPeriodic() {};
+void BeltMover::teleopPeriodic() {};
 
 void BeltMover::moveToSide(FastStepperMotor::Side side){
     Serial.println("Moving to side: " + String(side));

@@ -1,5 +1,6 @@
 
-
+#include "stormbot_type.h"
+#ifdef STORMBOT_ESPNOW_CONTROLLER_
 #include <Arduino.h>
 
 #include <WiFi.h>
@@ -125,8 +126,9 @@ bool waitingForResponse(){
 
 }
 
-void onReceive(const esp_now_recv_info *mac_info, const uint8_t *incomingData, int len) {
-  const uint8_t *recv_info = mac_info->src_addr;
+// void onReceive(const esp_now_recv_info *mac_info, const uint8_t *incomingData, int len) {
+void onReceive(const uint8_t *mac_info, const uint8_t *incomingData, int len) {
+  // const uint8_t *recv_info = mac_info->src_addr;
   
   if (len == sizeof(ControlData)) {
     //Serial.println("Data received from remote!"); 
@@ -154,3 +156,4 @@ void onReceive(const esp_now_recv_info *mac_info, const uint8_t *incomingData, i
 
 
 }
+#endif
