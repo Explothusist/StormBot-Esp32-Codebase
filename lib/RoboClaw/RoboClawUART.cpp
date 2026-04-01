@@ -18,9 +18,12 @@ void RoboClawUART::init() {
     Serial1.begin(115200, SERIAL_8N1, rxPin, txPin); 
     this->roboclaw->begin(38400); // Initialize RoboClaw communication at 38400 baud
 }
-void RoboClawUART::periodic() {
+void RoboClawUART::systemPeriodic() {
     
 };
+void RoboClawUART::disabledPeriodic() {};
+void RoboClawUART::autonomousPeriodic() {};
+void RoboClawUART::teleopPeriodic() {};
 
 int RoboClawUART::getPosition(int motor) {
     if(motor == consts::robo_claw::MOTOR1){

@@ -2,6 +2,7 @@
 #include "StormBot.h"
 
 #include "../Automat/automat.h"
+#include "stormbot_type.h"
 
 #include "Constants.h"
 #include "main.h"
@@ -25,7 +26,9 @@ StormBot::StormBot():
     addSerialReader(m_bot_cont->m_serial_reader);
 
     // Add RobotDashboardServer
+#ifdef STORMBOT_ROBOT_DASHBOARD_
     addRobotDashboard(m_bot_cont->m_dashboard);
+#endif
 
     // Configure bindings
     m_bot_cont->configure_bindings(); // Bind keys added here
@@ -37,21 +40,21 @@ StormBot::~StormBot() {
 
 void StormBot::robotInit() {
 
-    #ifdef AUTOMAT_ESP32_
-       Serial.begin(115200);
-        WiFi.mode(WIFI_MODE_STA);
-        WiFi.disconnect();
-        ESPNow.init();
-        WiFi.macAddress(macAddress); 
-        WiFi.setTxPower(WIFI_POWER_19dBm);
-        ESPNow.reg_recv_cb(onReceive);
-        
-        if (esp_now_init() != ESP_OK) {
-            Serial.println("Error initializing ESP-NOW");
-            return;
-        }
-        ESPNow.add_peer((uint8_t*)broadcastAddress,0); 
-    #endif
+    Serial.begin(115200);
+#ifdef STORMBOT_ESPNOW_CONTROLLER_
+    WiFi.mode(WIFI_MODE_STA);
+    WiFi.disconnect();
+    ESPNow.init();
+    WiFi.macAddress(macAddress); 
+    WiFi.setTxPower(WIFI_POWER_19dBm);
+    ESPNow.reg_recv_cb(onReceive);
+    
+    if (esp_now_init() != ESP_OK) {
+        Serial.println("Error initializing ESP-NOW");
+        return;
+    }
+    ESPNow.add_peer((uint8_t*)broadcastAddress,0); 
+#endif
 
     atmt::platform_print("Robot Init!           ");
     
@@ -66,8 +69,9 @@ void StormBot::robotInit() {
     
 };
 void StormBot::robotPeriodic() {
-    //atmt::platform_print("Robot Periodic...     ");
+    // atmt::platform_print("Robot Periodic...     ");
 
+#ifdef STORMBOT_ESPNOW_CONTROLLER_
     if(timeout > 0){ // WORKING HERE
         // mapFunction(); // Instead of mapFunction, update joystick state
        //  m_bot_cont->m_operator_controller->setRobotState(atmt::RobotState::Teleop);
@@ -84,6 +88,7 @@ void StormBot::robotPeriodic() {
         waitingForResponse();
        //  m_bot_cont->m_operator_controller->setRobotState(atmt::RobotState::Disabled);
     }
+#endif
 };
 void StormBot::robotExit() {
     atmt::platform_print("Robot Exit            ");

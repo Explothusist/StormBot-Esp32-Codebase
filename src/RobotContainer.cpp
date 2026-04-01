@@ -12,9 +12,11 @@ RobotContainer::RobotContainer():
     m_compressor{ new Compressor(consts::compressor::pwmPin1, consts::compressor::pwmPin2, consts::compressor::enPin1, consts::compressor::enPin2) },
     m_vacuum{ new Vacuum(consts::vacuum::pwmPin1, consts::vacuum::pwmPin2, consts::vacuum::enPin1, consts::vacuum::enPin2) },
     m_roboClaw{ new RoboClawUART(consts::robo_claw::rxPin, consts::robo_claw::txPin, consts::robo_claw::address) },
+#ifdef STORMBOT_ROBOT_DASHBOARD_
+    m_dashboard{ new atmt::RobotDashboardServer("STORM_Esp32_MainBot", WIFI_SSID, WIFI_PASSWORD) },
+#endif
     m_operator_controller{ new atmt::Joystick(atmt::PollMode_Manual) },
-    m_serial_reader{ new atmt::SerialReader(consts::serial::SerialAddress, consts::serial::RXPin, consts::serial::TXPin) },
-    m_dashboard{ new atmt::RobotDashboardServer("STORM_Esp32_MainBot", WIFI_SSID, WIFI_PASSWORD) }
+    m_serial_reader{ new atmt::SerialReader(consts::serial::SerialAddress, consts::serial::RXPin, consts::serial::TXPin) }
 {
 
 };
@@ -121,11 +123,25 @@ void RobotContainer::configure_bindings() {
 
 };
 
-atmt::Command* RobotContainer::getAutonomousCommand() {
-    // std::vector<atmt::Command*> commands = 
-    // return new atmt::SequentialCommandGroup({
-    //     (new DriveCommand(m_drivetrain, 0.3, 0.0, 0.0))->withTimeout(2.0),
-    //     new ApproachAndAlign(m_drivetrain, m_camera_reader)
-    // });
-    return new atmt::EmptyCommand();
+// atmt::Command* RobotContainer::getAutonomousCommand() {
+//     // std::vector<atmt::Command*> commands = 
+//     // return new atmt::SequentialCommandGroup({
+//     //     (new DriveCommand(m_drivetrain, 0.3, 0.0, 0.0))->withTimeout(2.0),
+//     //     new ApproachAndAlign(m_drivetrain, m_camera_reader)
+//     // });
+//     return new atmt::EmptyCommand();
+// };
+atmt::Command* RobotContainer::getAutonomousCommand(int indicator, void* robot_container) {
+    RobotContainer* self = static_cast<RobotContainer*>(robot_container);
+    switch (indicator) {
+        case 0:
+            return new atmt::EmptyCommand();
+        
+        default:
+            return new atmt::EmptyCommand();
+    }
+};
+int RobotContainer::getWhichAutonomousRoutine(void* robot_container) {
+    RobotContainer* self = static_cast<RobotContainer*>(robot_container);
+    return 0;
 };
