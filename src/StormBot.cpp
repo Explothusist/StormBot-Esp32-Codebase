@@ -58,8 +58,8 @@ void StormBot::robotInit() {
     
     Serial.println("Starting up...");
     
-    m_bot_cont->m_belt_mover->setSpeed(900); // Stepper Speeds dec here
-    m_bot_cont->m_belt_mover->setDistance(1000); // Move 1000 steps forward as a test
+    //m_bot_cont->m_belt_mover->setSpeed(900); // Stepper Speeds dec here
+    //m_bot_cont->m_belt_mover->setDistance(1000); // Move 1000 steps forward as a test
 
 
    

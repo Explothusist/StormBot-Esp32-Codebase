@@ -125,8 +125,8 @@ bool waitingForResponse(){
 
 }
 
-void onReceive(const esp_now_recv_info *mac_info, const uint8_t *incomingData, int len) {
-  const uint8_t *recv_info = mac_info->src_addr;
+void onReceive(const uint8_t *mac_info, const uint8_t *incomingData, int len) {
+  //const uint8_t *recv_info = mac_info->src_addr;
   
   if (len == sizeof(ControlData)) {
     //Serial.println("Data received from remote!"); 

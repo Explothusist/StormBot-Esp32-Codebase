@@ -8,7 +8,7 @@
 #include "commands/VacuumCommand.h"
 #include "commands/RoboClawCommand.h"   
 RobotContainer::RobotContainer():
-    m_belt_mover{ new BeltMover(consts::belt_mover::EnPin, consts::belt_mover::DirPin, consts::belt_mover::StepPin, consts::belt_mover::MS1Pin, consts::belt_mover::MS2Pin) },
+    m_belt_mover{ new BeltMover(consts::belt_mover::PWM1, consts::belt_mover::PWM2) },
     m_compressor{ new Compressor(consts::compressor::pwmPin1, consts::compressor::pwmPin2, consts::compressor::enPin1, consts::compressor::enPin2) },
     m_vacuum{ new Vacuum(consts::vacuum::pwmPin1, consts::vacuum::pwmPin2, consts::vacuum::enPin1, consts::vacuum::enPin2) },
     m_roboClaw{ new RoboClawUART(consts::robo_claw::rxPin, consts::robo_claw::txPin, consts::robo_claw::address) },
@@ -40,7 +40,7 @@ void RobotContainer::configure_bindings() {
     */
     
     m_operator_controller->bindKey(
-        (new atmt::Trigger(atmt::AButton, atmt::ButtonPressed))->inMode(atmt::ModeTeleopOnly),
+        (new atmt::Trigger(atmt::BButton, atmt::ButtonPressed))->inMode(atmt::ModeTeleopOnly),
         new VacuumCommand(m_vacuum)
     );
 
@@ -52,38 +52,58 @@ void RobotContainer::configure_bindings() {
     */
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::LeftButton, atmt::ButtonPressed))->inMode(atmt::ModeTeleopOnly),
-        new RoboClawCommand(m_roboClaw, 1)
+        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR1, 1)
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightButton, atmt::ButtonPressed))->inMode(atmt::ModeTeleopOnly),
-        new RoboClawCommand(m_roboClaw, -1)
+        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR1, -1)
     );
 
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::LeftStick, atmt::StickLeft))->inMode(atmt::ModeTeleopOnly),
-        new BeltCommand(m_belt_mover, 0)
+        //new BeltCommand(m_belt_mover, 0)
+        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, 1)
+        
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::LeftStick, atmt::StickRight))->inMode(atmt::ModeTeleopOnly),
-        new BeltCommand(m_belt_mover, 1)
+        //new BeltCommand(m_belt_mover, 1)
+        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, -1)
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightStick, atmt::StickLeft))->inMode(atmt::ModeTeleopOnly),
-        new BeltCommand(m_belt_mover, 0, 1)
+        //new BeltCommand(m_belt_mover, 0, 1)
+        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, 1, true)
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightStick, atmt::StickRight))->inMode(atmt::ModeTeleopOnly),
-        new BeltCommand(m_belt_mover, 1, 1)
+        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, -1, true)
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightStick, atmt::StickCenter))->inMode(atmt::ModeTeleopOnly),
-        new BeltCommand(m_belt_mover, 2, 1)
+            new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, 0, true) 
+    );
+
+
+    m_operator_controller->bindKey(
+        (new atmt::Trigger(atmt::RightStick, atmt::StickCenter))->inMode(atmt::ModeTeleopOnly),
+            new BeltCommand(m_belt_mover, 0) 
+    );
+
+    m_operator_controller->bindKey(
+        (new atmt::Trigger(atmt::RightStick, atmt::StickUp))->inMode(atmt::ModeTeleopOnly),
+            new BeltCommand(m_belt_mover, -1) 
+    );
+
+    m_operator_controller->bindKey(
+        (new atmt::Trigger(atmt::RightStick, atmt::StickDown))->inMode(atmt::ModeTeleopOnly),
+            new BeltCommand(m_belt_mover, 1) 
     );
 
     /*m_operator_controller->bindKey(

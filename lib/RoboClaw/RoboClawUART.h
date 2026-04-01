@@ -1,51 +1,55 @@
-#pragma once
+#ifndef ROBOCLAWUART_H
+#define ROBOCLAWUART_H
 
 #include <Arduino.h>
 #include <Basicmicro.h>
 #include "../Automat/command_based/Subsystem.h"
+#include "Constants.h"
 
 class RoboClawUART : public atmt::Subsystem {
 public:
-    enum STATES {
-        PICKUP = 250,
-        WHEEL = 4000,
-        MIDDROP = 3000,
-        TOPDROP = 5600
-    };
+    //enum STATES {
+    //    PICKUP = 150,
+    //    WHEEL = 4000,
+    //    MIDDROP = 3000,
+    //    TOPDROP = 5000
+    //};
 
 
-    int Roboclaw_Positions[4] = {250, 1000, 2000, 3000}; // Pickup, Wheel, MidDrop, TopDrop
+    int Roboclaw_Positions_Linear[4] = {consts::robo_claw::PICKUP, consts::robo_claw::MIDDROP, consts::robo_claw::TOPDROP, consts::robo_claw::WHEEL}; // Pickup, Wheel, MidDrop, TopDrop
+    int Roboclaw_Positions_Load[6] = {consts::robo_claw::LOADPOSITIONLEFTA, consts::robo_claw::LOADPOSITIONLEFTB, consts::robo_claw::LOADPOSITIONFRONTA, consts::robo_claw::LOADPOSITIONFRONTB, consts::robo_claw::LOADPOSITIONRIGHTA, consts::robo_claw::LOADPOSITIONRIGHTB}; // Load positions
     // address: packet-serial address configured in Motion Studio (0x80 default).
     RoboClawUART(uint8_t rxPin, uint8_t txPin, uint8_t _address = 0x80);
     
     void init() override;
     void periodic() override;
 
-    void setPosition(int position);
-    int getPosition();
+    void setPosition(int motor,int position);
+    int getPosition(int motor); 
 
-    void setSpeed(int speed);
+    void setSpeed(int motor, int speed);
     void resetEncoders();
 
-    void move();
-
+    void move(int motor);
+    void justMove(int motor, int direction);
     bool moveComplete = false;
-    int positionElement = 0; //1,2,3,4
+    int positionElement[2] = {0, 0}; //1,2,3,4
 
 private:
 
     uint8_t address;
     uint32_t defaultTimeoutMs  = 5;
-    uint16_t speed = 32;
+    uint16_t speed[2] = {50, 50};
     uint8_t rxPin, txPin;
-    int commandedPosition = 0;
+    int commandedPosition[2] = {0, 0};
+    bool jogging = false;
 
     
 
    
 
-    const int MAX_HEIGHT = 4000; // Maximum encoder count for the linear slide
-    const int MIN_HEIGHT = 250;  // Minimum encoder count to prevent overextension
+    const int MAX_HEIGHT[2] = { consts::robo_claw::TOPDROP, consts::robo_claw::LOADPOSITIONRIGHTB }; // Maximum encoder count for the linear slide
+    const int MIN_HEIGHT[2] = {consts::robo_claw::PICKUP, consts::robo_claw::LOADPOSITIONLEFTA};  // Minimum encoder count to prevent overextension
 
     //Basicmicro* roboclaw(&Serial1, 10000); // Using Serial1, 10ms timeout
     Basicmicro* roboclaw = nullptr; // Using Serial1, 10ms timeout
@@ -57,3 +61,5 @@ private:
 
     bool readBytesWithTimeout(uint8_t* buffer, size_t length, uint32_t timeoutMs);
 };
+
+#endif // ROBOCLAWUART_H

@@ -22,25 +22,64 @@ void RoboClawUART::periodic() {
     
 };
 
-int RoboClawUART::getPosition() {
-    return this->roboclaw->ReadEncM1(this->address);
+int RoboClawUART::getPosition(int motor) {
+    if(motor == consts::robo_claw::MOTOR1){
+        return this->roboclaw->ReadEncM1(this->address);
+    }
+    else if(motor == consts::robo_claw::MOTOR2){
+        return this->roboclaw->ReadEncM2(this->address);
+    }
+    return 0;
 }   
 
-void RoboClawUART::setPosition(int position) {
-    this->commandedPosition = position;
+void RoboClawUART::setPosition(int motor, int position) {
+    this->commandedPosition[motor] = position;
 
     moveComplete = false;
 
-    if(commandedPosition < MIN_HEIGHT){
-        commandedPosition = MIN_HEIGHT; // Minimum position to prevent overextension
+    if(commandedPosition[motor] < MIN_HEIGHT[motor]){
+        commandedPosition[motor] = MIN_HEIGHT[motor]; // Minimum position to prevent overextension
     }
-    if(commandedPosition > MAX_HEIGHT){
-        commandedPosition = MAX_HEIGHT; // Maximum position to prevent overextension
+    if(commandedPosition[motor] > MAX_HEIGHT[motor]){
+        commandedPosition[motor] = MAX_HEIGHT[motor]; // Maximum position to prevent overextension
     }
-    Serial.println("Setting Position to: " + String(commandedPosition));
-    move();
+    //Serial.println("Setting Position to: " + String(commandedPosition[motor]) + 
+    //    " for motor: " + String(motor));
+    move(motor);
 
 }
+
+void RoboClawUART::justMove(int motor, int direction) {
+    //moveComplete = false;
+    Serial.println("Just moving motor: " + String(motor) + " in direction: " + String(direction));
+    if(motor == consts::robo_claw::MOTOR1){
+        if(direction == 1){
+            this->roboclaw->ForwardM1(this->address, this->speed[motor]);
+        }
+        else if(direction == -1){
+            this->roboclaw->BackwardM1(this->address, this->speed[motor]);
+        }
+        else{
+            this->roboclaw->ForwardM1(this->address, 0);
+        }
+    }
+    else if(motor == consts::robo_claw::MOTOR2){
+        if(direction == 1){
+            Serial.println("Just moving motor: " + String(motor) + " in direction: " + String(direction));
+            this->roboclaw->ForwardM2(this->address, this->speed[motor]);
+        }
+        else if(direction == -1){
+            Serial.println("Just moving motor: " + String(motor) + " in direction: " + String(direction));
+            this->roboclaw->BackwardM2(this->address, this->speed[motor]);
+        }
+        else{
+            this->roboclaw->ForwardM2(this->address, 0);
+            Serial.println(String(this->roboclaw->ReadEncM2(this->address)));
+        }
+
+    }
+}
+
 
 void RoboClawUART::resetEncoders() {
 
@@ -49,28 +88,46 @@ void RoboClawUART::resetEncoders() {
 
 }
 
-void RoboClawUART::setSpeed(int speed) {
-    this->speed = speed;
+void RoboClawUART::setSpeed(int motor, int speed) {
+    this->speed[motor] = speed;
     //this->roboclaw->ForwardM1(this->address, this->speed);
 }
 
-void RoboClawUART::move() {
+void RoboClawUART::move(int motor) {
     // Read current position from encoder
     //while(!moveCompelte){
 
-    int currentPosition = this->roboclaw->ReadEncM1(this->address);
-    Serial.println(currentPosition);
-    if(currentPosition > commandedPosition + 100) { // If we're above the target position, move backward
-       // Serial.println("Moving backward");
-        this->roboclaw->BackwardM1(this->address, this->speed);
+
+    int currentPosition = motor == 1 ?   this->roboclaw->ReadEncM2(this->address) : this->roboclaw->ReadEncM1(this->address);
+    Serial.println("Current Position: " + String(currentPosition) + " Commanded Position: " + String(commandedPosition[motor]) + " Speed: " + String(speed[motor]));
+   //Serial.println(currentPosition);
+    if(motor == consts::robo_claw::MOTOR1){
+        if(currentPosition > commandedPosition[motor] + 100) { // If we're above the target position, move backward
+        // Serial.println("Moving backward");
+            this->roboclaw->BackwardM1(this->address, this->speed[motor]);
+        }
+        else if (currentPosition < commandedPosition[motor] - 100) { // If we're below the target position, move forward
+        // Serial.println("Moving forward");
+            this->roboclaw->ForwardM1(this->address, this->speed[motor]);
+        }
+        else {
+            moveComplete = true;
+            this->roboclaw->ForwardM1(this->address, 0); // Stop if we're within the target range
+        }
     }
-    else if (currentPosition < commandedPosition - 100) { // If we're below the target position, move forward
-       // Serial.println("Moving forward");
-        this->roboclaw->ForwardM1(this->address, this->speed);
-    }
-    else {
-        moveComplete = true;
-        this->roboclaw->ForwardM1(this->address, 0); // Stop if we're within the target range
+    else if(motor == consts::robo_claw::MOTOR2){
+        if(currentPosition > commandedPosition[motor] + 100) { // If we're above the target position, move backward
+        // Serial.println("Moving backward");
+            this->roboclaw->BackwardM2(this->address, this->speed[motor]);
+        }
+        else if (currentPosition < commandedPosition[motor] - 100) { // If we're below the target position, move forward
+        // Serial.println("Moving forward");
+            this->roboclaw->ForwardM2(this->address, this->speed[motor]);
+        }
+        else {
+            moveComplete = true;
+            this->roboclaw->ForwardM2(this->address, 0); // Stop if we're within the target range
+        }
     }
 
    // }

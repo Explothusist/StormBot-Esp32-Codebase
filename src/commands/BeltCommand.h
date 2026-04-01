@@ -18,8 +18,7 @@ class BeltCommand : public atmt::Command { // Add more functionality to this, bu
         void end(bool interrupted) override; // User-made
         bool is_finished() override; // User-made
 
-        void incrementalMove(int direction); // For small adjustments, moves a small amount in the specified direction (true for left, false for right)
-        
+
     private:
         BeltMover* m_belt_mover;
         int m_direction;

@@ -72,8 +72,8 @@ void setup() {
 
   
   // Moved to StormBot.robotInit()
-//   Serial.begin(115200);
-//   Serial.println("Starting up...");
+   Serial.begin(115200);
+   Serial.println("Starting up...");
 
   // Initialize belt mover
 //   stepperArm.init(); // Called by atmt::TimedRobot because it is a registered subsystem

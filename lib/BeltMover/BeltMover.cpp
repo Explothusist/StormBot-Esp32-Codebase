@@ -6,23 +6,26 @@
 // StepperArm = _StepperArm;
 
 // }
-BeltMover::BeltMover(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin, uint8_t _MS1Pin, uint8_t _MS2Pin):
-    StepperArm{ new FastStepperMotor(_enPin, _dirPin, _stepPin, _MS1Pin, _MS2Pin) }
+BeltMover::BeltMover(uint8_t PWM1, uint8_t PWM2):
+    m_dcMotor{ new DcMotor(PWM1, PWM2) }
 {
 
 };
-BeltMover::BeltMover(uint8_t _enPin, uint8_t _dirPin, uint8_t _stepPin):
-    BeltMover(_enPin, _dirPin, _stepPin, 0, 0)
+
+BeltMover::BeltMover(BeltMover& belt):
+    m_dcMotor{ new DcMotor(*belt.m_dcMotor) }
 {
 
 };
+
+
 BeltMover::~BeltMover() {
-    delete StepperArm;
-    StepperArm = nullptr;
+    delete m_dcMotor;
+    m_dcMotor = nullptr;
 };
 
 void BeltMover::init(){
-    StepperArm->init();
+    m_dcMotor->init();
     setSpeed(speed);
 
 
@@ -32,44 +35,18 @@ void BeltMover::periodic() {
     
 };
 
-void BeltMover::moveToSide(FastStepperMotor::Side side){
-    Serial.println("Moving to side: " + String(side));
-    StepperArm->moveToSide(side);
-}
 
-
-void BeltMover::moveLeft(){
-
-    StepperArm->moveForward();
-}
-
-
-void BeltMover::moveRight(){
-
-    StepperArm->moveBackward();
-}
 
 void BeltMover::stop(){
-    StepperArm->stopMotor();
+    m_dcMotor->setSpeed( 0);
 }
 
-void BeltMover::setDistance(int distance) {
-    
-};
 
-bool BeltMover::moveComplete() {
-    return StepperArm->moveComplete();
-};
 
-bool BeltMover::update(){
-
-        
-    return true;
-}
 
 void BeltMover::setSpeed (int _speed){
 
     speed = _speed;
-    StepperArm->setSpeed(_speed);
+    m_dcMotor->setSpeed(_speed);
 
 }

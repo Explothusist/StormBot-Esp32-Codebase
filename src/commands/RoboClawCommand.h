@@ -1,4 +1,5 @@
 
+
 #ifndef STORMBOT_ROBOCLAWCOMMAND_
 #define STORMBOT_ROBOCLAWCOMMAND_
 
@@ -7,7 +8,7 @@
 
 class RoboClawCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
     public:
-        RoboClawCommand(RoboClawUART* roboClaw, int position); // Put subsystems as parameters
+        RoboClawCommand(RoboClawUART* roboClaw,int motor, int position, bool justMove = false); // Put subsystems as parameters
         RoboClawCommand(RoboClawCommand& command); // Copy constructor
         ~RoboClawCommand();
         atmt::Command* clone() const override;
@@ -22,6 +23,8 @@ class RoboClawCommand : public atmt::Command { // Add more functionality to this
     private:
         RoboClawUART* m_roboClaw;
         int m_position;
+        int m_motor;
+        bool m_justMove;
 };
 
 #endif

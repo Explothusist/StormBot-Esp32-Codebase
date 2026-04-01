@@ -31,12 +31,12 @@ class FastStepperMotor {
 
         Side currentSide = Front;
         // Moved to Constants
-        // enum Speeds : uint32_t {
-        //     FAST = 150,
-        //     MEDIUM = 300,
-        //     SLOW = 600,
-        //     SUPERSLOW = 1000
-        // } speed;
+         enum Speeds : uint32_t {
+             FAST = 150,
+             MEDIUM = 300,
+             SLOW = 600,
+             SUPERSLOW = 1000
+        } speed;
 
         FastStepperMotor(uint8_t enPin, uint8_t dirPin, uint8_t stepPin, uint8_t ms1Pin, uint8_t ms2Pin);
         FastStepperMotor(uint8_t enPin, uint8_t dirPin, uint8_t stepPin);
@@ -95,7 +95,7 @@ class FastStepperMotor {
         bool resetHome = false;
         bool hasTarget = false;
 
-        int speedSettingUs = consts::belt_mover::MEDIUM; // microseconds per step
+        int speedSettingUs = Speeds::MEDIUM; // microseconds per step
         int directionSign = 1;
         float speedStepsPerSecond = 0.0f;
 

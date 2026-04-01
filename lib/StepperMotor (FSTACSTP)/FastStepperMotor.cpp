@@ -110,8 +110,8 @@ void FastStepperMotor::setDistance(int distance) {
     //Serial.println(("Setting Stepper Motor to" + String(distance)));
     MoveResultCode result = stepper->move(distance, false);
 
-    Serial.print("Move result: ");
-    Serial.println(static_cast<int>(result));
+   // Serial.print("Move result: ");
+   // Serial.println(static_cast<int>(result));
 
 }
 
