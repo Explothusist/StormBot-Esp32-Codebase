@@ -11,6 +11,16 @@ StormBot::StormBot():
     atmt::TimedRobot(consts::robot::AutonomousLength),
     m_bot_cont{ new RobotContainer() } // Init for belt_mover, compressor and vacuum
 {
+
+};
+StormBot::~StormBot() {
+    delete m_bot_cont;
+    m_bot_cont = nullptr;
+};
+
+void StormBot::environmentInit() {
+    atmt::platform_println("Environment Init!");
+
     // Register all Subsystems
     registerSubsystem(m_bot_cont->m_belt_mover);
     registerSubsystem(m_bot_cont->m_compressor);
@@ -32,10 +42,6 @@ StormBot::StormBot():
 
     // Configure bindings
     m_bot_cont->configure_bindings(); // Bind keys added here
-};
-StormBot::~StormBot() {
-    delete m_bot_cont;
-    m_bot_cont = nullptr;
 };
 
 void StormBot::robotInit() {
