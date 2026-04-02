@@ -1,4 +1,5 @@
 
+#pragma once
 #ifndef STORMBOT_CONSTANTS_
 #define STORMBOT_CONSTANTS_
 
@@ -21,22 +22,13 @@ namespace consts {
     }
 
     namespace belt_mover {
-        uint8_t const EnPin = 34;
-        uint8_t const DirPin = 47;
-        uint8_t const StepPin = 33;
-        uint8_t const MS1Pin = 0;
-        uint8_t const MS2Pin = 0;
+        uint8_t const PWM1 = 36;
+        uint8_t const PWM2 = 39;
 
-        static constexpr int FAST      = 150;
-        static constexpr int MEDIUM    = 300;
-        static constexpr int SLOW      = 600;
-        static constexpr int SUPERSLOW = 1000;
+        int const FORWARDSPEED = 255;
+        int const BACKWARDSPEED = -255;
+        int const STOP = 0;
 
-        static constexpr int INITPOS = 2000; // Amount of steps to get out of inital poisition
-
-        static constexpr int TURNSTEPS = 1500; // Inital steps to match corner movements
-
-        static constexpr int LEFTRIGHTMOVE = 500; // Adjust to be moved left or giht
     };
 
     namespace compressor {
@@ -58,6 +50,22 @@ namespace consts {
         uint8_t const txPin = 40;
 
         uint8_t const address = 0x80; // Default address for RoboClaw
+
+        extern int PICKUP;
+        extern int WHEEL;
+        extern int MIDDROP;
+        extern int TOPDROP;
+
+        extern int INITPOSITION;
+        extern int LOADPOSITIONLEFTA;
+        extern int LOADPOSITIONLEFTB;
+        extern int LOADPOSITIONFRONTA;
+        extern int LOADPOSITIONFRONTB; 
+        extern int LOADPOSITIONRIGHTA;
+        extern int LOADPOSITIONRIGHTB;
+
+        uint8_t const MOTOR1 = 0;
+        uint8_t const MOTOR2 = 1;
 
         
     };

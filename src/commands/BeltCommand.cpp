@@ -36,38 +36,29 @@ atmt::Command* BeltCommand::clone() const {
 };
 
 void BeltCommand::initialize() {
-    //Serial.println("Initializing Belt Command");
-    //Serial.println(m_direction);
+    Serial.println("Initializing Belt Command");
+    Serial.println(m_direction);
+    switch (m_direction)
+    {
+        case -1:
+            m_belt_mover->setSpeed(consts::belt_mover::BACKWARDSPEED);
+            break;
+        case 0:
+            m_belt_mover->setSpeed(consts::belt_mover::STOP);
+            break;
+        case 1:
+            m_belt_mover->setSpeed(consts::belt_mover::FORWARDSPEED);
+            break;
+    }
+  //  m_beltMover->setSpeed(m_direction); 
 
-    if(m_isIncremental){
-        Serial.println("Performing incremental move in direction: " + String(m_direction));
-        incrementalMove(m_direction);
-        return;
-    }
-    else{
-        m_belt_mover->moveToSide(static_cast<FastStepperMotor::Side>(m_direction)); // Move 1000 steps in the appropriate direction as a test
-    }
-    
 };
 void BeltCommand::execute() {
-    m_belt_mover->update();
+   // m_belt_mover->update();
 };
 void BeltCommand::end(bool interrupted) {
     
 };
 bool BeltCommand::is_finished() {
-    return m_belt_mover->moveComplete();
+    return true;
 };
-
-void BeltCommand::incrementalMove(int direction){
-    if(direction == 0){
-        m_belt_mover->moveLeft();
-    }
-    else if (direction == 1){
-        m_belt_mover->moveRight();
-    }
-    else if (direction == 2){
-        Serial.println("Stopping Belt");
-        m_belt_mover->stop();
-    }
-}

@@ -46,26 +46,37 @@ void DcMotor::init(){
 
 
 void DcMotor::setSpeed(int _speed){
-    if(speed = 0){
-        digitalWrite(pwmPin1, LOW);
+    Serial.print("Setting DC motor speed to ");
+    Serial.println(_speed);
+    speed = _speed;
+
+    if(_speed == 0){
+        analogWrite(pwmPin1, 0);
         if (pwmPin2 > 0){
-            digitalWrite(pwmPin2, LOW);
+            
+            analogWrite(pwmPin2, 0);
         }
+        Serial.println("Stopping DC motor");
         return;
     }
     if(_speed >= 0){
-        
+        Serial.print("Setting motor speed to ");
+        Serial.println(_speed);
+
         analogWrite(pwmPin1, _speed);
         if (pwmPin2 > 0){
             analogWrite(pwmPin2, 0);
         }
     }
     else{
+        Serial.print("Setting motor speed to ");
+        Serial.println(_speed);
+
         analogWrite(pwmPin1, 0);
         if (pwmPin2 > 0){
             analogWrite(pwmPin2, -_speed);
         }
     }
 
-    speed = _speed;
+    
 }
