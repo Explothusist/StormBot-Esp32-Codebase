@@ -16,7 +16,8 @@ RobotContainer::RobotContainer():
     m_dashboard{ new atmt::RobotDashboardServer("STORM_Esp32_MainBot", WIFI_SSID, WIFI_PASSWORD) },
 #endif
     m_operator_controller{ new atmt::Joystick(atmt::PollMode_Manual) },
-    m_serial_reader{ new atmt::SerialReader(consts::serial::SerialAddress, consts::serial::RXPin, consts::serial::TXPin) }
+    m_serial_reader{ new atmt::SerialReader(consts::serial::SerialAddress, consts::serial::RXPin, consts::serial::TXPin) },
+    m_heartbeat_sender{ new atmt::HeartbeatMaker_StateMatcher(consts::heartbeat::SenderTimeoutMS, m_serial_reader, Serial_Heartbeat) }
 {
 
 };

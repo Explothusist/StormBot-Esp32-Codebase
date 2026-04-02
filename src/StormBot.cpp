@@ -40,6 +40,9 @@ void StormBot::environmentInit() {
     addRobotDashboard(m_bot_cont->m_dashboard);
 #endif
 
+    // Add Heartbeat Helpers
+    addHeartbeatMaker(m_bot_cont->m_heartbeat_sender);
+
     // Configure bindings
     m_bot_cont->configure_bindings(); // Bind keys added here
 };
