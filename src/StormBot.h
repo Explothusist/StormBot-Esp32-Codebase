@@ -5,6 +5,8 @@
 #include "../Automat/automat.h"
 #include "RobotContainer.h"
 
+#define STORMBOT_ESPNOW_CONTROLLER_
+
 class StormBot : public atmt::TimedRobot {
     public:
         StormBot();

@@ -69,11 +69,13 @@ void DcMotor::setSpeed(int _speed){
         }
     }
     else{
-        Serial.print("Setting motor speed to ");
-        Serial.println(_speed);
-
+      //  Serial.print("Setting motor speed to ");
+      //  Serial.println(_speed);
         analogWrite(pwmPin1, 0);
         if (pwmPin2 > 0){
+            Serial.print("Setting motor speed to ");
+            Serial.println(-_speed);
+
             analogWrite(pwmPin2, -_speed);
         }
     }

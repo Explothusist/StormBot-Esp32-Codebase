@@ -31,12 +31,10 @@ void BeltMover::init(){
 
 
 };
-void BeltMover::systemPeriodic() {
-    
-};
-void BeltMover::disabledPeriodic() {};
-void BeltMover::autonomousPeriodic() {};
-void BeltMover::teleopPeriodic() {};
+
+void BeltMover::periodic(){
+
+}
 
 
 

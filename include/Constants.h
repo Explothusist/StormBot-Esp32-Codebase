@@ -25,8 +25,8 @@ namespace consts {
         uint8_t const PWM1 = 36;
         uint8_t const PWM2 = 39;
 
-        int const FORWARDSPEED = 255;
-        int const BACKWARDSPEED = -255;
+        int const FORWARDSPEED = 140;
+        int const BACKWARDSPEED = -140;
         int const STOP = 0;
 
     };

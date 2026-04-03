@@ -17,11 +17,7 @@ class BeltMover : public atmt::Subsystem {
     ~BeltMover(); // Now BeltMover owns StepperMotor and has to delete it
 
     void init() override;
-    void systemPeriodic() override;
-    void disabledPeriodic() override;
-    void autonomousPeriodic() override;
-    void teleopPeriodic() override;
-
+    void periodic() override;
 
     void setSpeed(int _speed);
     

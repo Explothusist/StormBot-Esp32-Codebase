@@ -13,10 +13,7 @@ class Compressor : public atmt::Subsystem {
 
 
     void init() override;
-    void systemPeriodic() override;
-    void disabledPeriodic() override;
-    void autonomousPeriodic() override;
-    void teleopPeriodic() override;
+    void periodic() override;
 
     void setSpeed(int speed); // 0 to 255
 

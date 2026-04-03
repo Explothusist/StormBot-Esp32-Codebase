@@ -18,19 +18,43 @@ void RoboClawUART::init() {
     Serial1.begin(115200, SERIAL_8N1, rxPin, txPin); 
     this->roboclaw->begin(38400); // Initialize RoboClaw communication at 38400 baud
 }
-void RoboClawUART::systemPeriodic() {
-    
-};
-void RoboClawUART::disabledPeriodic() {};
-void RoboClawUART::autonomousPeriodic() {};
-void RoboClawUART::teleopPeriodic() {};
+
+
+void RoboClawUART::periodic(){
+
+}
 
 int RoboClawUART::getPosition(int motor) {
+    Serial.println("Getting position for motor: " + String(motor));
     if(motor == consts::robo_claw::MOTOR1){
-        return this->roboclaw->ReadEncM1(this->address);
+        uint32_t value = this->roboclaw->ReadEncM1(this->address);
+        if(value == 0){
+            
+            foundZeros[motor]++;
+            if(foundZeros[motor] > 10){
+                foundZeros[motor] = 0;
+                return 0;
+            }  
+            return getPosition(motor);    
+        } 
+        foundZeros[motor] = 0;
+        return value;
+
     }
     else if(motor == consts::robo_claw::MOTOR2){
-        return this->roboclaw->ReadEncM2(this->address);
+        uint32_t value = this->roboclaw->ReadEncM2(this->address);
+        if(value == 0){
+               
+            foundZeros[motor]++;
+            if(foundZeros[motor] > 10){
+                foundZeros[motor] = 0; 
+                return 0;
+            }  
+            return getPosition(motor);    
+        
+            foundZeros[motor] = 0;
+        return value;
+        }   
     }
     return 0;
 }   
@@ -99,9 +123,10 @@ void RoboClawUART::setSpeed(int motor, int speed) {
 void RoboClawUART::move(int motor) {
     // Read current position from encoder
     //while(!moveCompelte){
+    
+    int currentPosition = getPosition(motor);
 
-
-    int currentPosition = motor == 1 ?   this->roboclaw->ReadEncM2(this->address) : this->roboclaw->ReadEncM1(this->address);
+    //int currentPosition = motor == 1 ?   this->roboclaw->ReadEncM2(this->address) : this->roboclaw->ReadEncM1(this->address);
     Serial.println("Current Position: " + String(currentPosition) + " Commanded Position: " + String(commandedPosition[motor]) + " Speed: " + String(speed[motor]));
    //Serial.println(currentPosition);
     if(motor == consts::robo_claw::MOTOR1){

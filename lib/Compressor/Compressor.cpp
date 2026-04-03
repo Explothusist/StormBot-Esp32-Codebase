@@ -21,12 +21,10 @@ void Compressor::init(){
 
     compressorDriver->init();
 }
-void Compressor::systemPeriodic() {
-    
-};
-void Compressor::disabledPeriodic() {};
-void Compressor::autonomousPeriodic() {};
-void Compressor::teleopPeriodic() {};
+
+void Compressor::periodic(){
+
+}
 
 void Compressor::setSpeed(int _speed){
 
