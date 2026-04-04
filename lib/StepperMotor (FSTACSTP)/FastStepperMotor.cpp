@@ -23,7 +23,7 @@ void FastStepperMotor::init() {
         stepper->setEnablePin(enPin);
         stepper->setAutoEnable(true);
 
-        stepper->setSpeedInUs(30000);
+        stepper->setSpeedInUs(speed);
         stepper->setAcceleration(10000);
     }
 

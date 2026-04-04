@@ -43,6 +43,7 @@ private:
     uint8_t address;
     uint32_t defaultTimeoutMs  = 5;
     uint16_t speed[2] = {50, 50};
+    int foundZeros[2] = {0, 0};
     uint8_t rxPin, txPin;
     int commandedPosition[2] = {0, 0};
     bool jogging = false;
