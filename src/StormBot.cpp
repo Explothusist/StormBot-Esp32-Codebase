@@ -20,7 +20,7 @@ StormBot::~StormBot() {
 
 void StormBot::environmentInit() {
     atmt::platform_println("Environment Init!");
-
+    Serial.begin(115200);
     // Register all Subsystems
     registerSubsystem(m_bot_cont->m_belt_mover);
     registerSubsystem(m_bot_cont->m_compressor);
@@ -49,7 +49,7 @@ void StormBot::environmentInit() {
 
 void StormBot::robotInit() {
 
-    Serial.begin(115200);
+    
 #ifdef STORMBOT_ESPNOW_CONTROLLER_
     WiFi.mode(WIFI_MODE_STA);
     WiFi.disconnect();
@@ -78,7 +78,7 @@ void StormBot::robotInit() {
     
 };
 void StormBot::robotPeriodic() {
-    // atmt::platform_print("Robot Periodic...     ");
+     //atmt::platform_print("Robot Periodic...     ");
 
 #ifdef STORMBOT_ESPNOW_CONTROLLER_
     if(timeout > 0){ // WORKING HERE
