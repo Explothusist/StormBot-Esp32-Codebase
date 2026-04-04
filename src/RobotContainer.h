@@ -4,6 +4,7 @@
 
 #include "../Automat/automat.h"
 #include "Constants.h"
+#include "storm_serial_utils.h"
 #include "stormbot_type.h"
 
 #include "Compressor.h"

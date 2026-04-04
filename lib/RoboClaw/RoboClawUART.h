@@ -22,7 +22,10 @@ public:
     RoboClawUART(uint8_t rxPin, uint8_t txPin, uint8_t _address = 0x80);
     
     void init() override;
-    void periodic() override;
+    void systemPeriodic() override;
+    void disabledPeriodic() override;
+    void autonomousPeriodic() override;
+    void teleopPeriodic() override;
 
     void setPosition(int motor,int position);
     int getPosition(int motor); 

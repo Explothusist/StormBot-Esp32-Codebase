@@ -19,7 +19,7 @@ BeltCommand::BeltCommand(BeltMover* belt_mover, int direction, bool isIncrementa
 {
     usesSubsystem(m_belt_mover);
 };
-BeltCommand::BeltCommand(BeltCommand& command):
+BeltCommand::BeltCommand(const BeltCommand& command):
     atmt::Command(command)
 {
     m_belt_mover = command.m_belt_mover;

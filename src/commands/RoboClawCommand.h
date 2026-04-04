@@ -9,7 +9,7 @@
 class RoboClawCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
     public:
         RoboClawCommand(RoboClawUART* roboClaw,int motor, int position, bool justMove = false); // Put subsystems as parameters
-        RoboClawCommand(RoboClawCommand& command); // Copy constructor
+        RoboClawCommand(const RoboClawCommand& command); // Copy constructor
         ~RoboClawCommand();
         atmt::Command* clone() const override;
 

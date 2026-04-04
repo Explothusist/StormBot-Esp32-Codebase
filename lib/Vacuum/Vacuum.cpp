@@ -21,11 +21,12 @@ void Vacuum::init(){
 
     vacuumDriver->init();
 };
-
-void Vacuum::periodic(){
-
-}
-
+void Vacuum::systemPeriodic() {
+    
+};
+void Vacuum::disabledPeriodic() {};
+void Vacuum::autonomousPeriodic() {};
+void Vacuum::teleopPeriodic() {};
 
 bool Vacuum::getState(){
     state = !state; // Toggle state for next command
