@@ -12,6 +12,8 @@ class StormBot : public atmt::TimedRobot {
         StormBot();
         ~StormBot();
 
+        void environmentInit() override;
+
         void robotInit() override;
         void robotPeriodic() override;
         void robotExit() override;

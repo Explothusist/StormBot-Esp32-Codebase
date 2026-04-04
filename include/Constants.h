@@ -19,7 +19,11 @@ namespace consts {
         int const SerialAddress = Address_EspBot;
         int const RXPin = 16;
         int const TXPin = 17;
-    }
+    };
+
+    namespace heartbeat {
+        int const SenderTimeoutMS = 500;
+    };
 
     namespace belt_mover {
         uint8_t const PWM1 = 36;
