@@ -25,6 +25,12 @@ RobotContainer::~RobotContainer() { // Subsystems deleted by atmt::TimedRobot
 
 };
 
+
+void RobotContainer::configure_auto_bindings() {
+    m_operator_controller->bindAutoTrigger(
+        new atmt::Trigger(atmt::AButton, atmt::ButtonPressed)
+    );
+};
 void RobotContainer::configure_bindings() {
      //m_driver_controller->bindKey(atmt::AButton, atmt::ButtonPressed, atmt::WhileTrigger, new ApproachAndAlign(m_drivetrain, m_camera_reader));
     // m_driver_controller->bindKey(atmt::R1Button, atmt::ButtonPressed, atmt::WhileTrigger, new AlignAndPounce(m_drivetrain, m_camera_reader));

@@ -18,6 +18,7 @@ class RobotContainer {
         RobotContainer();
         ~RobotContainer();
 
+        void configure_auto_bindings();
         void configure_bindings();
 
         // atmt::Command* getAutonomousCommand();
