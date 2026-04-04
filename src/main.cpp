@@ -6,9 +6,9 @@
 StormBot m_robot{ StormBot() }; // Bindings and init configured here
 
 void setup() {
-
+    Serial.begin(115200);
     // atmt::systemWait(10000);
-
+    atmt::systemWait(6000);
     atmt::platform_println("Starting");
 
     m_robot.startLoop();
