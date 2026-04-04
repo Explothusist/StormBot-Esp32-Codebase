@@ -27,6 +27,7 @@ RobotContainer::~RobotContainer() { // Subsystems deleted by atmt::TimedRobot
 
 
 void RobotContainer::configure_auto_bindings() {
+    atmt::platform_print("Configuring Auto Bindings\n");
     m_operator_controller->bindAutoTrigger(
         new atmt::Trigger(atmt::AButton, atmt::ButtonPressed)
     );
