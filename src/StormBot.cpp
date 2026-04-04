@@ -20,7 +20,7 @@ StormBot::~StormBot() {
 
 void StormBot::environmentInit() {
     atmt::platform_println("Environment Init!");
-
+    Serial.begin(115200);
     // Register all Subsystems
     registerSubsystem(m_bot_cont->m_belt_mover);
     registerSubsystem(m_bot_cont->m_compressor);
