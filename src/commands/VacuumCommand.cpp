@@ -10,7 +10,7 @@ VacuumCommand::VacuumCommand(Vacuum* vacuum):
 {
     usesSubsystem(m_vacuum);
 };
-VacuumCommand::VacuumCommand(VacuumCommand& command):
+VacuumCommand::VacuumCommand(const VacuumCommand& command):
     atmt::Command(command)
 {
     m_vacuum = command.m_vacuum;

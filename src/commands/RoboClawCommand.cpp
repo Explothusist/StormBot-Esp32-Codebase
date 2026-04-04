@@ -14,7 +14,7 @@ RoboClawCommand::RoboClawCommand(RoboClawUART* roboClaw,int motor, int position,
 {
     usesSubsystem(m_roboClaw);
 };
-RoboClawCommand::RoboClawCommand(RoboClawCommand& command):
+RoboClawCommand::RoboClawCommand(const RoboClawCommand& command):
     atmt::Command(command)
 {
     m_roboClaw = command.m_roboClaw;

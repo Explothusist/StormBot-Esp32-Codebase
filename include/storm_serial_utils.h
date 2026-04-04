@@ -32,7 +32,9 @@ enum SerialIndicators {
     Serial_IsSingleDetection = 0x07, // Cameras sending tag data
     Serial_IsManyDetections = 0x08,
 
-    Serial_Heartbeat = 0x10
+    Serial_Heartbeat = 0x10,
+    Serial_JoystickPacket = 0x11,
+    Serial_AutonomousResume = 0x12
 };
 
 enum SerialAddresses {

@@ -8,7 +8,7 @@
 class VacuumCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
     public:
         VacuumCommand(Vacuum* vacuum); // Put subsystems as parameters
-        VacuumCommand(VacuumCommand& command); // Copy constructor
+        VacuumCommand(const VacuumCommand& command); // Copy constructor
         ~VacuumCommand();
         atmt::Command* clone() const override;
 
