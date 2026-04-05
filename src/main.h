@@ -42,66 +42,135 @@ uint8_t macAddress[6];
 //Message msg;
 ControlData lastControlPackage; // Renamed for clarity
 
+typedef enum {
+  EspNow_Released = 0,
+  EspNow_Pressed = 1
+} EspNowButtonState;
+
+typedef enum {
+  EspNow_Center = 0,
+  EspNow_Up = 1,
+  EspNow_Down = 2,
+  EspNow_Left = 3,
+  EspNow_Right = 4
+} EspNowAxisState;
+
+atmt::ButtonEvent getButtonEvent(bool esp_now_state) {
+    EspNowButtonState state = static_cast<EspNowButtonState>(esp_now_state);
+    switch (state) {
+        case EspNow_Released:
+            return atmt::ButtonReleased;
+        case EspNow_Pressed:
+            return atmt::ButtonPressed;
+        
+        default:
+            return atmt::ButtonReleased;
+    }
+};
+void setJoystickAxis(int esp_now_direction, double &axis_x, double &axis_y) {
+    EspNowAxisState direction = static_cast<EspNowAxisState>(esp_now_direction);
+    switch (direction) {
+        case EspNow_Center:
+            axis_x = 50;
+            axis_y = 50;
+            return;
+        case EspNow_Up:
+            axis_x = 50;
+            axis_y = 100;
+            return;
+        case EspNow_Down:
+            axis_x = 50;
+            axis_y = 0;
+            return;
+        case EspNow_Left:
+            axis_x = 0;
+            axis_y = 50;
+            return;
+        case EspNow_Right:
+            axis_x = 100;
+            axis_y = 50;
+            return;
+        
+        default:
+            axis_x = 50;
+            axis_y = 50;
+            return;
+    }
+};
+
 atmt::JoystickState controlDataToJoystickState(ControlData data) {
     atmt::JoystickState state;
-
-    state.buttons[atmt::LeftButton] =  lastControlPackage.objectArm[0]; // Left Bottom Button - Grabber   Vaccum Pumps
-
-    
-
-
-    state.buttons[atmt::RightButton] =  lastControlPackage.objectArm[2];
-
-    state.buttons[atmt::AButton] =  lastControlPackage.objectRun[0];
-
-    state.buttons[atmt::BButton] =  lastControlPackage.objectRun[2];
-
-    // The job that these lines tried to do is done correctly by the lines below
-    // // Left Axis
-    // state.axes[atmt::LeftStick] = lastControlPackage.Direction[0];
-    // state.axes[atmt::RightStick] = lastControlPackage.Direction[1];
-
-    // 0 is center
-    
-    if(!lastControlPackage.Direction[0]){ // Middle
-        state.axes[atmt::LXAxis] = 50;
-        state.axes[atmt::LYAxis] = 50;
-
-    }
-    else if(lastControlPackage.Direction[0] > 0 && lastControlPackage.Direction[0] <= 2){ // Forward or Backward
-        state.axes[atmt::LYAxis] = lastControlPackage.Direction[0] == 1 ? 100 : 0 ;
-        state.axes[atmt::LXAxis] = 50;
-
-      
-    }
-    else if(lastControlPackage.Direction[0] > 2){ // Left or Right
-        state.axes[atmt::LXAxis] = lastControlPackage.Direction[0] == 3 ? 100 : 0 ;
-        state.axes[atmt::LYAxis] = 50;
-    }
-    //Serial.println("Left Stick X: " + String(state.axes[atmt::LXAxis]) + " Y: " + String(state.axes[atmt::LYAxis]));
-
-
-    if(!lastControlPackage.Direction[1]){ // Middle
-        state.axes[atmt::RXAxis] = 50;
-        state.axes[atmt::RYAxis] = 50;
-
-    }
-    else if(lastControlPackage.Direction[1] > 0 && lastControlPackage.Direction[1] <= 2){ // Forward or Backward
-        state.axes[atmt::RYAxis] = lastControlPackage.Direction[1] == 1 ? 100 : 0 ;
-        state.axes[atmt::RXAxis] = 50;
-    }
-    else if(lastControlPackage.Direction[1] > 2){ // Left or Right
-        state.axes[atmt::RXAxis] = lastControlPackage.Direction[1] == 3 ? 100 : 0 ;
-        state.axes[atmt::RYAxis] = 50;
-    }
-    //Serial.println("Right Stick X: " + String(state.axes[atmt::RXAxis]) + " Y: " + String(state.axes[atmt::RYAxis]));
 
     state.axis_range[0] = 0;
     state.axis_range[1] = 100;
 
-    
+    state.buttons[atmt::LeftButton] = getButtonEvent(lastControlPackage.objectArm[0]);
+    state.buttons[atmt::RightButton] = getButtonEvent(lastControlPackage.objectArm[2]);
+    state.buttons[atmt::AButton] = getButtonEvent(lastControlPackage.objectRun[0]);
+    state.buttons[atmt::BButton] = getButtonEvent(lastControlPackage.objectRun[2]);
 
-    //if(state.buttons[atmt::AButton]) Serial.println("Vacuum On");
+    setJoystickAxis(lastControlPackage.Direction[0], state.axes[atmt::LXAxis], state.axes[atmt::LYAxis]);
+    setJoystickAxis(lastControlPackage.Direction[1], state.axes[atmt::RXAxis], state.axes[atmt::RYAxis]);
+
+    /* Ancient */
+    // state.buttons[atmt::LeftButton] = lastControlPackage.objectArm[0]; // Left Bottom Button - Grabber   Vaccum Pumps
+    // state.buttons[atmt::RightButton] = lastControlPackage.objectArm[2];
+    // state.buttons[atmt::AButton] = lastControlPackage.objectRun[0];
+    // state.buttons[atmt::BButton] = lastControlPackage.objectRun[2];
+
+    /* Merely Old */
+    // if (lastControlPackage.objectArm[0] == EspNow_Pressed) {
+    //     state.buttons[atmt::LeftButton] = atmt::ButtonPressed;
+    // }else {
+    //     state.buttons[atmt::LeftButton] = atmt::ButtonReleased;
+    // }
+    // if (lastControlPackage.objectArm[2] == EspNow_Pressed) {
+    //     state.buttons[atmt::RightButton] = atmt::ButtonPressed;
+    // }else {
+    //     state.buttons[atmt::RightButton] = atmt::ButtonReleased;
+    // }
+    // if (lastControlPackage.objectRun[0] == EspNow_Pressed) {
+    //     state.buttons[atmt::AButton] = atmt::ButtonPressed;
+    // }else {
+    //     state.buttons[atmt::AButton] = atmt::ButtonReleased;
+    // }
+    // if (lastControlPackage.objectRun[2] == EspNow_Pressed) {
+    //     state.buttons[atmt::BButton] = atmt::ButtonPressed;
+    // }else {
+    //     state.buttons[atmt::BButton] = atmt::ButtonReleased;
+    // }
+
+    /* Dawn of Time */
+    // The job that these lines tried to do is done correctly by the lines below
+    // // Left Axis
+    // state.axes[atmt::LeftStick] = lastControlPackage.Direction[0];
+    // state.axes[atmt::RightStick] = lastControlPackage.Direction[1];
+    
+    /* Ancient */
+    // if (!lastControlPackage.Direction[0]){ // Middle
+    //     state.axes[atmt::LXAxis] = 50;
+    //     state.axes[atmt::LYAxis] = 50;
+    // }
+    // else if (lastControlPackage.Direction[0] > 0 && lastControlPackage.Direction[0] <= 2){ // Forward or Backward
+    //     state.axes[atmt::LYAxis] = lastControlPackage.Direction[0] == 1 ? 100 : 0 ;
+    //     state.axes[atmt::LXAxis] = 50;
+    // }
+    // else if (lastControlPackage.Direction[0] > 2){ // Left or Right
+    //     state.axes[atmt::LXAxis] = lastControlPackage.Direction[0] == 3 ? 100 : 0 ;
+    //     state.axes[atmt::LYAxis] = 50;
+    // }
+    // if (!lastControlPackage.Direction[1]){ // Middle
+    //     state.axes[atmt::RXAxis] = 50;
+    //     state.axes[atmt::RYAxis] = 50;
+    // }
+    // else if (lastControlPackage.Direction[1] > 0 && lastControlPackage.Direction[1] <= 2){ // Forward or Backward
+    //     state.axes[atmt::RYAxis] = lastControlPackage.Direction[1] == 1 ? 100 : 0 ;
+    //     state.axes[atmt::RXAxis] = 50;
+    // }
+    // else if (lastControlPackage.Direction[1] > 2){ // Left or Right
+    //     state.axes[atmt::RXAxis] = lastControlPackage.Direction[1] == 3 ? 100 : 0 ;
+    //     state.axes[atmt::RYAxis] = 50;
+    // }
 
     return state;
 };
