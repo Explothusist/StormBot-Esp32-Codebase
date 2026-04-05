@@ -41,7 +41,7 @@ class BeltMover : public atmt::Subsystem {
     DcMotor* m_dcMotor = nullptr;
 
 
-    int speed =  255;// StepperSpeeds::FAST;
+    int speed = 0; // Start disabled to avoid driving hardware during boot
 
 
     

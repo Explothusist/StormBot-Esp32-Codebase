@@ -15,6 +15,8 @@
 const uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 int timeout = 0;
 bool receivedRemoteSignal = false; 
+volatile bool pendingPeerAdd = false;
+uint8_t pendingPeerMac[6] = {0, 0, 0, 0, 0, 0};
 
 const char id[20] = "STORM";
 
@@ -41,6 +43,18 @@ Container message;
 uint8_t macAddress[6];
 //Message msg;
 ControlData lastControlPackage; // Renamed for clarity
+
+bool consumePendingPeer(uint8_t outMac[6]) {
+  if (!pendingPeerAdd) {
+    return false;
+  }
+
+  noInterrupts();
+  memcpy(outMac, pendingPeerMac, 6);
+  pendingPeerAdd = false;
+  interrupts();
+  return true;
+}
 
 typedef enum {
   EspNow_Released = 0,
@@ -203,11 +217,8 @@ void onReceive(const uint8_t *mac_info, const uint8_t *incomingData, int len) {
     //Serial.println("Data received from remote!"); 
     ESPNow.remoteConnected = true;
     memcpy(&lastControlPackage, incomingData, sizeof(ControlData));
-
-    if (!esp_now_is_peer_exist(lastControlPackage.macHandshake)) {
-  //  Serial.println("Adding peer");
-    ESPNow.add_peer(lastControlPackage.macHandshake);
-    }
+    memcpy(pendingPeerMac, lastControlPackage.macHandshake, 6);
+    pendingPeerAdd = true;
     
 
     timeout = 10000;
@@ -218,9 +229,6 @@ void onReceive(const uint8_t *mac_info, const uint8_t *incomingData, int len) {
       ) {
         
     }
-
-  } else {
-    Serial.println(len);
   }
 
 
