@@ -22,7 +22,8 @@ namespace consts {
     };
 
     namespace heartbeat {
-        int const SenderTimeoutMS = 500;
+        int const SenderTimeoutMS = 200;
+        int const JoystickTimeoutMS = 150; // +300 (450)
     };
 
     namespace belt_mover {

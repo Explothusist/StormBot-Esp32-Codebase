@@ -37,6 +37,7 @@ class RobotContainer {
         atmt::Joystick* m_operator_controller;
         atmt::SerialReader* m_serial_reader;
         atmt::HeartbeatMaker_StateMatcher* m_heartbeat_sender;
+        atmt::Heartbeat* m_joystick_heartbeat;
     private:
 };
 

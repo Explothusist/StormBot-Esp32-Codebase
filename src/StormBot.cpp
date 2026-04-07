@@ -49,6 +49,7 @@ void StormBot::environmentInit() {
 #endif
 
     // Add Heartbeat Helpers
+    addHeartbeat(m_bot_cont->m_joystick_heartbeat);
     addHeartbeatMaker(m_bot_cont->m_heartbeat_sender);
 
     m_bot_cont->configure_auto_bindings();
@@ -115,6 +116,7 @@ void StormBot::robotPeriodic() {
        //  m_bot_cont->m_operator_controller->setRobotState(atmt::RobotState::Teleop);
 
         m_bot_cont->m_operator_controller->updateState(controlDataToJoystickState(lastControlPackage));
+        m_bot_cont->m_joystick_heartbeat->beatHeart();
         
 
         timeout--;
