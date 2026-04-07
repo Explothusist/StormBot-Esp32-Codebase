@@ -11,7 +11,7 @@ class BeltCommand : public atmt::Command { // Add more functionality to this, bu
         BeltCommand(BeltMover* belt_mover, int direction, bool isIncremental);
         BeltCommand(const BeltCommand& command); // Copy constructor
         ~BeltCommand();
-        atmt::Command* clone() const override;
+        atmt::Command* cloneSelf() const override;
 
         void initialize() override; // User-made
         void execute() override; // User-made

@@ -18,7 +18,7 @@ VacuumCommand::VacuumCommand(const VacuumCommand& command):
 VacuumCommand::~VacuumCommand() {
     // Will run ~Command() after this is complete
 };
-atmt::Command* VacuumCommand::clone() const {
+atmt::Command* VacuumCommand::cloneSelf() const {
     return new VacuumCommand(m_vacuum);
 };
 

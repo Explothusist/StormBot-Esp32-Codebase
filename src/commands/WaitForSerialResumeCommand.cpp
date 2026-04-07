@@ -19,7 +19,7 @@ WaitForSerialResumeCommand::WaitForSerialResumeCommand(const WaitForSerialResume
 WaitForSerialResumeCommand::~WaitForSerialResumeCommand() {
     // Will run ~Command() after this is complete
 };
-atmt::Command* WaitForSerialResumeCommand::clone() const {
+atmt::Command* WaitForSerialResumeCommand::cloneSelf() const {
     return new WaitForSerialResumeCommand(m_serial);
 };
 

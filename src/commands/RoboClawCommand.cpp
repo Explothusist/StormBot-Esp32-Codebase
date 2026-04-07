@@ -25,45 +25,36 @@ RoboClawCommand::RoboClawCommand(const RoboClawCommand& command):
 RoboClawCommand::~RoboClawCommand() {
     // Will run ~Command() after this is complete
 };
-atmt::Command* RoboClawCommand::clone() const {
+atmt::Command* RoboClawCommand::cloneSelf() const {
     return new RoboClawCommand(m_roboClaw,m_motor, m_position, m_justMove);
 };
 
 void RoboClawCommand::initialize() {
-  //  Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
-  //Serial.println("Initializing RoboClaw Command"); 
+    //  Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
+    //Serial.println("Initializing RoboClaw Command"); 
     m_roboClaw->init();
 
- if(!m_justMove){ // Set to a specific position 
-
-    m_roboClaw->positionElement[m_motor] =  m_roboClaw->positionElement[m_motor] + m_position; // Update current position before moving
-    
-    if(m_roboClaw->positionElement[m_motor] < 0){
-        m_roboClaw->positionElement[m_motor] = 0; // Prevent going below minimum position
-    }
-    if(m_motor == consts::robo_claw::MOTOR1){
-        if(m_roboClaw->positionElement[m_motor] > 3){
-            m_roboClaw->positionElement[m_motor] = 3; // Prevent going above maximum position
-            
-
+    if(!m_justMove){
+        m_roboClaw->positionElement[m_motor] =  m_roboClaw->positionElement[m_motor] + m_position; // Update current position before moving
+        if(m_roboClaw->positionElement[m_motor] < 0){
+            m_roboClaw->positionElement[m_motor] = 0; // Prevent going below minimum position
         }
-        m_roboClaw->setPosition(m_motor, m_roboClaw->Roboclaw_Positions_Linear[m_roboClaw->positionElement[m_motor]]);
-    }
-    if(m_motor == consts::robo_claw::MOTOR2){
-        if(m_roboClaw->positionElement[m_motor] > 5){
-            m_roboClaw->positionElement[m_motor] = 5; // Prevent going above maximum position
-        
+        if(m_motor == consts::robo_claw::MOTOR1){
+            if(m_roboClaw->positionElement[m_motor] > 3){
+                m_roboClaw->positionElement[m_motor] = 3; // Prevent going above maximum position
+            }
+            m_roboClaw->setPosition(m_motor, m_roboClaw->Roboclaw_Positions_Linear[m_roboClaw->positionElement[m_motor]]);
         }
-        m_roboClaw->setPosition(m_motor, m_roboClaw->Roboclaw_Positions_Load[m_roboClaw->positionElement[m_motor]]);
+        if(m_motor == consts::robo_claw::MOTOR2){
+            if(m_roboClaw->positionElement[m_motor] > 5){
+                m_roboClaw->positionElement[m_motor] = 5; // Prevent going above maximum position
+            }
+            m_roboClaw->setPosition(m_motor, m_roboClaw->Roboclaw_Positions_Load[m_roboClaw->positionElement[m_motor]]);
+        }
     }
-}
-else{
-
-    m_roboClaw->justMove(m_motor, m_position);
-}
-
-
-    
+    else{
+        m_roboClaw->justMove(m_motor, m_position);
+    }
 };
 void RoboClawCommand::execute() {
   //  m_roboClaw->update();
@@ -79,7 +70,7 @@ void RoboClawCommand::end(bool interrupted) {
 
 bool RoboClawCommand::is_finished(){
 
-return m_roboClaw->moveComplete; 
+    return m_roboClaw->moveComplete; 
 }
 
 

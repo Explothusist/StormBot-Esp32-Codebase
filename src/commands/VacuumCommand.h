@@ -10,7 +10,7 @@ class VacuumCommand : public atmt::Command { // Add more functionality to this, 
         VacuumCommand(Vacuum* vacuum); // Put subsystems as parameters
         VacuumCommand(const VacuumCommand& command); // Copy constructor
         ~VacuumCommand();
-        atmt::Command* clone() const override;
+        atmt::Command* cloneSelf() const override;
 
         void initialize() override; // User-made
         void execute() override; // User-made
