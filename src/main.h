@@ -70,7 +70,14 @@ typedef enum {
 } EspNowAxisState;
 
 atmt::ButtonEvent getButtonEvent(bool esp_now_state) {
-    EspNowButtonState state = static_cast<EspNowButtonState>(esp_now_state);
+    // EspNowButtonState state = static_cast<EspNowButtonState>(esp_now_state);
+    EspNowButtonState state;
+    if (esp_now_state) {
+        state = EspNow_Released;
+    } else {
+        state = EspNow_Pressed;
+    }
+
     switch (state) {
         case EspNow_Released:
             return atmt::ButtonReleased;

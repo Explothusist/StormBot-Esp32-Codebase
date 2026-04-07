@@ -28,8 +28,6 @@ class StormBot : public atmt::TimedRobot {
         void teleopPeriodic() override;
         void teleopExit() override;
 
-        void addSerialReader(atmt::SerialReader* reader){} // Added as a placeholder for compilation
-
     private:
         RobotContainer* m_bot_cont;
 };

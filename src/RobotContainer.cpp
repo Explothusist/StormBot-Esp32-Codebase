@@ -30,7 +30,7 @@ RobotContainer::~RobotContainer() { // Subsystems deleted by atmt::TimedRobot
 void RobotContainer::configure_auto_bindings() {
     atmt::platform_print("Configuring Auto Bindings\n");
     m_operator_controller->bindAutoTrigger(
-        new atmt::Trigger(atmt::AButton, atmt::ButtonPressed)
+        (new atmt::Trigger(atmt::AButton, atmt::ButtonPressed))->inMode(atmt::ModeAnyAndAll)
     );
 };
 void RobotContainer::configure_bindings() {
@@ -83,6 +83,16 @@ void RobotContainer::configure_bindings() {
         (new atmt::Trigger(atmt::LeftStick, atmt::StickRight))->inMode(atmt::ModeTeleopOnly),
         //new BeltCommand(m_belt_mover, 1)
         new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, -1)
+    );
+
+    m_operator_controller->bindKey(
+        (new atmt::Trigger(atmt::LeftStick, atmt::StickUp))->inMode(atmt::ModeTeleopOnly),
+        new BeltCommand(m_belt_mover, 1)
+    );
+
+    m_operator_controller->bindKey(
+        (new atmt::Trigger(atmt::LeftStick, atmt::StickDown))->inMode(atmt::ModeTeleopOnly),
+        new BeltCommand(m_belt_mover, -1)
     );
 
     m_operator_controller->bindKey(
@@ -145,6 +155,14 @@ atmt::Command* RobotContainer::getAutonomousCommand(int indicator, void* robot_c
     switch (indicator) {
         case 0:
             return new atmt::EmptyCommand();
+        case 1: // Autonomous Routine to move RoboClaw to Belt Position, and extend probes. 
+            return new atmt::SequentialCommandGroup({
+                std::vector<atmt::Command*>{
+                    new RoboClawCommand(self->m_roboClaw, consts::robo_claw::MOTOR2, 3), // Move to Position 3
+                    new BeltCommand(self->m_belt_mover, 1),
+                }
+            });
+        
         
         default:
             return new atmt::EmptyCommand();
