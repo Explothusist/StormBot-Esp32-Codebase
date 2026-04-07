@@ -17,8 +17,8 @@ namespace consts {
 
     namespace serial {
         int const SerialAddress = Address_EspBot;
-        int const RXPin = 16;
-        int const TXPin = 17;
+        int const RXPin = 33;
+        int const TXPin = 47;
     };
 
     namespace heartbeat {

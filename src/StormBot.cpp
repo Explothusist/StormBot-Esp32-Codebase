@@ -102,7 +102,7 @@ void StormBot::robotInit() {
     
 };
 void StormBot::robotPeriodic() {
-     //atmt::platform_print("Robot Periodic...     ");
+    // atmt::platform_print("Robot Periodic...     ");
 
 #ifdef STORMBOT_ESPNOW_CONTROLLER_
     uint8_t new_peer_mac[6];

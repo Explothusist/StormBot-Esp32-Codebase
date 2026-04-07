@@ -34,7 +34,7 @@ void RoboClawCommand::initialize() {
   //Serial.println("Initializing RoboClaw Command"); 
     m_roboClaw->init();
 
- if(!m_justMove){
+ if(!m_justMove){ // Set to a specific position 
 
     m_roboClaw->positionElement[m_motor] =  m_roboClaw->positionElement[m_motor] + m_position; // Update current position before moving
     
