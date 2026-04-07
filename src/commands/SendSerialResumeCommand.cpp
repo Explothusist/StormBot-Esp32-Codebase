@@ -17,7 +17,7 @@ SendSerialResumeCommand::SendSerialResumeCommand(const SendSerialResumeCommand& 
 SendSerialResumeCommand::~SendSerialResumeCommand() {
     // Will run ~Command() after this is complete
 };
-atmt::Command* SendSerialResumeCommand::clone() const {
+atmt::Command* SendSerialResumeCommand::cloneSelf() const {
     return new SendSerialResumeCommand(m_serial);
 };
 

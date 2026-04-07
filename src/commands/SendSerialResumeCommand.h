@@ -10,7 +10,7 @@ class SendSerialResumeCommand : public atmt::Command { // Add more functionality
         SendSerialResumeCommand(atmt::SerialReader* serial); // Put subsystems as parameters
         SendSerialResumeCommand(const SendSerialResumeCommand& command); // Copy constructor
         ~SendSerialResumeCommand();
-        atmt::Command* clone() const override;
+        atmt::Command* cloneSelf() const override;
 
         void initialize() override; // User-made
         void execute() override; // User-made

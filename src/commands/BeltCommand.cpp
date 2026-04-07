@@ -31,7 +31,7 @@ BeltCommand::BeltCommand(const BeltCommand& command):
 BeltCommand::~BeltCommand() {
     // Will run ~Command() after this is complete
 };
-atmt::Command* BeltCommand::clone() const {
+atmt::Command* BeltCommand::cloneSelf() const {
     return new BeltCommand(m_belt_mover, m_direction, m_isIncremental);
 };
 

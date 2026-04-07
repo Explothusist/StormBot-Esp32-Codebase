@@ -10,7 +10,7 @@ class WaitForSerialResumeCommand : public atmt::Command { // Add more functional
         WaitForSerialResumeCommand(atmt::SerialReader* serial); // Put subsystems as parameters
         WaitForSerialResumeCommand(const WaitForSerialResumeCommand& command); // Copy constructor
         ~WaitForSerialResumeCommand();
-        atmt::Command* clone() const override;
+        atmt::Command* cloneSelf() const override;
 
         void initialize() override; // User-made
         void execute() override; // User-made

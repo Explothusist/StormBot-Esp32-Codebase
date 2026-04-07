@@ -11,14 +11,14 @@ class RoboClawCommand : public atmt::Command { // Add more functionality to this
         RoboClawCommand(RoboClawUART* roboClaw,int motor, int position, bool justMove = false); // Put subsystems as parameters
         RoboClawCommand(const RoboClawCommand& command); // Copy constructor
         ~RoboClawCommand();
-        atmt::Command* clone() const override;
+        atmt::Command* cloneSelf() const override;
 
         void initialize() override; // User-made
         void execute() override; // User-made
         void end(bool interrupted) override; // User-made
         bool is_finished() override; // User-made
 
-        void toggleClaw( );
+        // void toggleClaw( ); // Illegal
         
     private:
         RoboClawUART* m_roboClaw;
