@@ -5,33 +5,33 @@
 
 ClawCommand::ClawCommand(Vacuum* vacuum):
     atmt::Command(),
-    m_vacuum{ vacuum }
+    m_claw{ vacuum }
 
 {
-    usesSubsystem(m_vacuum);
+    usesSubsystem(m_claw);
 };
 ClawCommand::ClawCommand(const ClawCommand& command):
     atmt::Command(command)
 {
-    m_vacuum = command.m_vacuum;
+    m_claw = command.m_claw;
 };
 ClawCommand::~ClawCommand() {
     // Will run ~Command() after this is complete
 };
 atmt::Command* ClawCommand::cloneSelf() const {
-    return new ClawCommand(m_vacuum);
+    return new ClawCommand(m_claw);
 };
 
 void ClawCommand::initialize() {
   //  Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
   Serial.println("Initializing Vacuum Command"); 
-  //m_vacuum->init();
+  //m_claw->init();
 };
 void ClawCommand::execute() {
-  //  m_vacuum->update();
-    bool newState = !m_vacuum->getState();
+  //  m_claw->update();
+    bool newState = !m_claw->getState();
     Serial.println("Toggling Claw " + String(newState ? "On" : "Off"));
-    m_vacuum->setState(newState);
+    m_claw->setState(newState);
     toggleClaw();
      
 
@@ -46,10 +46,10 @@ return true;
 
 
 void ClawCommand::toggleClaw(){
-    if(m_vacuum->getState()){
-        m_vacuum->enableVacuum(); // Turn on vacuum
+    if(m_claw->getState()){
+        m_claw->enableVacuum(); // Turn on vacuum
     }
     else{
-        m_vacuum->disableVacuum(); // Turn off vacuum
+        m_claw->disableVacuum(); // Turn off vacuum
     }
 }

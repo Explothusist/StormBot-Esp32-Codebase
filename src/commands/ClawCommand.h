@@ -20,7 +20,7 @@ class ClawCommand : public atmt::Command { // Add more functionality to this, bu
         void toggleClaw( );
         
     private:
-        Vacuum* m_vacuum;
+        Vacuum* m_claw;
         int m_direction;
 };
 

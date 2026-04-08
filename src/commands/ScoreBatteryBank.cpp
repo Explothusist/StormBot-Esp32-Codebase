@@ -3,7 +3,7 @@
 // #include "ExtruderCommand.h"
 
 
-ScoreBatteryBank::ScoreBatteryBank(ScoreBankRow row, ScoreBankSide side, Compressor* Compressor, Extruder* belt_mover, Vacuum* vacuum, GantryDriver gantry_driver) {
-    // addCommand(new BeltToSetpoint(belt_mover, row == Bank_LeftSide ? consts::belt_mover::setpoints::Score_Left));
-    // addCommand(new BeltToSetpoint(belt_mover, row == Bank_LeftSide ? consts::belt_mover::setpoints::Score_Left));
+ScoreBatteryBank::ScoreBatteryBank(ScoreBankRow row, ScoreBankSide side, Compressor* Compressor, Extruder* slide, Vacuum* vacuum, GantryDriver gantry_driver) {
+    // addCommand(new BeltToSetpoint(slide, row == Bank_LeftSide ? consts::slide::setpoints::Score_Left));
+    // addCommand(new BeltToSetpoint(slide, row == Bank_LeftSide ? consts::slide::setpoints::Score_Left));
 };

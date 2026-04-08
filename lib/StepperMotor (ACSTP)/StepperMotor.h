@@ -65,7 +65,7 @@ class StepperMotor {
         bool resetHome = false;
         bool hasTarget = false;
 
-        int speedSettingUs = consts::belt_mover::MEDIUM; // microseconds per step
+        int speedSettingUs = consts::slide::MEDIUM; // microseconds per step
         int directionSign = 1;
         float speedStepsPerSecond = 0.0f;
 

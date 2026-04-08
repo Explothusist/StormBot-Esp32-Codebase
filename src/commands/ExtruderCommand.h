@@ -7,8 +7,8 @@
 
 class ExtruderCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
     public:
-        ExtruderCommand(Extruder* belt_mover, int direction); // Put subsystems as parameters
-        ExtruderCommand(Extruder* belt_mover, int direction, bool isIncremental);
+        ExtruderCommand(Extruder* slide, int direction); // Put subsystems as parameters
+        ExtruderCommand(Extruder* slide, int direction, bool isIncremental);
         ExtruderCommand(const ExtruderCommand& command); // Copy constructor
         ~ExtruderCommand();
         atmt::Command* cloneSelf() const override;
@@ -20,7 +20,7 @@ class ExtruderCommand : public atmt::Command { // Add more functionality to this
 
 
     private:
-        Extruder* m_belt_mover;
+        Extruder* m_slide;
         int m_direction;
         bool m_isIncremental = false; // Whether this command is for a small incremental move or a full move to the left or right
 };

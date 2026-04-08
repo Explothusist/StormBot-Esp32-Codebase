@@ -21,7 +21,7 @@ class GantryDriverCommand : public atmt::Command { // Add more functionality to 
         // void toggleClaw( ); // Illegal
         
     private:
-        GantryDriver* m_roboClaw;
+        GantryDriver* m_gantryDriver;
         int m_position;
         int m_motor;
         bool m_justMove;

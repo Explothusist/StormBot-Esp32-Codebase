@@ -12,7 +12,7 @@
 
 StormBot::StormBot():
     atmt::TimedRobot(consts::robot::AutonomousLength),
-    m_bot_cont{ new RobotContainer() } // Init for belt_mover, compressor and vacuum
+    m_bot_cont{ new RobotContainer() } // Init for slide, compressor and vacuum
 {
 
 };
@@ -26,10 +26,10 @@ void StormBot::environmentInit() {
     atmt::platform_println("Environment Init!");
     
     // Register all Subsystems
-    registerSubsystem(m_bot_cont->m_belt_mover);
+    registerSubsystem(m_bot_cont->m_slide);
     registerSubsystem(m_bot_cont->m_compressor);
-    registerSubsystem(m_bot_cont->m_vacuum);
-    registerSubsystem(m_bot_cont->m_roboClaw);
+    registerSubsystem(m_bot_cont->m_claw);
+    registerSubsystem(m_bot_cont->m_gantryDriver);
 
 
     atmt::platform_println("Subsystems Registered!");
@@ -95,8 +95,8 @@ void StormBot::robotInit() {
     
 
     
-    //m_bot_cont->m_belt_mover->setSpeed(900); // Stepper Speeds dec here
-    //m_bot_cont->m_belt_mover->setDistance(1000); // Move 1000 steps forward as a test
+    //m_bot_cont->m_slide->setSpeed(900); // Stepper Speeds dec here
+    //m_bot_cont->m_slide->setDistance(1000); // Move 1000 steps forward as a test
 
 
    
