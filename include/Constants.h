@@ -23,7 +23,7 @@ namespace consts {
 
     namespace heartbeat {
         int const SenderTimeoutMS = 200;
-        int const JoystickTimeoutMS = 150; // +300 (450)
+        int const JoystickTimeoutMS = 450; // +300 (450)
     };
 
     namespace belt_mover {
@@ -51,7 +51,7 @@ namespace consts {
     };
 
     namespace robo_claw {
-        uint8_t const rxPin = 41;
+        uint8_t const rxPin = 48;
         uint8_t const txPin = 40;
 
         uint8_t const address = 0x80; // Default address for RoboClaw
