@@ -1,12 +1,13 @@
-#ifndef ROBOCLAWUART_H
-#define ROBOCLAWUART_H
+#ifndef GantryDriver_H
+#define GantryDriver_H
 
 #include <Arduino.h>
 #include <Basicmicro.h>
 #include "../Automat/command_based/Subsystem.h"
 #include "Constants.h"
 
-class RoboClawUART : public atmt::Subsystem {
+
+class GantryDriver : public atmt::Subsystem {
 public:
     //enum STATES {
     //    PICKUP = 150,
@@ -16,10 +17,10 @@ public:
     //};
 
 
-    int Roboclaw_Positions_Linear[4] = {consts::robo_claw::PICKUP, consts::robo_claw::MIDDROP, consts::robo_claw::TOPDROP, consts::robo_claw::WHEEL}; // Pickup, Wheel, MidDrop, TopDrop
-    int Roboclaw_Positions_Load[6] = {consts::robo_claw::LOADPOSITIONLEFTA, consts::robo_claw::LOADPOSITIONLEFTB, consts::robo_claw::LOADPOSITIONFRONTA, consts::robo_claw::LOADPOSITIONFRONTB, consts::robo_claw::LOADPOSITIONRIGHTA, consts::robo_claw::LOADPOSITIONRIGHTB}; // Load positions
+    int Roboclaw_Positions_Linear[4] = {consts::gantry_driver::PICKUP, consts::gantry_driver::MIDDROP, consts::gantry_driver::TOPDROP, consts::gantry_driver::WHEEL}; // Pickup, Wheel, MidDrop, TopDrop
+    int Roboclaw_Positions_Load[6] = {consts::gantry_driver::LOADPOSITIONLEFTA, consts::gantry_driver::LOADPOSITIONLEFTB, consts::gantry_driver::LOADPOSITIONFRONTA, consts::gantry_driver::LOADPOSITIONFRONTB, consts::gantry_driver::LOADPOSITIONRIGHTA, consts::gantry_driver::LOADPOSITIONRIGHTB}; // Load positions
     // address: packet-serial address configured in Motion Studio (0x80 default).
-    RoboClawUART(uint8_t rxPin, uint8_t txPin, uint8_t _address = 0x80);
+    GantryDriver(uint8_t rxPin, uint8_t txPin, uint8_t _address = 0x80);
     
     void init() override;
     void systemPeriodic() override;
@@ -42,7 +43,7 @@ private:
 
     uint8_t address;
     uint32_t defaultTimeoutMs  = 5;
-    uint16_t speed[2] = {2500, 25};
+    uint16_t speed[2] = {consts::gantry_driver::SLIDESPEED, consts::gantry_driver::GANTRYSPEED};
     int foundZeros[2] = {0, 0};
     uint8_t rxPin, txPin;
     int commandedPosition[2] = {0, 0};
@@ -52,8 +53,8 @@ private:
 
    
 
-    const int MAX_HEIGHT[2] = { consts::robo_claw::TOPDROP, consts::robo_claw::LOADPOSITIONRIGHTB }; // Maximum encoder count for the linear slide
-    const int MIN_HEIGHT[2] = {consts::robo_claw::PICKUP, consts::robo_claw::LOADPOSITIONLEFTA};  // Minimum encoder count to prevent overextension
+    const int MAX_HEIGHT[2] = { consts::gantry_driver::TOPDROP, consts::gantry_driver::LOADPOSITIONRIGHTB }; // Maximum encoder count for the linear slide
+    const int MIN_HEIGHT[2] = {consts::gantry_driver::PICKUP, consts::gantry_driver::LOADPOSITIONLEFTA};  // Minimum encoder count to prevent overextension
 
     //Basicmicro* roboclaw(&Serial1, 10000); // Using Serial1, 10ms timeout
     Basicmicro* roboclaw = nullptr; // Using Serial1, 10ms timeout
@@ -66,4 +67,4 @@ private:
     bool readBytesWithTimeout(uint8_t* buffer, size_t length, uint32_t timeoutMs);
 };
 
-#endif // ROBOCLAWUART_H
+#endif // GantryDriver_H

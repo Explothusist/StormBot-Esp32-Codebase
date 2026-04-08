@@ -1,10 +1,10 @@
 
-#include "RoboClawCommand.h"
+#include "GantryDriverCommand.h"
 #include <Arduino.h>
 #include <cmath>
 #include "Constants.h"
 
-RoboClawCommand::RoboClawCommand(RoboClawUART* roboClaw,int motor, int position, bool justMove, bool absolutePosition):
+GantryDriverCommand::GantryDriverCommand(GantryDriver* roboClaw,int motor, int position, bool justMove, bool absolutePosition):
     atmt::Command(),
     m_roboClaw{ roboClaw },
     m_motor{ motor },   
@@ -16,7 +16,7 @@ RoboClawCommand::RoboClawCommand(RoboClawUART* roboClaw,int motor, int position,
 {
     usesSubsystem(m_roboClaw);
 };
-RoboClawCommand::RoboClawCommand(const RoboClawCommand& command):
+GantryDriverCommand::GantryDriverCommand(const GantryDriverCommand& command):
     atmt::Command(command)
 {
     m_roboClaw = command.m_roboClaw;
@@ -25,14 +25,14 @@ RoboClawCommand::RoboClawCommand(const RoboClawCommand& command):
     m_justMove = command.m_justMove;
     m_absolutePosition = command.m_absolutePosition;
 };
-RoboClawCommand::~RoboClawCommand() {
+GantryDriverCommand::~GantryDriverCommand() {
     // Will run ~Command() after this is complete
 };
-atmt::Command* RoboClawCommand::cloneSelf() const {
-    return new RoboClawCommand(m_roboClaw,m_motor, m_position, m_justMove, m_absolutePosition);
+atmt::Command* GantryDriverCommand::cloneSelf() const {
+    return new GantryDriverCommand(m_roboClaw,m_motor, m_position, m_justMove, m_absolutePosition);
 };
 
-void RoboClawCommand::initialize() {
+void GantryDriverCommand::initialize() {
     //  Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
     //Serial.println("Initializing RoboClaw Command"); 
     m_roboClaw->init();
@@ -50,13 +50,13 @@ void RoboClawCommand::initialize() {
             if(m_roboClaw->positionElement[m_motor] < 0){
                 m_roboClaw->positionElement[m_motor] = 0; // Prevent going below minimum position
             }
-            if(m_motor == consts::robo_claw::MOTOR1){
+            if(m_motor == consts::gantry_driver::SLIDEMOTOR){
                 if(m_roboClaw->positionElement[m_motor] > 3){
                     m_roboClaw->positionElement[m_motor] = 3; // Prevent going above maximum position
                 }
                 m_roboClaw->setPosition(m_motor, m_roboClaw->Roboclaw_Positions_Linear[m_roboClaw->positionElement[m_motor]]);
             }
-            if(m_motor == consts::robo_claw::MOTOR2){
+            if(m_motor == consts::gantry_driver::GANTRYMOTOR){
                 if(m_roboClaw->positionElement[m_motor] > 5){
                     m_roboClaw->positionElement[m_motor] = 5; // Prevent going above maximum position
                 }
@@ -70,7 +70,7 @@ void RoboClawCommand::initialize() {
 
 
 };
-void RoboClawCommand::execute() {
+void GantryDriverCommand::execute() {
   //  m_roboClaw->update();
   if(!m_justMove){
     m_roboClaw->move(m_motor);
@@ -78,11 +78,11 @@ void RoboClawCommand::execute() {
      
 
 };
-void RoboClawCommand::end(bool interrupted) {
+void GantryDriverCommand::end(bool interrupted) {
     
 };
 
-bool RoboClawCommand::is_finished(){
+bool GantryDriverCommand::is_finished(){
 
     return m_roboClaw->moveComplete; 
 }

@@ -1,15 +1,15 @@
 
-#ifndef STORMBOT_VACUUMCOMMAND_
-#define STORMBOT_VACUUMCOMMAND_
+#ifndef STORMBOT_ClawCommand_
+#define STORMBOT_ClawCommand_
 
 #include "../Automat/automat.h"
 #include "Vacuum.h"
 
-class VacuumCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
+class ClawCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
     public:
-        VacuumCommand(Vacuum* vacuum); // Put subsystems as parameters
-        VacuumCommand(const VacuumCommand& command); // Copy constructor
-        ~VacuumCommand();
+        ClawCommand(Vacuum* vacuum); // Put subsystems as parameters
+        ClawCommand(const ClawCommand& command); // Copy constructor
+        ~ClawCommand();
         atmt::Command* cloneSelf() const override;
 
         void initialize() override; // User-made

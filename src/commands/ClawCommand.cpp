@@ -1,33 +1,33 @@
 
-#include "VacuumCommand.h"
+#include "ClawCommand.h"
 #include <Arduino.h>
 #include <cmath>
 
-VacuumCommand::VacuumCommand(Vacuum* vacuum):
+ClawCommand::ClawCommand(Vacuum* vacuum):
     atmt::Command(),
     m_vacuum{ vacuum }
 
 {
     usesSubsystem(m_vacuum);
 };
-VacuumCommand::VacuumCommand(const VacuumCommand& command):
+ClawCommand::ClawCommand(const ClawCommand& command):
     atmt::Command(command)
 {
     m_vacuum = command.m_vacuum;
 };
-VacuumCommand::~VacuumCommand() {
+ClawCommand::~ClawCommand() {
     // Will run ~Command() after this is complete
 };
-atmt::Command* VacuumCommand::cloneSelf() const {
-    return new VacuumCommand(m_vacuum);
+atmt::Command* ClawCommand::cloneSelf() const {
+    return new ClawCommand(m_vacuum);
 };
 
-void VacuumCommand::initialize() {
+void ClawCommand::initialize() {
   //  Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
   Serial.println("Initializing Vacuum Command"); 
   //m_vacuum->init();
 };
-void VacuumCommand::execute() {
+void ClawCommand::execute() {
   //  m_vacuum->update();
     bool newState = !m_vacuum->getState();
     Serial.println("Toggling Claw " + String(newState ? "On" : "Off"));
@@ -36,16 +36,16 @@ void VacuumCommand::execute() {
      
 
 };
-void VacuumCommand::end(bool interrupted) {
+void ClawCommand::end(bool interrupted) {
     
 };
 
-bool VacuumCommand::is_finished(){
+bool ClawCommand::is_finished(){
 return true; 
 }
 
 
-void VacuumCommand::toggleClaw(){
+void ClawCommand::toggleClaw(){
     if(m_vacuum->getState()){
         m_vacuum->enableVacuum(); // Turn on vacuum
     }

@@ -1,9 +1,9 @@
 
-#include "BeltCommand.h"
+#include "ExtruderCommand.h"
 
 #include <cmath>
 
-BeltCommand::BeltCommand(BeltMover* belt_mover, int direction): // Side to side movements
+ExtruderCommand::ExtruderCommand(Extruder* belt_mover, int direction): // Side to side movements
     atmt::Command(),
     m_belt_mover{ belt_mover },
     m_direction{ direction }
@@ -11,7 +11,7 @@ BeltCommand::BeltCommand(BeltMover* belt_mover, int direction): // Side to side 
     usesSubsystem(m_belt_mover);
 };
 
-BeltCommand::BeltCommand(BeltMover* belt_mover, int direction, bool isIncremental): // Small adjustments 
+ExtruderCommand::ExtruderCommand(Extruder* belt_mover, int direction, bool isIncremental): // Small adjustments 
     atmt::Command(),
     m_belt_mover{ belt_mover },
     m_direction{ direction },
@@ -19,7 +19,7 @@ BeltCommand::BeltCommand(BeltMover* belt_mover, int direction, bool isIncrementa
 {
     usesSubsystem(m_belt_mover);
 };
-BeltCommand::BeltCommand(const BeltCommand& command):
+ExtruderCommand::ExtruderCommand(const ExtruderCommand& command):
     atmt::Command(command)
 {
     m_belt_mover = command.m_belt_mover;
@@ -28,14 +28,14 @@ BeltCommand::BeltCommand(const BeltCommand& command):
         m_isIncremental = command.m_isIncremental;
     }
 };
-BeltCommand::~BeltCommand() {
+ExtruderCommand::~ExtruderCommand() {
     // Will run ~Command() after this is complete
 };
-atmt::Command* BeltCommand::cloneSelf() const {
-    return new BeltCommand(m_belt_mover, m_direction, m_isIncremental);
+atmt::Command* ExtruderCommand::cloneSelf() const {
+    return new ExtruderCommand(m_belt_mover, m_direction, m_isIncremental);
 };
 
-void BeltCommand::initialize() {
+void ExtruderCommand::initialize() {
     Serial.println("Initializing Belt Command");
     Serial.println(m_direction);
     switch (m_direction)
@@ -50,15 +50,15 @@ void BeltCommand::initialize() {
             m_belt_mover->setSpeed(consts::belt_mover::FORWARDSPEED);
             break;
     }
-  //  m_beltMover->setSpeed(m_direction); 
+  //  m_Extruder->setSpeed(m_direction); 
 
 };
-void BeltCommand::execute() {
+void ExtruderCommand::execute() {
    // m_belt_mover->update();
 };
-void BeltCommand::end(bool interrupted) {
+void ExtruderCommand::end(bool interrupted) {
     
 };
-bool BeltCommand::is_finished() {
+bool ExtruderCommand::is_finished() {
     return true;
 };
