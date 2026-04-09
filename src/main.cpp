@@ -9,7 +9,7 @@ void setup() {
     //Serial.begin(115200);
     // atmt::systemWait(10000);
     Serial.begin(115200);
-    atmt::systemWait(6000);
+    //atmt::systemWait(6000);
     atmt::platform_println("Starting");
 
     m_robot.startLoop();

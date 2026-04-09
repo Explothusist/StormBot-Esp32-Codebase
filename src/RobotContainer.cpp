@@ -4,20 +4,23 @@
 
 #include <vector>
 
-#include "commands/BeltCommand.h"
-#include "commands/VacuumCommand.h"
-#include "commands/RoboClawCommand.h"   
+// #include "commands/BeltCommand.h"
+// #include "commands/VacuumCommand.h"
+// #include "commands/RoboClawCommand.h"   
 #include "commands/SendSerialResumeCommand.h"
 #include "commands/WaitForSerialResumeCommand.h"
 
 #include "commands/SendSerialResumeCommand.h"
 #include "commands/WaitForSerialResumeCommand.h"
 
+#include "commands/ExtruderCommand.h"
+#include "commands/ClawCommand.h"
+#include "commands/GantryDriverCommand.h"   
 RobotContainer::RobotContainer():
-    m_belt_mover{ new BeltMover(consts::belt_mover::PWM1, consts::belt_mover::PWM2) },
+    m_slide{ new Extruder(consts::slide::PWM1, consts::slide::PWM2) },
     m_compressor{ new Compressor(consts::compressor::pwmPin1, consts::compressor::pwmPin2, consts::compressor::enPin1, consts::compressor::enPin2) },
-    m_vacuum{ new Vacuum(consts::vacuum::pwmPin1, consts::vacuum::pwmPin2, consts::vacuum::enPin1, consts::vacuum::enPin2) },
-    m_roboClaw{ new RoboClawUART(consts::robo_claw::rxPin, consts::robo_claw::txPin, consts::robo_claw::address) },
+    m_claw{ new Vacuum(consts::vacuum::pwmPin1, consts::vacuum::pwmPin2, consts::vacuum::enPin1, consts::vacuum::enPin2) },
+    m_gantryDriver{ new GantryDriver(consts::gantry_driver::rxPin, consts::gantry_driver::txPin, consts::gantry_driver::address) },
 #ifdef STORMBOT_ROBOT_DASHBOARD_
     m_dashboard{ new atmt::RobotDashboardServer("STORM_Esp32_MainBot", WIFI_SSID, WIFI_PASSWORD) },
 #endif
@@ -52,97 +55,97 @@ void RobotContainer::configure_bindings() {
     /*
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::BButton, atmt::ButtonPressed))->inMode(atmt::ModeTeleopAndAuto),
-        new VacuumCommand(m_vacuum)
-        //new BeltCommand(m_belt_mover, consts::belt_mover::Direction_Forward)
+        new ClawCommand(m_claw)
+        //new ExtruderCommand(m_slide, consts::slide::Direction_Forward)
     );
     */
     
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::BButton, atmt::ButtonPressed))->inMode(atmt::ModeTeleopOnly),
-        new VacuumCommand(m_vacuum)
+        new ClawCommand(m_claw)
     );
 
     /*
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::BButton, atmt::ButtonPressed))->inMode(atmt::ModeTeleopOnly),
-        new VacuumCommand(m_vacuum)
+        new ClawCommand(m_claw)
     );
     */
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::LeftButton, atmt::ButtonPressed))->inMode(atmt::ModeTeleopOnly),
-        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR1, 1)
+        new GantryDriverCommand(m_gantryDriver, consts::gantry_driver::SLIDEMOTOR, consts::gantry_driver::MOVEUPPOSITION, consts::gantry_driver::POSITIONMOVE)
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightButton, atmt::ButtonPressed))->inMode(atmt::ModeTeleopOnly),
-        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR1, -1)
+        new GantryDriverCommand(m_gantryDriver, consts::gantry_driver::SLIDEMOTOR, consts::gantry_driver::MOVEDOWNPOSITION, consts::gantry_driver::POSITIONMOVE)
     );
 
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::LeftStick, atmt::StickLeft))->inMode(atmt::ModeTeleopOnly),
-        //new BeltCommand(m_belt_mover, 0)
-        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, 1)
+        //new ExtruderCommand(m_slide, 0)
+        new GantryDriverCommand(m_gantryDriver, consts::gantry_driver::GANTRYMOTOR, consts::gantry_driver::MOVEUPPOSITION, consts::gantry_driver::POSITIONMOVE)
         
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::LeftStick, atmt::StickRight))->inMode(atmt::ModeTeleopOnly),
-        //new BeltCommand(m_belt_mover, 1)
-        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, -1)
+        //new ExtruderCommand(m_slide, 1)
+        new GantryDriverCommand(m_gantryDriver, consts::gantry_driver::GANTRYMOTOR, consts::gantry_driver::MOVEDOWNPOSITION, consts::gantry_driver::POSITIONMOVE)
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::LeftStick, atmt::StickUp))->inMode(atmt::ModeTeleopOnly),
-        new BeltCommand(m_belt_mover, 1)
+        new ExtruderCommand(m_slide, consts::slide::MOVEFORWARD)
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::LeftStick, atmt::StickDown))->inMode(atmt::ModeTeleopOnly),
-        new BeltCommand(m_belt_mover, -1)
+        new ExtruderCommand(m_slide, consts::slide::MOVEBACKWARD)
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightStick, atmt::StickLeft))->inMode(atmt::ModeTeleopOnly),
-        //new BeltCommand(m_belt_mover, 0, 1)
-        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, 1, true)
+        //new ExtruderCommand(m_slide, 0, 1)
+        new GantryDriverCommand(m_gantryDriver, consts::gantry_driver::GANTRYMOTOR, consts::gantry_driver::FORWARDVELOCITY, consts::gantry_driver::VELOCITYMOVE)
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightStick, atmt::StickRight))->inMode(atmt::ModeTeleopOnly),
-        new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, -1, true)
+        new GantryDriverCommand(m_gantryDriver, consts::gantry_driver::GANTRYMOTOR, consts::gantry_driver::BACKWARDVELOCITY, consts::gantry_driver::VELOCITYMOVE)
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightStick, atmt::StickCenter))->inMode(atmt::ModeTeleopOnly),
-            new RoboClawCommand(m_roboClaw, consts::robo_claw::MOTOR2, 0, true) 
+            new GantryDriverCommand(m_gantryDriver, consts::gantry_driver::GANTRYMOTOR, consts::gantry_driver::STOP, consts::gantry_driver::VELOCITYMOVE) 
     );
 
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightStick, atmt::StickCenter))->inMode(atmt::ModeTeleopOnly),
-            new BeltCommand(m_belt_mover, 0) 
+            new ExtruderCommand(m_slide, consts::slide::STOP) 
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightStick, atmt::StickUp))->inMode(atmt::ModeTeleopOnly),
-            new BeltCommand(m_belt_mover, -1) 
+            new ExtruderCommand(m_slide, consts::slide::MOVEFORWARD) 
     );
 
     m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::RightStick, atmt::StickDown))->inMode(atmt::ModeTeleopOnly),
-            new BeltCommand(m_belt_mover, 1) 
+            new ExtruderCommand(m_slide, consts::slide::MOVEBACKWARD) 
     );
 
     /*m_operator_controller->bindKey(
         (new atmt::Trigger(atmt::LeftStick, atmt::StickRight))->inMode(atmt::ModeTeleopOnly),
-        new BeltCommand(m_belt_mover, 2)
+        new ExtruderCommand(m_slide, 2)
     );*/
 
 
     //m_operator_controller->bindKey(
     //    (new atmt::Trigger(atmt::LTAxis, atmt::StickUp))->inMode(atmt::ModeTeleopOnly),
-    //    new BeltCommand(m_belt_mover)
+    //    new ExtruderCommand(m_slide)
     //);
     
     
@@ -156,16 +159,16 @@ atmt::Command* RobotContainer::getAutonomousCommand(int indicator, void* robot_c
             return new atmt::EmptyCommand();
         case 1: // Autonomous Routine to move RoboClaw to Belt Position, and extend probes. 
             return new atmt::SequentialCommandGroup({
-                new RoboClawCommand(self->m_roboClaw, consts::robo_claw::MOTOR2, 3), // Move to Position 3
-                new BeltCommand(self->m_belt_mover, 1),
+                new GantryDriverCommand(self->m_gantryDriver, consts::gantry_driver::GANTRYMOTOR, 3), // Move to Position 3
+                new ExtruderCommand(self->m_slide, 1),
             });
         case 2:
             return new atmt::SequentialCommandGroup({
                 new WaitForSerialResumeCommand(self->m_serial_reader),
-                new VacuumCommand(self->m_vacuum),
+                // new VacuumCommand(self->m_vacuum),
                 new SendSerialResumeCommand(self->m_serial_reader),
                 new WaitForSerialResumeCommand(self->m_serial_reader),
-                new VacuumCommand(self->m_vacuum),
+                // new VacuumCommand(self->m_vacuum),
             });
         
         default:

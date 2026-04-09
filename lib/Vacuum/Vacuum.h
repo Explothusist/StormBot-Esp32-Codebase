@@ -4,7 +4,7 @@
 #include <DcMotor.h>
 
 #include "../Automat/command_based/Subsystem.h"
-
+#include <Constants.h>
 class Vacuum : public atmt::Subsystem {
     public:
     // Vacuum(DcMotor _vacuumDriver); // Made DCMotor internal
@@ -31,7 +31,7 @@ class Vacuum : public atmt::Subsystem {
     void setState(bool _state); // Maybe not needed, but we will see
     private:
 
-    int speed = 170;
+    int speed = consts::vacuum::speed;
 
     bool state = false;
 

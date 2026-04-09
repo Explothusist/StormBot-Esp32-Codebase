@@ -228,7 +228,7 @@ void onReceive(const uint8_t *mac_info, const uint8_t *incomingData, int len) {
     pendingPeerAdd = true;
     
 
-    timeout = 300;
+    timeout = 5;
 
     if (lastControlPackage.macHandshake[5] == macAddress[5]
       && lastControlPackage.macHandshake[4] == macAddress[4]

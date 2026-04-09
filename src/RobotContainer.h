@@ -8,10 +8,10 @@
 #include "stormbot_type.h"
 
 #include "Compressor.h"
-#include "BeltMover.h"
+#include "Extruder.h"
 #include "Vacuum.h"
 #include "FastStepperMotor.h"
-#include "RoboClawUART.h"
+#include "GantryDriver.h"
 
 class RobotContainer {
     public:
@@ -26,9 +26,9 @@ class RobotContainer {
         static int getWhichAutonomousRoutine(void* robot_container);
 
         Compressor* m_compressor; // public because they are for Robot.cpp
-        BeltMover* m_belt_mover;
-        Vacuum* m_vacuum;
-        RoboClawUART* m_roboClaw;
+        Extruder* m_slide;
+        Vacuum* m_claw;
+        GantryDriver* m_gantryDriver;
 
 
 #ifdef STORMBOT_ROBOT_DASHBOARD_

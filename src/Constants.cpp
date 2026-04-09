@@ -2,11 +2,11 @@
 
 namespace consts {
 
-    namespace robo_claw {
-        int PICKUP = 75;
-        int WHEEL = 4000;
+    namespace gantry_driver {
+        int PICKUP = 100;
+        int WHEEL = 2000;
         int MIDDROP = 3000;
-        int TOPDROP = 5000;
+        int TOPDROP = 4000;
         int INITPOSITION = 0;
         int LOADPOSITIONLEFTA = 2300;
         int LOADPOSITIONLEFTB = 2750;

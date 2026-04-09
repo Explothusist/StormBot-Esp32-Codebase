@@ -17,13 +17,13 @@ It does **not** hard-code any command table. You pass the command byte and data 
 
 ```cpp
 #include <Arduino.h>
-#include "RoboClawUART.h"
+#include "GantryDriver.h"
 
 // Example pins; adjust to your board
 static constexpr int ROBOCLAW_RX_PIN = 16;  // ESP32 RX (into S2)
 static constexpr int ROBOCLAW_TX_PIN = 17;  // ESP32 TX (from S1)
 
-RoboClawUART roboclaw(Serial2, 0x80);  // 0x80 = default address from Motion Studio
+GantryDriver roboclaw(Serial2, 0x80);  // 0x80 = default address from Motion Studio
 
 void setup() {
   Serial.begin(115200);

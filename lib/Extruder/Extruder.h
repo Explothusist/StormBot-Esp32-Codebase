@@ -7,14 +7,14 @@
 #include "../Automat/command_based/Subsystem.h"
 
 
-class BeltMover : public atmt::Subsystem {
+class Extruder : public atmt::Subsystem {
 
     public:
 
-    // BeltMover(StepperMotor* _StepperArm ); // Made StepperArm internal
-    BeltMover(uint8_t PWM1, uint8_t PWM2);
-    BeltMover(BeltMover& belt);
-    ~BeltMover(); // Now BeltMover owns StepperMotor and has to delete it
+    // Extruder(StepperMotor* _StepperArm ); // Made StepperArm internal
+    Extruder(uint8_t PWM1, uint8_t PWM2);
+    Extruder(Extruder& belt);
+    ~Extruder(); // Now Extruder owns StepperMotor and has to delete it
 
     void init() override;
     void systemPeriodic() override;
