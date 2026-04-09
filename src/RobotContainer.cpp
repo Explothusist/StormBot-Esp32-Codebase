@@ -7,6 +7,12 @@
 #include "commands/BeltCommand.h"
 #include "commands/VacuumCommand.h"
 #include "commands/RoboClawCommand.h"   
+#include "commands/SendSerialResumeCommand.h"
+#include "commands/WaitForSerialResumeCommand.h"
+
+#include "commands/SendSerialResumeCommand.h"
+#include "commands/WaitForSerialResumeCommand.h"
+
 RobotContainer::RobotContainer():
     m_belt_mover{ new BeltMover(consts::belt_mover::PWM1, consts::belt_mover::PWM2) },
     m_compressor{ new Compressor(consts::compressor::pwmPin1, consts::compressor::pwmPin2, consts::compressor::enPin1, consts::compressor::enPin2) },
@@ -30,7 +36,8 @@ RobotContainer::~RobotContainer() { // Subsystems deleted by atmt::TimedRobot
 void RobotContainer::configure_auto_bindings() {
     atmt::platform_print("Configuring Auto Bindings\n");
     m_operator_controller->bindAutoTrigger(
-        (new atmt::Trigger(atmt::AButton, atmt::ButtonPressed))->inMode(atmt::ModeAnyAndAll)
+        // (new atmt::Trigger(atmt::AButton, atmt::ButtonPressed))->inMode(atmt::ModeAnyAndAll) // Automat overrides inMode internall on AutoTriggers
+        new atmt::Trigger(atmt::AButton, atmt::ButtonPressed)
     );
 };
 void RobotContainer::configure_bindings() {
@@ -142,14 +149,6 @@ void RobotContainer::configure_bindings() {
 
 };
 
-// atmt::Command* RobotContainer::getAutonomousCommand() {
-//     // std::vector<atmt::Command*> commands = 
-//     // return new atmt::SequentialCommandGroup({
-//     //     (new DriveCommand(m_drivetrain, 0.3, 0.0, 0.0))->withTimeout(2.0),
-//     //     new ApproachAndAlign(m_drivetrain, m_camera_reader)
-//     // });
-//     return new atmt::EmptyCommand();
-// };
 atmt::Command* RobotContainer::getAutonomousCommand(int indicator, void* robot_container) {
     RobotContainer* self = static_cast<RobotContainer*>(robot_container);
     switch (indicator) {
@@ -157,12 +156,17 @@ atmt::Command* RobotContainer::getAutonomousCommand(int indicator, void* robot_c
             return new atmt::EmptyCommand();
         case 1: // Autonomous Routine to move RoboClaw to Belt Position, and extend probes. 
             return new atmt::SequentialCommandGroup({
-                std::vector<atmt::Command*>{
-                    new RoboClawCommand(self->m_roboClaw, consts::robo_claw::MOTOR2, 3), // Move to Position 3
-                    new BeltCommand(self->m_belt_mover, 1),
-                }
+                new RoboClawCommand(self->m_roboClaw, consts::robo_claw::MOTOR2, 3), // Move to Position 3
+                new BeltCommand(self->m_belt_mover, 1),
             });
-        
+        case 2:
+            return new atmt::SequentialCommandGroup({
+                new WaitForSerialResumeCommand(self->m_serial_reader),
+                new VacuumCommand(self->m_vacuum),
+                new SendSerialResumeCommand(self->m_serial_reader),
+                new WaitForSerialResumeCommand(self->m_serial_reader),
+                new VacuumCommand(self->m_vacuum),
+            });
         
         default:
             return new atmt::EmptyCommand();
