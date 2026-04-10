@@ -4,9 +4,9 @@
 
 #include "../Automat/automat.h"
 #include "Compressor.h"
-#include "BeltMover.h"
+#include "Extruder.h"
 #include "Vacuum.h"
-#include "RoboClawUART.h"
+#include "GantryDriver.h"
 
 typedef enum {
     Bank_LeftSide,
@@ -19,7 +19,7 @@ typedef enum {
 
 class ScoreBatteryBank : public atmt::SequentialCommandGroup {
     public:
-        ScoreBatteryBank(ScoreBankRow row, ScoreBankSide side, Compressor* Compressor, BeltMover* belt_mover, Vacuum* vacuum, RoboClawUART robo_claw);
+        ScoreBatteryBank(ScoreBankRow row, ScoreBankSide side, Compressor* Compressor, Extruder* extruder, Vacuum* vacuum, GantryDriver* gantry_driver);
         
     private:
 };

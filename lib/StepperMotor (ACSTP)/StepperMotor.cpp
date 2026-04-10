@@ -72,7 +72,7 @@ void StepperMotor::move() {
 
 void StepperMotor::setSpeed(int microsecondsPerStep) {
     if (microsecondsPerStep <= 0) {
-        microsecondsPerStep = consts::belt_mover::FAST;
+        microsecondsPerStep = consts::lift::FAST;
     }
     speedSettingUs = microsecondsPerStep;
     applySpeed();

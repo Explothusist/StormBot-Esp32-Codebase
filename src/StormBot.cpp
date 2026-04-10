@@ -12,7 +12,7 @@
 
 StormBot::StormBot():
     atmt::TimedRobot(consts::robot::AutonomousLength),
-    m_bot_cont{ new RobotContainer() } // Init for belt_mover, compressor and vacuum
+    m_bot_cont{ new RobotContainer() } // Init for slide, compressor and vacuum
 {
 
 };
@@ -26,10 +26,10 @@ void StormBot::environmentInit() {
     atmt::platform_println("Environment Init!");
     
     // Register all Subsystems
-    registerSubsystem(m_bot_cont->m_belt_mover);
+    registerSubsystem(m_bot_cont->m_slide);
     registerSubsystem(m_bot_cont->m_compressor);
-    registerSubsystem(m_bot_cont->m_vacuum);
-    registerSubsystem(m_bot_cont->m_roboClaw);
+    registerSubsystem(m_bot_cont->m_claw);
+    registerSubsystem(m_bot_cont->m_gantryDriver);
 
 
     atmt::platform_println("Subsystems Registered!");
@@ -49,7 +49,7 @@ void StormBot::environmentInit() {
 #endif
 
     // Add Heartbeat Helpers
-    addHeartbeat(m_bot_cont->m_joystick_heartbeat);
+    // addHeartbeat(m_bot_cont->m_joystick_heartbeat);
     addHeartbeatMaker(m_bot_cont->m_heartbeat_sender);
 
     m_bot_cont->configure_auto_bindings();
@@ -95,8 +95,8 @@ void StormBot::robotInit() {
     
 
     
-    //m_bot_cont->m_belt_mover->setSpeed(900); // Stepper Speeds dec here
-    //m_bot_cont->m_belt_mover->setDistance(1000); // Move 1000 steps forward as a test
+    //m_bot_cont->m_slide->setSpeed(900); // Stepper Speeds dec here
+    //m_bot_cont->m_slide->setDistance(1000); // Move 1000 steps forward as a test
 
 
    
@@ -111,12 +111,17 @@ void StormBot::robotPeriodic() {
         ESPNow.add_peer(new_peer_mac);
     }
 
+    if (beat_joystick_heart) {
+        atmt::platform_println("BEAT HEAT///////////////");
+        m_bot_cont->m_joystick_heartbeat->beatHeart();
+        beat_joystick_heart = false;
+    }
+
     if(timeout > 0){ // WORKING HERE
         // mapFunction(); // Instead of mapFunction, update joystick state
        //  m_bot_cont->m_operator_controller->setRobotState(atmt::RobotState::Teleop);
 
         m_bot_cont->m_operator_controller->updateState(controlDataToJoystickState(lastControlPackage));
-        m_bot_cont->m_joystick_heartbeat->beatHeart();
         
 
         timeout--;
@@ -138,7 +143,7 @@ void StormBot::disabledInit() {
     atmt::platform_println("Disabled Init!");
 };
 void StormBot::disabledPeriodic() {
- //   atmt::platform_println("Disabled Periodic...");
+   atmt::platform_println("Disabled Periodic...");
 };
 void StormBot::disabledExit() {
     atmt::platform_println("Disabled Exit");
@@ -148,7 +153,7 @@ void StormBot::autonomousInit() {
     atmt::platform_println("Autonomous Init!");
 };
 void StormBot::autonomousPeriodic() {
- //   atmt::platform_println("Autonomous Periodic...");
+   atmt::platform_println("Autonomous Periodic...");
 };
 void StormBot::autonomousExit() {
     atmt::platform_println("Autonomous Exit");
@@ -158,7 +163,7 @@ void StormBot::teleopInit() {
     atmt::platform_println("Teleop Init!");
 };
 void StormBot::teleopPeriodic() {
-  //  atmt::platform_println("Teleop Periodic...");
+   atmt::platform_println("Teleop Periodic...");
 };
 void StormBot::teleopExit() {
     atmt::platform_println("Teleop Exit");
