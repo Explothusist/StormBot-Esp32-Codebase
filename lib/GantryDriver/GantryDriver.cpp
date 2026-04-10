@@ -20,7 +20,7 @@ void GantryDriver::init() {
 
     // Configure position PID for both motors
     // Parameters: address, kp, ki, kd, kiMax, deadzone, minPos, maxPos
-    this->roboclaw->SetM1PositionPID(this->address, 3.16, 0.15, 2.0, 1000, 150, MIN_HEIGHT[consts::gantry_driver::SLIDEMOTOR], MAX_HEIGHT[consts::gantry_driver::SLIDEMOTOR]); //4.16 .15 1
+    this->roboclaw->SetM1PositionPID(this->address, 3.16, 0.15, 2.0, 1000, 150, MIN_HEIGHT[consts::gantry_driver::LIFTMOTOR], MAX_HEIGHT[consts::gantry_driver::LIFTMOTOR]); //4.16 .15 1
     this->roboclaw->SetM2PositionPID(this->address, 4.4, 0.15, 2.0, 1000, 150, MIN_HEIGHT[consts::gantry_driver::GANTRYMOTOR], MAX_HEIGHT[consts::gantry_driver::GANTRYMOTOR]);
 
     // Set default acceleration/deceleration (counts per second^2)
@@ -28,15 +28,16 @@ void GantryDriver::init() {
     this->roboclaw->SetM2DefaultAccel(this->address, 20000, 20000);
 }
 void GantryDriver::systemPeriodic() {
-    
+    // Serial.printf("Gantry Pos: %d\n", this->getPosition(consts::gantry_driver::GANTRYMOTOR));
+    // Serial.printf("Lift Pos: %d\n", this->getPosition(consts::gantry_driver::LIFTMOTOR));
 };
 void GantryDriver::disabledPeriodic() {};
 void GantryDriver::autonomousPeriodic() {};
 void GantryDriver::teleopPeriodic() {};
 
 int GantryDriver::getPosition(int motor) {
-    Serial.println("Getting position for motor: " + String(motor));
-    if(motor == consts::gantry_driver::SLIDEMOTOR){
+    // Serial.println("Getting position for motor: " + String(motor));
+    if(motor == consts::gantry_driver::LIFTMOTOR){
         uint32_t value = this->roboclaw->ReadEncM1(this->address);
         if(value == 0){
             
@@ -66,7 +67,13 @@ int GantryDriver::getPosition(int motor) {
         return value;
     }
     return 0;
-}   
+}
+// int GantryDriver::getPosition(int motor) {
+//     switch (motor) {
+//         case consts::gantry_driver::GANTRYMOTOR:
+
+//     }
+// };   
 
 void GantryDriver::setPosition(int motor, int position) {
     this->commandedPosition[motor] = position;
@@ -88,7 +95,7 @@ void GantryDriver::setPosition(int motor, int position) {
 void GantryDriver::justMove(int motor, int direction) {
     //moveComplete = false;
     Serial.println("Just moving motor: " + String(motor) + " in direction: " + String(direction));
-    if(motor == consts::gantry_driver::SLIDEMOTOR){
+    if(motor == consts::gantry_driver::LIFTMOTOR){
         if(direction == 1){
             this->roboclaw->ForwardM1(this->address, this->speed[motor]);
         }
@@ -131,7 +138,7 @@ void GantryDriver::setSpeed(int motor, int speed) {
 
 void GantryDriver::move(int motor) {
     Serial.println("Moving motor " + String(motor) + " to position: " + String(commandedPosition[motor]));
-    if(motor == consts::gantry_driver::SLIDEMOTOR){
+    if(motor == consts::gantry_driver::LIFTMOTOR){
         this->roboclaw->M1SpeedPosition(this->address, speed[motor], commandedPosition[motor], 1);
     }
     else if(motor == consts::gantry_driver::GANTRYMOTOR){
@@ -140,6 +147,41 @@ void GantryDriver::move(int motor) {
     moveComplete = true;
 }
 
+
+int GantryDriver::getAbsoluteGantryFromRelativeGantry(consts::gantry::RelativeSetpoint relative_setpoint) {
+    int last_position = this->commandedPosition[consts::gantry_driver::GANTRYMOTOR];
+
+    if (last_position < consts::gantry::Setpoint_Corner01) {
+        return consts::gantry::Setpoint_Store;
+    }else if (last_position < consts::gantry::Setpoint_Corner12) {
+        switch (relative_setpoint) {
+            case consts::gantry::RelativeSetpoint::LeftScore:
+                return consts::gantry::Setpoint_Side1_LeftScore;
+            case consts::gantry::RelativeSetpoint::Neutral:
+                return consts::gantry::Setpoint_Side1_Neutral;
+            case consts::gantry::RelativeSetpoint::RightScore:
+                return consts::gantry::Setpoint_Side1_RightScore;
+        }
+    }else if (last_position < consts::gantry::Setpoint_Corner23) {
+        switch (relative_setpoint) {
+            case consts::gantry::RelativeSetpoint::LeftScore:
+                return consts::gantry::Setpoint_Side2_LeftScore;
+            case consts::gantry::RelativeSetpoint::Neutral:
+                return consts::gantry::Setpoint_Side2_Neutral;
+            case consts::gantry::RelativeSetpoint::RightScore:
+                return consts::gantry::Setpoint_Side2_RightScore;
+        }
+    }else {
+        switch (relative_setpoint) {
+            case consts::gantry::RelativeSetpoint::LeftScore:
+                return consts::gantry::Setpoint_Side3_LeftScore;
+            case consts::gantry::RelativeSetpoint::Neutral:
+                return consts::gantry::Setpoint_Side3_Neutral;
+            case consts::gantry::RelativeSetpoint::RightScore:
+                return consts::gantry::Setpoint_Side3_RightScore;
+        }
+    }
+};
 
 
     

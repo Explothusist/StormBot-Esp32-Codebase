@@ -41,13 +41,13 @@ void ExtruderCommand::initialize() {
     switch (m_direction)
     {
         case -1:
-            m_slide->setSpeed(consts::slide::BACKWARDSPEED);
+            m_slide->setSpeed(consts::extruder::BACKWARDSPEED);
             break;
         case 0:
-            m_slide->setSpeed(consts::slide::STOP);
+            m_slide->setSpeed(consts::extruder::STOP);
             break;
         case 1:
-            m_slide->setSpeed(consts::slide::FORWARDSPEED);
+            m_slide->setSpeed(consts::extruder::FORWARDSPEED);
             break;
     }
   //  m_Extruder->setSpeed(m_direction); 

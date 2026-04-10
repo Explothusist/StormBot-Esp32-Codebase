@@ -19,7 +19,7 @@ typedef enum {
 
 class ScoreBatteryBank : public atmt::SequentialCommandGroup {
     public:
-        ScoreBatteryBank(ScoreBankRow row, ScoreBankSide side, Compressor* Compressor, Extruder* slide, Vacuum* vacuum, GantryDriver gantry_driver);
+        ScoreBatteryBank(ScoreBankRow row, ScoreBankSide side, Compressor* Compressor, Extruder* extruder, Vacuum* vacuum, GantryDriver* gantry_driver);
         
     private:
 };

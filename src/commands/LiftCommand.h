@@ -1,16 +1,16 @@
 
 
-#ifndef STORMBOT_GantryDriverCommand_
-#define STORMBOT_GantryDriverCommand_
+#ifndef STORMBOT_LiftCommand_
+#define STORMBOT_LiftCommand_
 
 #include "../Automat/automat.h"
 #include "GantryDriver.h"
 
-class GantryDriverCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
+class LiftCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
     public:
-        GantryDriverCommand(GantryDriver* roboClaw,int motor, int position, bool justMove = false, bool absolutePosition = false); // Put subsystems as parameters
-        GantryDriverCommand(const GantryDriverCommand& command); // Copy constructor
-        ~GantryDriverCommand();
+        LiftCommand(GantryDriver* roboClaw, int position, bool justMove = false, bool absolutePosition = false); // Put subsystems as parameters
+        LiftCommand(const LiftCommand& command); // Copy constructor
+        ~LiftCommand();
         atmt::Command* cloneSelf() const override;
 
         void initialize() override; // User-made
@@ -23,7 +23,6 @@ class GantryDriverCommand : public atmt::Command { // Add more functionality to 
     private:
         GantryDriver* m_gantryDriver;
         int m_position;
-        int m_motor;
         bool m_justMove;
         bool m_absolutePosition;
 };

@@ -31,7 +31,7 @@ class Vacuum : public atmt::Subsystem {
     void setState(bool _state); // Maybe not needed, but we will see
     private:
 
-    int speed = consts::vacuum::speed;
+    int speed = consts::claw::speed;
 
     bool state = false;
 

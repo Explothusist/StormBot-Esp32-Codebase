@@ -14,6 +14,7 @@
 
 const uint8_t broadcastAddress[] = {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 int timeout = 0;
+bool beat_joystick_heart = false;
 bool receivedRemoteSignal = false; 
 volatile bool pendingPeerAdd = false;
 uint8_t pendingPeerMac[6] = {0, 0, 0, 0, 0, 0};
@@ -209,7 +210,7 @@ bool waitingForResponse(){
   result == ESP_OK ? Serial.println("Sent successfully"): Serial.printf("Print failure %02x", ESP_OK);
 
   Serial.println("Result Status: " + String(result));
-  delay(250);
+//   delay(250);
 
 
   return(true);
@@ -228,7 +229,8 @@ void onReceive(const uint8_t *mac_info, const uint8_t *incomingData, int len) {
     pendingPeerAdd = true;
     
 
-    timeout = 5;
+    timeout = 300;
+    beat_joystick_heart = true;
 
     if (lastControlPackage.macHandshake[5] == macAddress[5]
       && lastControlPackage.macHandshake[4] == macAddress[4]

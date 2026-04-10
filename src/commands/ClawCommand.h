@@ -8,6 +8,7 @@
 class ClawCommand : public atmt::Command { // Add more functionality to this, but this is a basic framework
     public:
         ClawCommand(Vacuum* vacuum); // Put subsystems as parameters
+        ClawCommand(Vacuum* vacuum, consts::claw::ClawPosition position); // Put subsystems as parameters
         ClawCommand(const ClawCommand& command); // Copy constructor
         ~ClawCommand();
         atmt::Command* cloneSelf() const override;
@@ -21,7 +22,8 @@ class ClawCommand : public atmt::Command { // Add more functionality to this, bu
         
     private:
         Vacuum* m_claw;
-        int m_direction;
+        consts::claw::ClawPosition m_position;
+        bool m_is_toggle;
 };
 
 #endif

@@ -5,34 +5,60 @@
 
 ClawCommand::ClawCommand(Vacuum* vacuum):
     atmt::Command(),
-    m_claw{ vacuum }
-
+    m_claw{ vacuum },
+    m_position{ consts::claw::ClawClosed },
+    m_is_toggle{ true }
 {
     usesSubsystem(m_claw);
+};
+ClawCommand::ClawCommand(Vacuum* vacuum, consts::claw::ClawPosition position):
+    atmt::Command(),
+    m_claw{ vacuum },
+    m_position{ position },
+    m_is_toggle{ false }
+{
+
 };
 ClawCommand::ClawCommand(const ClawCommand& command):
     atmt::Command(command)
 {
     m_claw = command.m_claw;
+    m_position = command.m_position;
+    m_is_toggle = command.m_is_toggle;
 };
 ClawCommand::~ClawCommand() {
     // Will run ~Command() after this is complete
 };
 atmt::Command* ClawCommand::cloneSelf() const {
-    return new ClawCommand(m_claw);
+    if (!m_is_toggle) {
+        return new ClawCommand(m_claw);
+    }else {
+        return new ClawCommand(m_claw, m_position);
+    }
 };
 
 void ClawCommand::initialize() {
   //  Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
-  Serial.println("Initializing Vacuum Command"); 
+//   Serial.println("Initializing Vacuum Command"); 
   //m_claw->init();
 };
 void ClawCommand::execute() {
   //  m_claw->update();
-    bool newState = !m_claw->getState();
-    Serial.println("Toggling Claw " + String(newState ? "On" : "Off"));
-    m_claw->setState(newState);
-    toggleClaw();
+    if (m_is_toggle) {
+        bool newState = !m_claw->getState();
+        // Serial.println("Toggling Claw " + String(newState ? "On" : "Off"));
+        m_claw->setState(newState);
+        toggleClaw();
+    }else {
+        switch (m_position) {
+            case consts::claw::ClawClosed:
+                m_claw->setState(true);
+                break;
+            case consts::claw::ClawOpen:
+                m_claw->setState(false);
+                break;
+        }
+    }
      
 
 };
