@@ -1,6 +1,6 @@
 
 #include "StormBot.h"
-
+#include "wifi_network.h"
 #include "../Automat/automat.h"
 #include "stormbot_type.h"
 
@@ -68,10 +68,37 @@ void StormBot::robotInit() {
         return;
     }
 
-    if (WiFi.getMode() != WIFI_MODE_STA) {
+    #if WIFI_SET_AP_MODE
+        if (WiFi.getMode() != WIFI_MODE_STA) {
+            WiFi.mode(WIFI_MODE_STA);
+        }
+    #else
+        WiFi.persistent(false);           // Don't store credentials in flash
+        WiFi.disconnect(true, true);      // Clear any stale connection state
+        delay(100);
         WiFi.mode(WIFI_MODE_STA);
-    }
+        WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+        Serial.printf("Connecting to WiFi \"%s\"", WIFI_SSID);
+        int attempts = 0;
+        while (WiFi.status() != WL_CONNECTED && attempts < 40) {
+            delay(500);
+            Serial.print(".");
+            attempts++;
+        }
+        if (WiFi.status() == WL_CONNECTED) {
+            WiFi.setSleep(false);
+            Serial.println("\nConnected!");
+            Serial.print("IP: ");
+            Serial.println(WiFi.localIP());
+        } else {
+            Serial.println("\nFailed to connect. Falling back to ESPNOW Direct mode.");
+            if (WiFi.getMode() != WIFI_MODE_STA) {
+                WiFi.mode(WIFI_MODE_STA);
+            }
+        }
 
+    #endif 
+    
     int init_result = ESPNow.init();
     if (init_result != ESP_OK && init_result != ESP_ERR_ESPNOW_EXIST) {
         atmt::platform_println("Error initializing ESP-NOW");

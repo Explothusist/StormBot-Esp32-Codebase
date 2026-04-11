@@ -33,6 +33,11 @@ struct __attribute__((packed)) ControlData {
     bool objectRun[6]; 
     float escSpeed = .25; 
 
+    uint16_t joystickLeftX = 0; // 4096
+    uint16_t joystickLeftY = 0; // 4096
+    uint16_t joystickRightX = 0; // 4096
+    uint16_t joystickRightY = 0; // 4096
+
     bool connectCheck = false;
 };
 

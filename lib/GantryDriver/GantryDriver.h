@@ -45,11 +45,7 @@ private:
 
     uint8_t address;
     uint32_t defaultTimeoutMs  = 5;
-<<<<<<< HEAD:lib/RoboClaw/RoboClawUART.h
-    uint16_t speed[2] = {1250, 1250};
-=======
     uint16_t speed[2] = {consts::gantry_driver::SLIDESPEED, consts::gantry_driver::GANTRYSPEED};
->>>>>>> 7920f3bc468d59bd594171a7f55857834c1beeb0:lib/GantryDriver/GantryDriver.h
     int foundZeros[2] = {0, 0};
     uint8_t rxPin, txPin;
     int commandedPosition[2] = {0, 0};
