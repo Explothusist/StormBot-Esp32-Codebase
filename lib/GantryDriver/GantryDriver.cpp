@@ -20,8 +20,14 @@ void GantryDriver::init() {
 
     // Configure position PID for both motors
     // Parameters: address, kp, ki, kd, kiMax, deadzone, minPos, maxPos
+<<<<<<< HEAD:lib/RoboClaw/RoboClawUART.cpp
+    this->roboclaw->SetM1PositionPID(this->address, 2.4, 0.05, 2.0, 0, 150, MIN_HEIGHT[0], MAX_HEIGHT[0]); // Slide Motor
+
+    this->roboclaw->SetM2PositionPID(this->address, 4.4, 0.05, 4.0, 0, 150, MIN_HEIGHT[1], MAX_HEIGHT[1]);
+=======
     this->roboclaw->SetM1PositionPID(this->address, 3.16, 0.15, 2.0, 1000, 150, MIN_HEIGHT[consts::gantry_driver::LIFTMOTOR], MAX_HEIGHT[consts::gantry_driver::LIFTMOTOR]); //4.16 .15 1
     this->roboclaw->SetM2PositionPID(this->address, 4.4, 0.15, 2.0, 1000, 150, MIN_HEIGHT[consts::gantry_driver::GANTRYMOTOR], MAX_HEIGHT[consts::gantry_driver::GANTRYMOTOR]);
+>>>>>>> 7920f3bc468d59bd594171a7f55857834c1beeb0:lib/GantryDriver/GantryDriver.cpp
 
     // Set default acceleration/deceleration (counts per second^2)
     // this->roboclaw->SetM1DefaultAccel(this->address, 20000, 20000);
