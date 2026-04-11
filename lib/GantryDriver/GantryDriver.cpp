@@ -24,8 +24,10 @@ void GantryDriver::init() {
     this->roboclaw->SetM2PositionPID(this->address, 4.4, 0.15, 2.0, 1000, 150, MIN_HEIGHT[consts::gantry_driver::GANTRYMOTOR], MAX_HEIGHT[consts::gantry_driver::GANTRYMOTOR]);
 
     // Set default acceleration/deceleration (counts per second^2)
-    this->roboclaw->SetM1DefaultAccel(this->address, 20000, 20000);
-    this->roboclaw->SetM2DefaultAccel(this->address, 20000, 20000);
+    // this->roboclaw->SetM1DefaultAccel(this->address, 20000, 20000);
+    // this->roboclaw->SetM2DefaultAccel(this->address, 20000, 20000);
+    this->roboclaw->SetM1DefaultAccel(this->address, 100000, 100000); // Gantry
+    this->roboclaw->SetM2DefaultAccel(this->address, 50000, 50000); // Lift
 }
 void GantryDriver::systemPeriodic() {
     // Serial.printf("Gantry Pos: %d\n", this->getPosition(consts::gantry_driver::GANTRYMOTOR));

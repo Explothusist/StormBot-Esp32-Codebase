@@ -57,8 +57,8 @@ void ExtruderCommand::execute() {
    // m_slide->update();
 };
 void ExtruderCommand::end(bool interrupted) {
-    
+    m_slide->setSpeed(consts::extruder::STOP);
 };
 bool ExtruderCommand::is_finished() {
-    return true;
+    return false;
 };

@@ -17,7 +17,7 @@ ClawCommand::ClawCommand(Vacuum* vacuum, consts::claw::ClawPosition position):
     m_position{ position },
     m_is_toggle{ false }
 {
-
+    usesSubsystem(m_claw);
 };
 ClawCommand::ClawCommand(const ClawCommand& command):
     atmt::Command(command)
@@ -30,7 +30,7 @@ ClawCommand::~ClawCommand() {
     // Will run ~Command() after this is complete
 };
 atmt::Command* ClawCommand::cloneSelf() const {
-    if (!m_is_toggle) {
+    if (m_is_toggle) {
         return new ClawCommand(m_claw);
     }else {
         return new ClawCommand(m_claw, m_position);

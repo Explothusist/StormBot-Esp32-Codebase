@@ -26,7 +26,7 @@ class RobotContainer {
         static int getWhichAutonomousRoutine(void* robot_container);
 
         Compressor* m_compressor; // public because they are for Robot.cpp
-        Extruder* m_slide;
+        Extruder* m_extruder;
         Vacuum* m_claw;
         GantryDriver* m_gantryDriver;
 

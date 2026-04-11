@@ -52,6 +52,7 @@ atmt::Command* GantryCommand::cloneSelf() const {
 };
 
 void GantryCommand::initialize() {
+    Serial.println("Starting Gantry");
     //  Serial.println(m_direction == 1 ? "Moving forward with magnitude: " : "Moving backward with magnitude: ");
     //Serial.println("Initializing RoboClaw Command"); 
     m_gantryDriver->init();
@@ -73,18 +74,18 @@ void GantryCommand::initialize() {
         if(m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR] < 0){
             m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR] = 0; // Prevent going below minimum position
         }
-        if(consts::gantry_driver::GANTRYMOTOR == consts::gantry_driver::LIFTMOTOR){
-            if(m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR] > 3){
-                m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR] = 3; // Prevent going above maximum position
-            }
-            m_gantryDriver->setPosition(consts::gantry_driver::GANTRYMOTOR, m_gantryDriver->Roboclaw_Positions_Linear[m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR]]);
-        }
-        if(consts::gantry_driver::GANTRYMOTOR == consts::gantry_driver::GANTRYMOTOR){
+        // if(consts::gantry_driver::GANTRYMOTOR == consts::gantry_driver::LIFTMOTOR){
+        //     if(m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR] > 3){
+        //         m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR] = 3; // Prevent going above maximum position
+        //     }
+        //     m_gantryDriver->setPosition(consts::gantry_driver::GANTRYMOTOR, m_gantryDriver->Roboclaw_Positions_Linear[m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR]]);
+        // }
+        // if(consts::gantry_driver::GANTRYMOTOR == consts::gantry_driver::GANTRYMOTOR){
             if(m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR] > 5){
                 m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR] = 5; // Prevent going above maximum position
             }
             m_gantryDriver->setPosition(consts::gantry_driver::GANTRYMOTOR, m_gantryDriver->Roboclaw_Positions_Load[m_gantryDriver->positionElement[consts::gantry_driver::GANTRYMOTOR]]);
-        }
+        // }
     }
     else{
         m_gantryDriver->justMove(consts::gantry_driver::GANTRYMOTOR, m_position);
@@ -102,12 +103,16 @@ void GantryCommand::execute() {
 
 };
 void GantryCommand::end(bool interrupted) {
-    
+    Serial.println("Ending Gantry");
+    m_gantryDriver->justMove(consts::gantry_driver::GANTRYMOTOR, consts::gantry_driver::STOP);
 };
 
 bool GantryCommand::is_finished(){
-
-    return m_gantryDriver->moveComplete; 
+    if (!m_justMove) {
+        return m_gantryDriver->moveComplete; 
+    }else {
+        return false;
+    }
 }
 
 

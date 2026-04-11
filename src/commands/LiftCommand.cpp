@@ -48,18 +48,18 @@ void LiftCommand::initialize() {
         if(m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR] < 0){
             m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR] = 0; // Prevent going below minimum position
         }
-        if(consts::gantry_driver::LIFTMOTOR == consts::gantry_driver::LIFTMOTOR){
+        // if(consts::gantry_driver::LIFTMOTOR == consts::gantry_driver::LIFTMOTOR){
             if(m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR] > 3){
                 m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR] = 3; // Prevent going above maximum position
             }
             m_gantryDriver->setPosition(consts::gantry_driver::LIFTMOTOR, m_gantryDriver->Roboclaw_Positions_Linear[m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR]]);
-        }
-        if(consts::gantry_driver::LIFTMOTOR == consts::gantry_driver::GANTRYMOTOR){
-            if(m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR] > 5){
-                m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR] = 5; // Prevent going above maximum position
-            }
-            m_gantryDriver->setPosition(consts::gantry_driver::LIFTMOTOR, m_gantryDriver->Roboclaw_Positions_Load[m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR]]);
-        }
+        // }
+        // if(consts::gantry_driver::LIFTMOTOR == consts::gantry_driver::GANTRYMOTOR){
+        //     if(m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR] > 5){
+        //         m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR] = 5; // Prevent going above maximum position
+        //     }
+        //     m_gantryDriver->setPosition(consts::gantry_driver::LIFTMOTOR, m_gantryDriver->Roboclaw_Positions_Load[m_gantryDriver->positionElement[consts::gantry_driver::LIFTMOTOR]]);
+        // }
     }
     else{
         m_gantryDriver->justMove(consts::gantry_driver::LIFTMOTOR, m_position);
@@ -77,12 +77,15 @@ void LiftCommand::execute() {
 
 };
 void LiftCommand::end(bool interrupted) {
-    
+    m_gantryDriver->justMove(consts::gantry_driver::LIFTMOTOR, 0);
 };
 
 bool LiftCommand::is_finished(){
-
-    return m_gantryDriver->moveComplete; 
+    if (!m_justMove) {
+        return m_gantryDriver->moveComplete; 
+    }else {
+        return false;
+    }
 }
 
 

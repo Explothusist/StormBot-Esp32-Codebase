@@ -71,7 +71,7 @@ namespace consts {
         uint8_t const GANTRYMOTOR = 1;
 
         uint8_t const SLIDESPEED = 2500;
-        uint8_t const GANTRYSPEED = 2500;
+        uint8_t const GANTRYSPEED = 550;
 
         int const MOVEUPPOSITION = 1;
         int const MOVEDOWNPOSITION = -1;
