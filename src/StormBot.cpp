@@ -76,7 +76,7 @@ void StormBot::robotInit() {
         WiFi.persistent(false);           // Don't store credentials in flash
         WiFi.disconnect(true, true);      // Clear any stale connection state
         delay(100);
-        WiFi.mode(WIFI_MODE_STA);
+        WiFi.mode(WIFI_STA);
         WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
         Serial.printf("Connecting to WiFi \"%s\"", WIFI_SSID);
         int attempts = 0;
@@ -98,7 +98,7 @@ void StormBot::robotInit() {
         }
 
     #endif 
-    
+
     int init_result = ESPNow.init();
     if (init_result != ESP_OK && init_result != ESP_ERR_ESPNOW_EXIST) {
         atmt::platform_println("Error initializing ESP-NOW");
